@@ -4,22 +4,22 @@ import it.unumib.disco.dw.Config;
 
 import java.sql.*;
 
-public class ConnectionManager
+public class LocalDatabaseManager
 {
 
     private Connection connection;
 
-    private ConnectionManager()
+    private LocalDatabaseManager()
     {
         //
     }
 
-    public static ConnectionManager getInstance()
+    public static LocalDatabaseManager getInstance()
     {
         try
         {
-            Connection connection = DriverManager.getConnection(Config.DB.URL, Config.DB.NAME, Config.DB.PASSWORD);
-            ConnectionManager manager = new ConnectionManager();
+            Connection connection = DriverManager.getConnection(Config.Database.URL, Config.Database.USER, Config.Database.PASSWORD);
+            LocalDatabaseManager manager = new LocalDatabaseManager();
             manager.connection = connection;
             return manager;
         }
