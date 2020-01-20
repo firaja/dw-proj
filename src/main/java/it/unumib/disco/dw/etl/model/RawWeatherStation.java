@@ -9,6 +9,10 @@ public class RawWeatherStation
 
     private String city;
 
+    private String lat;
+
+    private String lng;
+
     public String getId()
     {
         return id;
@@ -29,12 +33,34 @@ public class RawWeatherStation
         this.city = city;
     }
 
+    public String getLat()
+    {
+        return lat;
+    }
+
+    public void setLat(String lat)
+    {
+        this.lat = lat;
+    }
+
+    public String getLng()
+    {
+        return lng;
+    }
+
+    public void setLng(String lng)
+    {
+        this.lng = lng;
+    }
+
     @Override
     public String toString()
     {
-        return "Station{" +
+        return "RawWeatherStation{" +
                 "id='" + id + '\'' +
                 ", city='" + city + '\'' +
+                ", lat='" + lat + '\'' +
+                ", lng='" + lng + '\'' +
                 '}';
     }
 }

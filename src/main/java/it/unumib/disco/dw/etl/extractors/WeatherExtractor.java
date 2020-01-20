@@ -24,11 +24,16 @@ public class WeatherExtractor extends AbstractJSONExtractor
 
     public List<RawRealtimeWeatherDetection> retrieveRealtimeMeasurement()
     {
+        LOG.info("Retrieving realtime detections from remote source...");
+
         return doRetrieve(Config.ExternalSource.Weather.REALTIME, RawRealtimeWeatherDetection.class);
     }
 
     public List<RawHistoricalWeatherDetection> retrieveHistoricalMeasurement(Date date)
     {
+        LOG.info("Retrieving historical detection from remote source...");
+
+
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
 
@@ -44,7 +49,6 @@ public class WeatherExtractor extends AbstractJSONExtractor
 
     private <T extends RawAbstractWeatherDetection> List<T> doRetrieve(String url, Class<T> type)
     {
-        LOG.info("Retrieving sensors from remote source...");
 
         long total = 0L;
 
@@ -84,16 +88,16 @@ public class WeatherExtractor extends AbstractJSONExtractor
 
                 total++;
 
-                LOG.trace("Sensor {}", sensor);
+                LOG.trace("Detection {}", sensor);
 
                 if (filter(sensor))
                 {
-                    LOG.debug("✔️ Sensor {} accepted", sensor.getStation().getId());
+                    LOG.debug("✔️ Detection {} accepted", sensor.getStation().getId());
                     sensorList.add(sensor);
                 }
                 else if (LOG.isDebugEnabled())
                 {
-                    LOG.debug("❌ Sensor {} rejected", sensor.getStation().getId());
+                    LOG.debug("❌ Detection {} rejected", sensor.getStation().getId());
                 }
             }
 
@@ -106,7 +110,7 @@ public class WeatherExtractor extends AbstractJSONExtractor
         LOG.debug("--- END");
 
 
-        LOG.info("Retrieved {} sensors out of {}", sensorList.size(), total);
+        LOG.info("Retrieved {} detections out of {}", sensorList.size(), total);
         return sensorList;
     }
 
