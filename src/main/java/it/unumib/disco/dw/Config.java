@@ -19,10 +19,10 @@ public class Config
         public static class Weather
         {
 
+            public static final String REALTIME = "https://www.torinometeo.org/api/v1/realtime/data/";
 
-            public static final String SENSORS_DESCRIPTION = "https://www.dati.lombardia.it/resource/nf78-nj6b.json?$limit=2000";
+            public static final String HISTORICAL = "https://www.torinometeo.org/api/v1/realtime/history/%s/%s/%s";
 
-            public static final String SENSORS_VALUE = "https://www.dati.lombardia.it/resource/647i-nhxk.json";
         }
 
 
