@@ -2,6 +2,8 @@ package it.unumib.disco.dw.etl.extractors;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
+import com.sun.istack.internal.NotNull;
+
 import it.unumib.disco.dw.Config;
 import it.unumib.disco.dw.etl.model.RawAbstractWeatherDetection;
 import it.unumib.disco.dw.etl.model.RawHistoricalWeatherDetection;
@@ -47,7 +49,7 @@ public class WeatherExtractor extends AbstractJSONExtractor
     }
 
 
-    private <T extends RawAbstractWeatherDetection> List<T> doRetrieve(String url, Class<T> type)
+    private <T extends RawAbstractWeatherDetection> List<T> doRetrieve(@NotNull String url, @NotNull Class<T> type)
     {
 
         long total = 0L;
@@ -115,7 +117,7 @@ public class WeatherExtractor extends AbstractJSONExtractor
     }
 
 
-    private boolean filter(RawAbstractWeatherDetection detection)
+    private boolean filter(@NotNull RawAbstractWeatherDetection detection)
     {
         return detection.getStation() != null //
                 && StringUtils.equalsIgnoreCase(detection.getStation().getCity(), "torino");

@@ -1,13 +1,15 @@
 package it.unumib.disco.dw.etl.transformers;
 
-import it.unumib.disco.dw.etl.model.ParsedWeatherDetection;
-import it.unumib.disco.dw.etl.model.RawRealtimeWeatherDetection;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import it.unumib.disco.dw.etl.model.ParsedWeatherDetection;
+import it.unumib.disco.dw.etl.model.RawHistoricalWeatherDetection;
+import it.unumib.disco.dw.etl.model.RawRealtimeWeatherDetection;
 
 
 public class WeatherTransformer
@@ -28,6 +30,19 @@ public class WeatherTransformer
         return parsedDetection;
     }
 
+    public ParsedWeatherDetection transform(RawHistoricalWeatherDetection rawDetection)
+    {
+        ParsedWeatherDetection parsedDetection = new ParsedWeatherDetection();
+        parsedDetection.setDetectionTime(toDate(rawDetection.getDate(), "yyyy-MM-dd"));
+        parsedDetection.setLatitude(toDouble(rawDetection.getStation().getLat()));
+        parsedDetection.setLongitude(toDouble(rawDetection.getStation().getLng()));
+        parsedDetection.setRain(toFloat(rawDetection.getRain()));
+        parsedDetection.setRelativeHumidity(toFloat(rawDetection.getRelative_humidity_mean()));
+        parsedDetection.setTemperature(toFloat(rawDetection.getTemperature_mean()));
+        parsedDetection.setWind(toFloat(null));
+        return parsedDetection;
+    }
+
     private static Date toDate(String date, String format)
     {
         try
@@ -36,17 +51,16 @@ public class WeatherTransformer
         }
         catch (Exception e)
         {
-            LOG.error("Cannot parse date {} with format {}", date, format);
+            LOG.error("Cannot parse date `{}` with format `{}`.", date, format);
             return null;
         }
     }
 
-
-    private static float toFloat(String str)
+    private static Float toFloat(String str)
     {
         if (str == null)
         {
-            return 0f;
+            return null;
         }
         try
         {
@@ -54,16 +68,16 @@ public class WeatherTransformer
         }
         catch (NumberFormatException nfe)
         {
-            LOG.error("Cannot parse float from string `{}`", str);
+            LOG.error("Cannot parse float from string `{}`.", str);
             return 0f;
         }
     }
 
-    private static double toDouble(String str)
+    private static Double toDouble(String str)
     {
         if (str == null)
         {
-            return 0d;
+            return null;
         }
         try
         {
@@ -75,6 +89,5 @@ public class WeatherTransformer
             return 0d;
         }
     }
-
 
 }

@@ -3,6 +3,8 @@ package it.unumib.disco.dw.etl.extractors;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.MappingJsonFactory;
+import com.sun.istack.internal.NotNull;
+
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -17,7 +19,7 @@ public abstract class AbstractJSONExtractor
 
     private static final Logger LOG = LogManager.getLogger();
 
-    protected JsonParser getParser(String url)
+    protected JsonParser getParser(@NotNull String url)
     {
         JsonParser result;
         JsonFactory jsonFactory = new MappingJsonFactory();

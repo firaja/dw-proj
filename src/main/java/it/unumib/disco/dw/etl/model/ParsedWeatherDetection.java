@@ -5,36 +5,36 @@ import java.util.Date;
 public class ParsedWeatherDetection
 {
 
-    private double latitude;
+    private Double latitude;
 
-    private double longitude;
+    private Double longitude;
 
     private Date detectionTime;
 
-    private float rain;
+    private Float rain;
 
-    private float temperature;
+    private Float temperature;
 
-    private float relativeHumidity;
+    private Float relativeHumidity;
 
-    private float wind;
+    private Float wind;
 
-    public double getLatitude()
+    public Double getLatitude()
     {
         return latitude;
     }
 
-    public void setLatitude(double latitude)
+    public void setLatitude(Double latitude)
     {
         this.latitude = latitude;
     }
 
-    public double getLongitude()
+    public Double getLongitude()
     {
         return longitude;
     }
 
-    public void setLongitude(double longitude)
+    public void setLongitude(Double longitude)
     {
         this.longitude = longitude;
     }
@@ -49,42 +49,42 @@ public class ParsedWeatherDetection
         this.detectionTime = detectionTime;
     }
 
-    public float getRain()
+    public Float getRain()
     {
         return rain;
     }
 
-    public void setRain(float rain)
+    public void setRain(Float rain)
     {
         this.rain = rain;
     }
 
-    public float getTemperature()
+    public Float getTemperature()
     {
         return temperature;
     }
 
-    public void setTemperature(float temperature)
+    public void setTemperature(Float temperature)
     {
         this.temperature = temperature;
     }
 
-    public float getRelativeHumidity()
+    public Float getRelativeHumidity()
     {
         return relativeHumidity;
     }
 
-    public void setRelativeHumidity(float relativeHumidity)
+    public void setRelativeHumidity(Float relativeHumidity)
     {
         this.relativeHumidity = relativeHumidity;
     }
 
-    public float getWind()
+    public Float getWind()
     {
         return wind;
     }
 
-    public void setWind(float wind)
+    public void setWind(Float wind)
     {
         this.wind = wind;
     }
