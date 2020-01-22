@@ -1,27 +1,34 @@
 package it.unumib.disco.dw;
 
-public class Config
+public interface Config
 {
 
-    public static class Database
+    interface Database
     {
-        public static final String NAME = "dw";
+        String NAME = "dw";
 
-        public static final String URL = "dbc:mysql://localhost:3306/" + NAME;
+        String URL = "dbc:mysql://localhost:3306/" + NAME;
 
-        public static final String USER = "root";
+        String USER = "root";
 
-        public static final String PASSWORD = "root";
+        String PASSWORD = "root";
     }
 
-    public static class ExternalSource
+    interface ExternalSource
     {
-        public static class Weather
+        interface Weather
         {
 
-            public static final String REALTIME = "https://www.torinometeo.org/api/v1/realtime/data/";
+            String REALTIME = "https://www.torinometeo.org/api/v1/realtime/data/";
 
-            public static final String HISTORICAL = "https://www.torinometeo.org/api/v1/realtime/history/%s/%s/%s";
+            String HISTORICAL = "https://www.torinometeo.org/api/v1/realtime/history/%s/%s/%s";
+
+        }
+
+        interface Strike
+        {
+
+            String REALTIME = "http://dati.mit.gov.it/catalog/api/action/datastore_search?resource_id=6838feb1-1f3d-40dc-845f-d304088a92cd";
 
         }
 
