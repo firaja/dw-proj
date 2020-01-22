@@ -10,10 +10,8 @@ import org.apache.logging.log4j.Logger;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
-import com.sun.istack.internal.NotNull;
 
 import it.unumib.disco.dw.Config;
-import it.unumib.disco.dw.etl.model.RawAbstractWeatherDetection;
 import it.unumib.disco.dw.etl.model.RawStrike;
 
 
@@ -30,7 +28,7 @@ public class StrikeExtractor extends AbstractJSONExtractor
     }
 
 
-    private List<RawStrike> doRetrieve(@NotNull String url)
+    private List<RawStrike> doRetrieve(String url)
     {
         long total = 0L;
 
@@ -96,7 +94,7 @@ public class StrikeExtractor extends AbstractJSONExtractor
         return strikeList;
     }
 
-    private boolean filter(@NotNull RawStrike strike)
+    private boolean filter(RawStrike strike)
     {
         return StringUtils.equalsAnyIgnoreCase(strike.getNome_provincia(), "tutte", "torino");
     }
