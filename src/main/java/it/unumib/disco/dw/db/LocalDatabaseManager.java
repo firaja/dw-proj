@@ -1,6 +1,7 @@
 package it.unumib.disco.dw.db;
 
 import it.unumib.disco.dw.Config;
+import javafx.util.Pair;
 
 import java.sql.*;
 
@@ -30,17 +31,18 @@ public class LocalDatabaseManager
     }
 
 
-    public ResultSet query(String query)
+    public Pair<Statement, ResultSet> query(String query)
     {
-        try(Statement statement = this.connection.createStatement())
+        Statement statement;
+        try
         {
-            return statement.executeQuery(query);
+            statement = this.connection.createStatement();
+            return new Pair<>(statement, statement.executeQuery(query));
         }
         catch (SQLException e)
         {
             throw new IllegalStateException(e);
         }
-
     }
 
     public int update(String update)
