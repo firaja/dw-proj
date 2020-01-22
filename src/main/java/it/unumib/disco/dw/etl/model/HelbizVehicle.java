@@ -1,5 +1,7 @@
 package it.unumib.disco.dw.etl.model;
 
+import java.util.Locale;
+
 public class HelbizVehicle
 {
     private String id;
@@ -7,10 +9,10 @@ public class HelbizVehicle
     private double lon;
     private int batteryLevelInMiles;
     private int range;
-    private int power;
+    private double power;
     private String geofence;
 
-    public HelbizVehicle(String id, double lat, double lon, int batteryLevelInMiles, int range, int power, String geofence)
+    public HelbizVehicle(String id, double lat, double lon, int batteryLevelInMiles, int range, double power, String geofence)
     {
         this.id = id;
         this.lat = lat;
@@ -66,11 +68,11 @@ public class HelbizVehicle
         this.range = range;
     }
 
-    public int getPower() {
+    public double getPower() {
         return power;
     }
 
-    public void setPower(int power) {
+    public void setPower(double power) {
         this.power = power;
     }
 
@@ -80,5 +82,12 @@ public class HelbizVehicle
 
     public void setGeofence(String geofence) {
         this.geofence = geofence;
+    }
+
+    public String toString()
+    {
+        return String.format(Locale.US,
+                "[id: %s, lat: %f, lon: %f, batteryLevelInMiles: %d, range: %d, power: %f, geofence: %s]",
+                id, lat, lon, batteryLevelInMiles, range, power, geofence);
     }
 }

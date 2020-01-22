@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.unumib.disco.dw.Config;
+import it.unumib.disco.dw.etl.HelbizLoader;
 import it.unumib.disco.dw.etl.model.HelbizRegion;
 import it.unumib.disco.dw.etl.model.HelbizUser;
 
@@ -21,7 +22,6 @@ import org.apache.logging.log4j.Logger;
 
 import javax.xml.ws.Holder;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,6 +33,7 @@ public class HelbizScootersLocationsExtractor
     private static final String CONTENT_TYPE = "Content-Type";
     private static final String ACCESS_TOKEN = "X-access-token";
     private String accessToken;
+    private HelbizLoader helbizLoader = new HelbizLoader();
 
     public static final Logger LOG = LogManager.getLogger();
     public static final ObjectMapper objectMapper = new ObjectMapper();
@@ -168,6 +169,7 @@ public class HelbizScootersLocationsExtractor
         }
         catch(JsonProcessingException e) {
             LOG.error("Error in JSON parsing");
+            LOG.error("The following exception has been thrown: ", e);
         }
 
         return vehicleLst.stream().filter(v -> region.getName().equals(v.getGeofence())).collect(Collectors.toList());
@@ -181,5 +183,12 @@ public class HelbizScootersLocationsExtractor
                 LOG.info("[id: {} - lat: {} - lon: {} - batteryLevelInMiles: {} - range: {} - power: {}]",
                         v.getId(), v.getLat(), v.getLon(), v.getBatteryLevelInMiles(), v.getRange(), v.getPower()));
         LOG.info("------------------- End   List of vehicles ---------------------");
+    }
+
+    public void loadVehicles(List<HelbizVehicle> vehicles)
+    {
+        LOG.info("Start loading of vehicles on database");
+        helbizLoader.loadVehiclesPositions(vehicles);
+        LOG.info("End loading of vehicles on database");
     }
 }

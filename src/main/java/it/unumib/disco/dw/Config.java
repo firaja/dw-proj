@@ -7,7 +7,7 @@ public class Config
     {
         public static final String NAME = "dw";
 
-        public static final String URL = "dbc:mysql://localhost:3306/" + NAME;
+        public static final String URL = "jdbc:mysql://localhost:3306/" + NAME;
 
         public static final String USER = "root";
 

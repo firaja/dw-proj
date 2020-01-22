@@ -56,5 +56,15 @@ public class LocalDatabaseManager
 
     }
 
-
+    public void close()
+    {
+        try
+        {
+            this.connection.close();
+        }
+        catch(SQLException e)
+        {
+            new IllegalStateException(e);
+        }
+    }
 }
