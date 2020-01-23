@@ -4,7 +4,6 @@ import it.unumib.disco.dw.Config;
 import it.unumib.disco.dw.db.LocalDatabaseManager;
 import it.unumib.disco.dw.etl.model.HelbizRegion;
 import it.unumib.disco.dw.etl.model.HelbizVehicle;
-import javafx.util.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -69,7 +68,7 @@ public class HelbizLoader
         String query = String.format(
                 "SELECT DISTINCT query_time FROM vehicles WHERE city = '%s' ORDER BY city, query_time DESC LIMIT 2",
                 region.getName());
-        Pair<Statement,ResultSet> pair = lDbManager.query(query);
+        Map.Entry<Statement,ResultSet> pair = lDbManager.query(query);
         List<Date> result = new ArrayList<>();
         try(Statement statement = pair.getKey(); ResultSet resultSet = pair.getValue())
         {
@@ -103,7 +102,7 @@ public class HelbizLoader
                         "AND v1.city = '%s'", sdf.format(lastTimes.get(0)), sdf.format(lastTimes.get(1)),
                 region.getName());
 
-        Pair<Statement,ResultSet> pair = lDbManager.query(query);
+        Map.Entry<Statement,ResultSet> pair = lDbManager.query(query);
 
         Map<String,List<HelbizVehicle>> vprofilingMap = new HashMap<>();
         try(Statement statement = pair.getKey(); ResultSet resultSet = pair.getValue())
@@ -164,7 +163,7 @@ public class HelbizLoader
                 "FROM information_schema.TABLES WHERE TABLE_SCHEMA = '%s' " +
                 "ORDER BY (DATA_LENGTH + INDEX_LENGTH) DESC;", tableName, Config.Database.NAME);
 
-        Pair<Statement,ResultSet> pair = lDbManager.query(query);
+        Map.Entry<Statement,ResultSet> pair = lDbManager.query(query);
         int size = 0;
         try(Statement statement = pair.getKey(); ResultSet resultSet = pair.getValue())
         {

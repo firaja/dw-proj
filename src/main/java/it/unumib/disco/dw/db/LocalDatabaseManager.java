@@ -1,9 +1,10 @@
 package it.unumib.disco.dw.db;
 
 import it.unumib.disco.dw.Config;
-import javafx.util.Pair;
 
 import java.sql.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class LocalDatabaseManager
 {
@@ -31,13 +32,13 @@ public class LocalDatabaseManager
     }
 
 
-    public Pair<Statement, ResultSet> query(String query)
+    public Map.Entry<Statement, ResultSet> query(String query)
     {
         Statement statement;
         try
         {
             statement = this.connection.createStatement();
-            return new Pair<>(statement, statement.executeQuery(query));
+            return new HashMap.SimpleEntry<>(statement, statement.executeQuery(query));
         }
         catch (SQLException e)
         {
@@ -47,7 +48,7 @@ public class LocalDatabaseManager
 
     public int update(String update)
     {
-        try(Statement statement = this.connection.createStatement())
+        try (Statement statement = this.connection.createStatement())
         {
             return statement.executeUpdate(update);
         }
@@ -64,7 +65,7 @@ public class LocalDatabaseManager
         {
             this.connection.close();
         }
-        catch(SQLException e)
+        catch (SQLException e)
         {
             new IllegalStateException(e);
         }
