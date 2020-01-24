@@ -1,11 +1,15 @@
 package it.unumib.disco.dw.etl.tasks;
 
+import it.unumib.disco.dw.etl.HelbizLoader;
 import it.unumib.disco.dw.etl.extractors.HelbizScootersLocationsExtractor;
 import it.unumib.disco.dw.etl.model.HelbizRegion;
 import it.unumib.disco.dw.etl.model.HelbizVehicle;
+import it.unumib.disco.dw.etl.transformers.HelbizTransformer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.TimerTask;
@@ -42,6 +46,15 @@ public class HelbizExtractorTimerTask extends TimerTask
 
         List<HelbizVehicle> vehicleLst = extractor.getVehicles(getRegion());
         extractor.loadVehicles(vehicleLst);
+        /*HelbizLoader loader = new HelbizLoader();
+        HelbizTransformer transformer = new HelbizTransformer();
+        List<Date> dates = loader.getLastQueryTimes(region);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        LOG.info("First date retrieved: " + sdf.format(dates.get(0)));
+        LOG.info("Second date retrieved: " + sdf.format(dates.get(1)));
+        LOG.info("Size of vehicles table: " + loader.getTableSize("vehicles"));
+        transformer.getDiffBetweenProfilings(region, dates);*/
     }
 
     public void setExtractor(HelbizScootersLocationsExtractor extractor)

@@ -18,6 +18,8 @@ public class HelbizLoader
 {
     private final LocalDatabaseManager lDbManager = LocalDatabaseManager.getInstance();
 
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
     private final static Logger LOG = LogManager.getLogger(HelbizLoader.class);
 
     @PreDestroy
@@ -28,7 +30,13 @@ public class HelbizLoader
 
     public void loadVehiclesPositions(List<HelbizVehicle> vlst)
     {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        if (vlst.size() == 0)
+        {
+            return;
+        }
+
+        LOG.info("Loading {} vehicles on database for city {}", vlst.size(), vlst.get(0).getGeofence());
+
         String date = sdf.format(new Date());
 
         StringBuilder str = new StringBuilder();
@@ -39,7 +47,7 @@ public class HelbizLoader
                 str.append(",");
             }
 
-            str.append(String.format(Locale.US, "('%s', '%s', %f, %f, %d, %d, %d, '%s')",
+            str.append(String.format(Locale.US, "('%s', '%s', %f, %f, %d, %d, %d, '%s', '')",
                     v.getId(), v.getGeofence(), v.getLat(), v.getLon(),
                     v.getBatteryLevelInMiles(), Math.round(v.getPower()), v.getRange(),
                     date));
@@ -90,50 +98,34 @@ public class HelbizLoader
         return result;
     }
 
-    public void getDiffBetweenProfilings(HelbizRegion region, List<Date> lastTimes)
+    public List<Date> getAllQueryTimes(HelbizRegion region, Date startDate, Date endDate)
     {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-        String query = String.format(
-                "SELECT v1.id, v1.city, v1.latitude, v1.longitude, v1.battery_level_miles, v1.power, v1.miles_range, " +
-                        "v2.latitude, v2.longitude, v2.battery_level_miles, v2.power, v2.miles_range " +
-                        "FROM vehicles v1, vehicles v2 " +
-                        "WHERE v1.id = v2.id AND v1.city = v2.city AND v1.query_time = '%s' AND v2.query_time = '%s' " +
-                        "AND v1.city = '%s'", sdf.format(lastTimes.get(0)), sdf.format(lastTimes.get(1)),
-                region.getName());
-
+        String query;
+        if (startDate != null && endDate != null)
+        {
+            query = String.format(
+                    "SELECT DISTINCT query_time FROM vehicles WHERE city = '%s' AND query_time >= '%s' " +
+                    "AND query_time <= '%s' ORDER BY query_time;",
+                    region.getName(), sdf.format(startDate), sdf.format(endDate));
+        }
+        else
+        {
+            query = String.format(
+                    "SELECT DISTINCT query_time FROM vehicles WHERE city = '%s' ORDER BY query_time;",
+                    region.getName());
+        }
         Map.Entry<Statement,ResultSet> pair = lDbManager.query(query);
-
-        Map<String,List<HelbizVehicle>> vprofilingMap = new HashMap<>();
+        List<Date> result = new ArrayList<>();
         try(Statement statement = pair.getKey(); ResultSet resultSet = pair.getValue())
         {
             while(resultSet.next())
             {
-                String id = resultSet.getString("v1.id");
-                String city = resultSet.getString("v1.city");
-
-                List<HelbizVehicle> vCouple = new ArrayList<>();
-                vCouple.add(new HelbizVehicle(id,
-                        resultSet.getDouble("v1.latitude"),
-                        resultSet.getDouble("v1.longitude"),
-                        resultSet.getInt("v1.battery_level_miles"),
-                        resultSet.getInt("v1.miles_range"),
-                        resultSet.getDouble("v1.power"),
-                        city));
-                vCouple.add(new HelbizVehicle(id,
-                        resultSet.getDouble("v2.latitude"),
-                        resultSet.getDouble("v2.longitude"),
-                        resultSet.getInt("v2.battery_level_miles"),
-                        resultSet.getInt("v2.miles_range"),
-                        resultSet.getDouble("v2.power"),
-                        city));
-
-                vprofilingMap.put(id, vCouple);
+                result.add(resultSet.getTimestamp("query_time"));
             }
         }
         catch(SQLException e)
         {
-            LOG.error("An error occurred during execution of method getDiffBetweenProfilings");
+            LOG.error("An error occurred during execution of method getLastQueryTimes");
             LOG.error("The following exception has been thrown: ", e);
             if (LOG.isDebugEnabled())
             {
@@ -141,10 +133,7 @@ public class HelbizLoader
             }
         }
 
-        vprofilingMap.forEach((id, lst) -> {
-            LOG.info("{}", lst.get(0));
-            LOG.info("{}", lst.get(1));
-        });
+        return result;
     }
 
     public int getTableSize(String tableName)
@@ -185,5 +174,4 @@ public class HelbizLoader
 
         return size;
     }
-
 }
