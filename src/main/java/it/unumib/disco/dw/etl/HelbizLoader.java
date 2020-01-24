@@ -47,7 +47,7 @@ public class HelbizLoader
                 str.append(",");
             }
 
-            str.append(String.format(Locale.US, "('%s', '%s', %f, %f, %d, %d, %d, '%s', '')",
+            str.append(String.format(Locale.US, "('%s', '%s', %f, %f, %d, %d, %d, '%s')",
                     v.getId(), v.getGeofence(), v.getLat(), v.getLon(),
                     v.getBatteryLevelInMiles(), Math.round(v.getPower()), v.getRange(),
                     date));

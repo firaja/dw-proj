@@ -39,8 +39,8 @@ CREATE TABLE IF NOT EXISTS vehicles
     power               TINYINT UNSIGNED,
     miles_range         MEDIUMINT UNSIGNED,
     query_time          DATETIME,
-    zone                VARCHAR(50),
-    FOREIGN KEY (zone) REFERENCES zones (zone_id),
+    /*zone                VARCHAR(50),
+    FOREIGN KEY (zone) REFERENCES zones (zone_id),*/
     UNIQUE (id, city, query_time)
 ) ENGINE = INNODB;
 
