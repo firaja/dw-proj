@@ -1,15 +1,14 @@
 package it.unumib.disco.dw.etl.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class ParsedWeatherDetection
 {
+    private long id;
 
-    private Double latitude;
+    private String city;
 
-    private Double longitude;
-
-    private Date detectionTime;
+    private LocalDateTime detectionTime;
 
     private Float rain;
 
@@ -19,32 +18,32 @@ public class ParsedWeatherDetection
 
     private Float wind;
 
-    public Double getLatitude()
+    public String getCity()
     {
-        return latitude;
+        return city;
     }
 
-    public void setLatitude(Double latitude)
+    public void setCity(String city)
     {
-        this.latitude = latitude;
+        this.city = city;
     }
 
-    public Double getLongitude()
+    public long getId()
     {
-        return longitude;
+        return id;
     }
 
-    public void setLongitude(Double longitude)
+    public void setId(long id)
     {
-        this.longitude = longitude;
+        this.id = id;
     }
 
-    public Date getDetectionTime()
+    public LocalDateTime getDetectionTime()
     {
         return detectionTime;
     }
 
-    public void setDetectionTime(Date detectionTime)
+    public void setDetectionTime(LocalDateTime detectionTime)
     {
         this.detectionTime = detectionTime;
     }
@@ -93,8 +92,8 @@ public class ParsedWeatherDetection
     public String toString()
     {
         return "ParsedWeatherDetection{" +
-                "latitude=" + latitude +
-                ", longitude=" + longitude +
+                "id=" + id +
+                "city=" + city +
                 ", detectionTime=" + detectionTime +
                 ", rain=" + rain +
                 ", temperature=" + temperature +

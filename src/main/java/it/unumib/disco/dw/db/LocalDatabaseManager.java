@@ -1,6 +1,9 @@
 package it.unumib.disco.dw.db;
 
 import it.unumib.disco.dw.Config;
+import it.unumib.disco.dw.etl.model.ParsedWeatherDetection;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.HashMap;
@@ -8,6 +11,8 @@ import java.util.Map;
 
 public class LocalDatabaseManager
 {
+
+    private static final Logger LOG = LogManager.getLogger();
 
     private Connection connection;
 
@@ -37,6 +42,7 @@ public class LocalDatabaseManager
         Statement statement;
         try
         {
+            LOG.debug(query);
             statement = this.connection.createStatement();
             return new HashMap.SimpleEntry<>(statement, statement.executeQuery(query));
         }
@@ -50,6 +56,7 @@ public class LocalDatabaseManager
     {
         try (Statement statement = this.connection.createStatement())
         {
+            LOG.debug(update);
             return statement.executeUpdate(update);
         }
         catch (SQLException e)
@@ -59,6 +66,8 @@ public class LocalDatabaseManager
 
     }
 
+
+
     public void close()
     {
         try
@@ -67,7 +76,7 @@ public class LocalDatabaseManager
         }
         catch (SQLException e)
         {
-            new IllegalStateException(e);
+            throw new IllegalStateException(e);
         }
     }
 }

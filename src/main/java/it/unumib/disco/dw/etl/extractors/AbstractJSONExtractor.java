@@ -23,6 +23,7 @@ public abstract class AbstractJSONExtractor
         JsonParser result;
         JsonFactory jsonFactory = new MappingJsonFactory();
 
+        LOG.debug("Fetching {}", url);
 
         HttpGet request = new HttpGet(url);
         request.setHeader("Content-type", "application/json");

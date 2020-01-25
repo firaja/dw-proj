@@ -12,6 +12,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -32,14 +33,14 @@ public class WeatherExtractor extends AbstractJSONExtractor
 
     public List<RawHistoricalWeatherDetection> retrieveHistoricalMeasurement(Date date)
     {
-        LOG.info("Retrieving historical detection from remote source...");
+        LOG.info("Retrieving historical detection of {} from remote source...", new SimpleDateFormat("dd/MM/yyyy").format(date));
 
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
 
         int day = calendar.get(Calendar.DAY_OF_MONTH);
-        int month = calendar.get(Calendar.MONTH);
+        int month = calendar.get(Calendar.MONTH) + 1;
         int year = calendar.get(Calendar.YEAR);
 
         return doRetrieve(String.format(Config.ExternalSource.Weather.HISTORICAL, year, month, day), RawHistoricalWeatherDetection.class);
