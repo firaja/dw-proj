@@ -1,0 +1,95 @@
+\documentclass[12pt,a4paper,oneside]{report}
+
+\usepackage[italian]{babel}
+\usepackage{graphicx}
+\graphicspath{ {./images/} }
+\usepackage{float}% If comment this, figure moves to Page 2
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{tocbibind}
+\usepackage{caption}
+\usepackage{geometry}
+\usepackage{xcolor}
+\usepackage{amsmath}
+\usepackage[some]{background}
+\usepackage{lipsum}
+
+\usepackage[utf8]{inputenc} % usually not needed (loaded by default)
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage{booktabs}
+\usepackage{minted}
+
+\newminted{json}{linenos,fontsize=\scriptsize,frame=single,breaklines}
+
+\definecolor{titlepagecolor}{cmyk}{1,.60,0,.40}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+
+\backgroundsetup{
+scale=1,
+angle=0,
+opacity=1,
+contents={\begin{tikzpicture}[remember picture,overlay]
+ \path [fill=titlepagecolor] (current page.west)rectangle (current page.north east); 
+ \draw [color=white, very thick] (5,0)--(5,0.5\paperheight);
+\end{tikzpicture}}
+}
+
+\makeatletter                   
+\def\printauthor{%                  
+    {\large \@author}}          
+\makeatother
+
+\author{%
+    Banfi Alessandro \\
+    743464 \\
+    -\\
+    Bertoldi David \\
+    735213 \\
+    -\\
+    }
+
+\begin{document}
+
+
+\begin{titlepage}
+\BgThispage
+\newgeometry{left=1cm,right=6cm,bottom=2cm}
+\vspace*{0.4\textheight}
+\noindent
+\textcolor{white}{\Huge\textbf{\textsf{Progetto di Data Warehouse}}}
+\vspace*{2cm}\par
+\noindent
+\begin{minipage}{0.35\linewidth}
+    \begin{flushright}
+        {%
+    Banfi Alessandro \\
+    743464 \\[2\baselineskip]
+    
+    Bertoldi David \\
+    735213 
+    
+    }
+    \end{flushright}
+\end{minipage} \hspace{35pt}
+%
+\begin{minipage}{0.02\linewidth}
+    \rule{1pt}{175pt}
+\end{minipage} \hspace{10pt}
+%
+\begin{minipage}{0.63\linewidth}
+\vspace{5pt}
+    {\Huge\textbf{Relazione Progetto Corso di Data Warehouse\\[10pt]}}
+   	Analisi dell'utilizzo di un servizio di eMobility per la città di Torino
+	in relaizoni a condizioni metereologiche e scioperi
+    \\ 2020-2021
+\end{minipage}
+\end{titlepage}
+\restoregeometry
+
+
+\newpage\tableofcontents\newpage
+
+\include{introduzione}
+\include{sorgenti}
+
+\end{document}

@@ -1,0 +1,85 @@
+\chapter{Analisi Sorgenti Dati}
+
+\section{Helbiz}
+
+Helbiz non mette a disposizione alcuna API pubblica per l'integrazione con
+i servizi offerti né rilascia open data relativi agli utilizzi dei propri
+veicoli. L'unico modo per un utente di interagire con un monopattino è mediante
+l'applicazione mobile.
+
+WoBike è un progetto presente su GitHub che raccoglie grazie al contributo
+di alcuni sviluppatori la documentazione alle API dei principali 
+provider di servizi di mobility sharing di tutto il mondo.
+Tra le varie documentazioni presenti vi è il servizio di API REST
+utilizzato dall'applicazione mobile di Helbiz, ottenuto per reverse
+engineering dell'applicazione Android. A seguito di analisi e di relativo
+utilizzo del servizio è emerso che lo stesso è stato oggetto di aggiornamento
+nel tempo e che alcune richieste, una su tutte quella di autenticazione,
+è cambiata per contenuto dei parametri inviati.
+Si è reso pertanto necessario, da parte di chi scrive, procedere al reverse
+engineering dell'applicazione Android. Tale operazione ha permesso di
+identificare la variazione intervenuta e di procedere con successo
+all'utilizzo del servizio in questione. Inoltre, allo scopo di facilitare
+gli altri utenti interessati a tale servizio, sono state integrate nella
+documentazione già presente, le variazioni rilevate alla richiesta di
+autenticazione.
+
+Un utente che decide di noleggiar per la prima volta un monopattino
+deve nell'ordine:
+\begin{itemize}
+\item scaricare sul proprio smartphone o tablet l'applicazione ufficiale
+disponibile su Play Store o App Store;
+\item registrarsi al servizio attraverso l'applicazione;
+\item abilitare la geolocalizzazione e abilitare l'applicazione ad accedere
+alla propria posizione;
+\item una volta geolocalizzato, scegliere un monopattino, dirigersi verso
+il monopattino scelto ed inquadrarne il QR Code;
+\item impostare il metodo di pagamento desiderato;
+\item attendere lo sblocco del mezzo prima di poterlo utilizzare.
+\end{itemize}
+L'interazione con il monopattino necessita di una connessione dati, di
+un dispositivo di geolocalizzazione, dell'accesso ad una fotocamera
+per la scansione del QR Code.
+
+Di seguito procediamo alla documentazione delle due richieste utilizzate,
+tralasciando la richiesta per autenticazione ed altre richieste non
+utili al progetto.
+
+Ognuna delle successive richieste deve essere provvista dei seguenti
+parametri nello header: \\
+
+\begin{tabular}{ll}
+\toprule
+\textbf{Chiave} & \textbf{Valore} \\
+\midrule
+X-Requested-With & XMLHttpRequest \\
+User-Agent & Helbiz (com.helbiz.android) \\
+Content-Type & application/json \\
+X-access-token & risultato richiesta di autenticazione \\
+\bottomrule
+\end{tabular}
+
+\subsection{API Region}
+
+\textbf{Method:} \texttt{GET} \\
+\textbf{Url:} \texttt{https://api.helbiz.com/prod/regions} \\
+
+\noindent\textbf{Descrizione:} la richiesta ritorna tutte le regioni corrispondenti
+a città presso le quali Helbiz opera. Attributi utilizzati all'interno del
+progetto sono displayName e bounds, quest'ultimo contenente le coppie di
+coordinate cartesiane entra le quali è definita l'area della regione in
+questione.
+A seguito di analisi è risultato che i valori riportati per gli attributi
+startTime e endTime, così come il valore dell'attributo live non sono
+indicativi del periodi di attività o del funzionamento del servizio
+nell'area in oggetto.
+Il seguente listato contiene parte delle informazioni ritornate per
+la città di Torino, ove presenti i puntini di sospensione va intesa
+la presenza di altri dati per brevità non riportati.
+
+\inputminted[bgcolor=lightgray]{json}{region.json}{fontsize=\footnotesize}
+
+\subsection{API Vehicles}
+
+\textbf{Method:} \texttt{GET} \\
+\textbf{Url:} \texttt{https://api.helbiz.com/prod/vehicles?northWest=coordinateNordOvest\&southEast=coordinateSudEst} \\
