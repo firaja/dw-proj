@@ -78,6 +78,7 @@ CREATE TABLE IF NOT EXISTS weather_detections
     rain              FLOAT,
     relative_humidity FLOAT,
     wind              FLOAT,
+    temperature       FLOAT,
     PRIMARY KEY (id, city, detection_time),
     FOREIGN KEY (city) REFERENCES cities (name),
     INDEX (city, detection_time)
@@ -97,10 +98,45 @@ CREATE TABLE IF NOT EXISTS strikes
 (
     start_time DATETIME NOT NULL,
     end_time   DATETIME NOT NULL,
-    type       VARCHAR(50),
+    name       VARCHAR(256),
     city       VARCHAR(50),
-    PRIMARY KEY (start_time, end_time, type, city),
+    PRIMARY KEY (start_time, end_time, name, city),
     FOREIGN KEY (city) REFERENCES cities (name)
+) ENGINE = INNODB;
+
+CREATE TABLE IF NOT EXISTS city_translation
+(
+    name        VARCHAR(50),
+    translation VARCHAR(50) NOT NULL,
+    PRIMARY KEY (name),
+    FOREIGN KEY (name) REFERENCES cities (name)
+) ENGINE = INNODB;
+
+CREATE TABLE IF NOT EXISTS precipitations
+(
+    minimum_rain INT NOT NULL,
+    maximum_rain INT NOT NULL,
+    level        INT NOT NULL,
+    name         VARCHAR(50),
+    PRIMARY KEY (level)
+) ENGINE = INNODB;
+
+CREATE TABLE IF NOT EXISTS temperatures
+(
+    minimum_temp FLOAT NOT NULL,
+    maximum_temp FLOAT NOT NULL,
+    level INT NOT NULL,
+    name VARCHAR(50) NOT NULL,
+    PRIMARY KEY (level)
+) ENGINE = INNODB;
+
+CREATE TABLE IF NOT EXISTS winds
+(
+    minimum_wind FLOAT NOT NULL,
+    maximum_wind FLOAT NOT NULL,
+    level INT NOT NULL,
+    name VARCHAR(50) NOT NULL,
+    PRIMARY KEY (level)
 ) ENGINE = INNODB;
 
 

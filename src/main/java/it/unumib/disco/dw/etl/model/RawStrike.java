@@ -1,5 +1,8 @@
 package it.unumib.disco.dw.etl.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class RawStrike
 {
 

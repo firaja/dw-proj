@@ -1,15 +1,11 @@
 package it.unumib.disco.dw.etl.tasks;
 
-import it.unumib.disco.dw.etl.HelbizLoader;
 import it.unumib.disco.dw.etl.extractors.HelbizScootersLocationsExtractor;
 import it.unumib.disco.dw.etl.model.HelbizRegion;
 import it.unumib.disco.dw.etl.model.HelbizVehicle;
-import it.unumib.disco.dw.etl.transformers.HelbizTransformer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.TimerTask;

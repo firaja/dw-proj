@@ -20,7 +20,7 @@ public class WeatherLoader
 
     private static final String SELECT_RECENT = "SELECT COUNT(*) FROM weather_detections WHERE `detection_time` >= '%s' AND `city` = '%s'";
 
-    private static final String INSERT_DETECTION = "INSERT INTO weather_detections (`id`, `city`, `detection_time`, `rain`, `relative_humidity`, `wind`) VALUES (%d, '%s', '%s', %f, %f ,%f)";
+    private static final String INSERT_DETECTION = "INSERT INTO weather_detections (`id`, `city`, `detection_time`, `rain`, `relative_humidity`, `wind`, `temperature`) VALUES (%d, '%s', '%s', %f, %f ,%f, %f)";
 
 
     public void update(List<ParsedWeatherDetection> detections)
@@ -44,7 +44,7 @@ public class WeatherLoader
                 LOG.error("", e);
             }
             LOG.debug("Writing new detection {}", detection);
-            lDbManager.update(String.format(INSERT_DETECTION, detection.getId(), detection.getCity(), detection.getDetectionTime(), detection.getRain(), detection.getRelativeHumidity(), detection.getWind()));
+            lDbManager.update(String.format(INSERT_DETECTION, detection.getId(), detection.getCity(), detection.getDetectionTime(), detection.getRain(), detection.getRelativeHumidity(), detection.getWind(), detection.getTemperature()));
 
         }
 
@@ -60,7 +60,7 @@ public class WeatherLoader
             LOG.debug("Writing old detection {}", detection);
             try
             {
-                lDbManager.update(String.format(INSERT_DETECTION, detection.getId(), detection.getCity(), detection.getDetectionTime(), detection.getRain(), detection.getRelativeHumidity(), detection.getWind()));
+                lDbManager.update(String.format(INSERT_DETECTION, detection.getId(), detection.getCity(), detection.getDetectionTime(), detection.getRain(), detection.getRelativeHumidity(), detection.getWind(), detection.getTemperature()));
             }
             catch (Exception e)
             {

@@ -1,6 +1,6 @@
 package it.unumib.disco.dw.etl.tasks;
 
-import it.unumib.disco.dw.etl.HelbizLoader;
+import it.unumib.disco.dw.etl.loaders.HelbizLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

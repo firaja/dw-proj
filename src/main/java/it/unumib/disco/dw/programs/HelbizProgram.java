@@ -1,6 +1,6 @@
 package it.unumib.disco.dw.programs;
 
-import it.unumib.disco.dw.etl.HelbizLoader;
+import it.unumib.disco.dw.etl.loaders.HelbizLoader;
 import it.unumib.disco.dw.etl.extractors.HelbizScootersLocationsExtractor;
 import it.unumib.disco.dw.etl.model.HelbizRegion;
 import it.unumib.disco.dw.etl.model.HelbizVehicle;

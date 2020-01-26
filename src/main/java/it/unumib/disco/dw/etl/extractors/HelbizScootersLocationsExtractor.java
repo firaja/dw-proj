@@ -5,7 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.unumib.disco.dw.Config;
-import it.unumib.disco.dw.etl.HelbizLoader;
+import it.unumib.disco.dw.etl.loaders.HelbizLoader;
 import it.unumib.disco.dw.etl.model.HelbizRegion;
 import it.unumib.disco.dw.etl.model.HelbizUser;
 

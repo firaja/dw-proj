@@ -1,4 +1,4 @@
-package it.unumib.disco.dw.etl;
+package it.unumib.disco.dw.etl.loaders;
 
 import it.unumib.disco.dw.Config;
 import it.unumib.disco.dw.db.LocalDatabaseManager;
