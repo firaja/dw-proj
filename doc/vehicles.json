@@ -1,0 +1,35 @@
+[
+    {
+        "id": "9eed54b829e74c10d8522937",
+        "lat": 45.0696699,
+        "lon": 7.68133,
+        "batteryLevelInMiles": 8,
+        "range": 8700,
+        "pricing": {
+            "start": 100,
+            "minute": 15
+        },
+        "currency": "eur",
+        "geofence": "torino",
+        "power": "58",
+        "vehicleType": "SCOOTER",
+        "type": "TELTONIKA"
+    },
+    {
+        "id": "6227b4708a1db12068b874b2",
+        "lat": 45.0731216,
+        "lon": 7.6672766,
+        "batteryLevelInMiles": 11,
+        "range": 11850,
+        "pricing": {
+            "start": 100,
+            "minute": 15
+        },
+        "currency": "eur",
+        "geofence": "torino",
+        "power": "79",
+        "vehicleType": "SCOOTER",
+        "type": "TELTONIKA"
+    },
+    ...
+]

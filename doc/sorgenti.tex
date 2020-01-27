@@ -57,7 +57,10 @@ User-Agent & Helbiz (com.helbiz.android) \\
 Content-Type & application/json \\
 X-access-token & risultato richiesta di autenticazione \\
 \bottomrule
-\end{tabular}
+\end{tabular} \\
+
+\noindent~Ogni risposta fornita dal servizio qui descritto restituisce dei
+dati in formato JSON.
 
 \subsection{API Region}
 
@@ -65,8 +68,13 @@ X-access-token & risultato richiesta di autenticazione \\
 \textbf{Url:} \texttt{https://api.helbiz.com/prod/regions} \\
 
 \noindent\textbf{Descrizione:} la richiesta ritorna tutte le regioni corrispondenti
-a città presso le quali Helbiz opera. Attributi utilizzati all'interno del
-progetto sono displayName e bounds, quest'ultimo contenente le coppie di
+a città presso le quali Helbiz opera.
+Relativamente alla singola region, gli attributi utilizzati all'interno del
+progetto sono:
+\begin{itemize}
+\item name: nome della region in oggetto;
+\item bounds: lista di coppie
+\end{itemize}
 coordinate cartesiane entra le quali è definita l'area della regione in
 questione.
 A seguito di analisi è risultato che i valori riportati per gli attributi
@@ -83,3 +91,30 @@ la presenza di altri dati per brevità non riportati.
 
 \textbf{Method:} \texttt{GET} \\
 \textbf{Url:} \texttt{https://api.helbiz.com/prod/vehicles?northWest=coordinateNordOvest\&southEast=coordinateSudEst} \\
+
+\begin{tabular}{lll}
+\toprule
+\textbf{Parametro} & \textbf{Esempio} & \textbf{Descrizione} \\
+\midrule
+northWest & 45,397541,7,245143 & coordinate geografiche dell'estremo Nord Ovest dell'area di interesse \\
+southEast & 44,726304,8,464625 & coordinate geografiche dell'estremo Sud Est dell'area di interesse \\
+\bottomrule
+\end{tabular} \\
+
+\noindent\textbf{Descrizione:} la richiesta ritorna i veicoli contenuti nell'area di interesse 
+corrispondente al rettangolo avente per estremo superiore sinistro il punto specificato dal
+parametro northWest e per estremo inferiore destro il punto specificato dal parametro southEast.
+Relativamente al singolo veicolo, le informazioni utilizzate ai fini del progetto sono:
+\begin{itemize}
+\item id: identificatore del veicolo in formato di stringa alfanumerica (esedecimale);
+\item lat: latitudine, numero provvisto di parte decimale di lunghezza variabile 
+\item lon: longitudine, numero provvisto di parte decimale di lunghezza variabile
+\item batteryLevelInMiles: autonomia in miglia della batteria, numero decimale 
+\item range: valore risultante dal prodotto tra batteryLevelInMiles e 1000
+\item geofence: nome della region di appartenenza
+\end{itemize}
+Il seguente listato contiene due veicoli di esempio ritornati interrogando il servizio
+con le coordinate indicate nella precedente tabella e facenti riferimento alla region
+che copre la città di Torino.
+
+\inputminted[bgcolor=lightgray]{json}{vehicles.json}
