@@ -41,6 +41,8 @@ L'interazione con il monopattino necessita di una connessione dati, di
 un dispositivo di geolocalizzazione, dell'accesso ad una fotocamera
 per la scansione del QR Code.
 
+\subsection{API REST}
+
 Di seguito procediamo alla documentazione delle due richieste utilizzate,
 tralasciando la richiesta per autenticazione ed altre richieste non
 utili al progetto.
@@ -62,7 +64,7 @@ X-access-token & risultato richiesta di autenticazione \\
 \noindent~Ogni risposta fornita dal servizio qui descritto restituisce dei
 dati in formato JSON.
 
-\subsection{API Region}
+\subsubsection{API Region}
 
 \textbf{Method:} \texttt{GET} \\
 \textbf{Url:} \texttt{https://api.helbiz.com/prod/regions} \\
@@ -87,7 +89,7 @@ la presenza di altri dati per brevità non riportati.
 
 \inputminted[bgcolor=lightgray]{json}{region.json}{fontsize=\footnotesize}
 
-\subsection{API Vehicles}
+\subsubsection{API Vehicles}
 
 \textbf{Method:} \texttt{GET} \\
 \textbf{Url:} \texttt{https://api.helbiz.com/prod/vehicles?northWest=coordinateNordOvest\&southEast=coordinateSudEst} \\
@@ -118,3 +120,121 @@ con le coordinate indicate nella precedente tabella e facenti riferimento alla r
 che copre la città di Torino.
 
 \inputminted[bgcolor=lightgray]{json}{vehicles.json}
+
+\subsection{Progettazione concettuale}
+
+A partire dalla API precedentemente descritta è stato scritto un applicativo Java,di cui
+verrà fatta descrizione nel seguito, che partendo da una Region e da un intervallo in
+minuti interroga ad intervalli regolari il servizio esposto da Helbiz per ottenere le
+informazioni sui veicoli presenti in una delimitata area geografica.
+In figura~\ref{fig:vehicle_profiling_er} è mostrato lo schema ER che modella le informazioni
+relative alle profilazioni. Nella progettazione è stato assunto che ogni istanza
+dell'entità Profiling sia univocamente identificata dall'attributo query\_time e
+dall'attributo id dell'entità Vehicle.
+
+\begin{figure}[H]                                                                                                                                                            
+\centering                                                                                                                                                                   
+\includegraphics[width=\textwidth]{diagrams/vehicle_profiling_er}                                                                                                                                   
+\caption{Diagramma ER Vehicle-Profiling-Region}                                                                                                                                            
+\label{fig:vehicle_profiling_er}                                                                                                                                                           
+\end{figure}
+
+\subsection{Progettazione logica}
+
+Risultato della progettazione logica sono le seguenti due relazioni:
+\begin{itemize}
+\item \textit{Vehicles:} contenente tutti dati relativi alla profilazione di un veicolo
+appartenente ad una determinata regione istante di tempo; è presnete un vincolo di integrità
+referenziale per l'attributo \textit{region\_id} rispetto all'attributo \textit{id} della
+relazione \textit{Regions};
+\item \textit{Regions:} contenente i nomi delle regioni per le quali esistono delle
+profilazioni all'interno della relazione \textit{Vehicles}.
+\end{itemize}
+In figura~\ref{fig:vehicles_logic_physic} è mostrato lo schema logico ottenuto mediante
+l'applicativo MySQL Workbench.
+
+Considerata a regime una differenza importante tra le due tabelle per numero di record
+memorizzati, è stato valutata sconveniente l'aggiunta delle chiavi della tabella
+\textit{Vehicles} alla tabella \textit{City} con conseguente aggiunta di ridondanza.
+Ciò ha portato a trasformare la relazione uno a molto espressa nel precedente diagramma
+ER in una relazione uno a uno.
+
+\begin{figure}[H]                                                                                                                                                            
+\centering                                                                                                                                                                   
+\includegraphics[width=\textwidth]{diagrams/vehicles_logic}                                                                                                                                   
+\caption{Schema logico Vehicles}                                                                                                                                            
+\label{fig:vehicles_logic_physic}                                                                                                                                                           
+\end{figure}
+
+\section{Torino Meteo}
+
+\subsection{API REST}
+
+\subsection{Progettazione concettuale}
+
+In figura~\ref{fig:weather_detection_er} è mostrato lo schema ER per la sorgente in oggetto.
+L'entità \textit{Weather sensor} è univocamente identificata dagli attributi id e detection\_time.
+
+\begin{figure}[H]                                                                                                                                                            
+\centering                                                                                                                                                                   
+\includegraphics[width=\textwidth]{diagrams/weather_detection_er}                                                                                                                                   
+\caption{Diagramma ER Weather sensor-City}                                                                                                                                            
+\label{fig:weather_detection_er}                                                                                                                                                           
+\end{figure}
+
+\subsection{Progettazione logica}
+
+Si è scelto di creare le seguenti due relazioni:
+\begin{itemize}
+\item \textit{Weather dectection:} contenente tutti i dati ottenuti interrogando un sensore;
+l'attributo è stato posto un vincolo di integrità referenziale sull'attributo
+\textit{city\_id} verso la relazione \textit{Cities};
+\item \textit{Cities:} contenente i nomi delle città per le quali è presente almeno una
+rilevazione nella relazione \textit{Weather detection}.
+\end{itemize}
+Lo schema logico prodotto è mostrato in figura~\ref{fig:weather_detection_logic}.
+La relazione uno a molti tra l'entità \textit{Weather\_sensor} dello schema concettuale e
+l'entità \textit{City} è stata trasformata in una relazione uno a uno in quanto, considerato 
+a regime il numero di sensori di molto superiore al numero di città osservate, l'aggiunta di
+due attributi alla relazione \textit{Cities} atti ad identificare un sensore in essa presente,
+avrebbe comportato la presenza di ridondanza nei dati memorizzati.
+
+\begin{figure}[H]                                                                                                                                                            
+\centering                                                                                                                                                                   
+\includegraphics{diagrams/weather_detection_logic}                                                                                                                                   
+\caption{Schema logico Weather detections}                                                                                                                                            
+\label{fig:weather_detection_logic}                                                                                                                                                           
+\end{figure}
+
+\section{Scioperi}
+
+\subsection{API REST}
+
+\subsection{Progettazione concettuale}
+
+In figura~\ref{fig:strikes_er} è presente il diagramma entità relazione per i dati
+ottenuti dall'API descritta al punto precedente.
+Le istanze dell'entità \textit{Strike} sono identificate univocamente dalla chiave composta
+dagli attributi \textit{start\_time}, \textit{end\_time}, \textit{name} e \textit{City}.
+
+\begin{figure}                                                                                                                                                            
+\centering                                                                                                                                                                   
+\includegraphics{diagrams/strikes_er}                                                                                                                                   
+\caption{Diagramma ER Strike-City}                                                                                                                                            
+\label{fig:strikes_er}                                                                                                                                                           
+\end{figure}
+
+\subsection{Progettazione logica}
+
+Lo schema logico è mostrato in figura~\ref{fig:strikes_logic}.
+Presupponendo il numero di scioperi di molto inferiore rispetto al numero di profilazioni
+ottenute con le precedenti due sorgenti dati, è stata definita una sola relazione
+\textit{Strikes} avente gli stessi attributi dell'entità \textit{Strike} del precedente 
+schema ER.
+
+\begin{figure}                                                                                                                                                            
+\centering                                                                                                                                                                   
+\includegraphics{diagrams/strikes_logic}                                                                                                                                   
+\caption{Schema logico Strikes}                                                                                                                                            
+\label{fig:strikes_logic}                                                                                                                                                           
+\end{figure}
