@@ -144,9 +144,9 @@ dall'attributo id dell'entità Vehicle.
 Risultato della progettazione logica sono le seguenti due relazioni:
 \begin{itemize}
 \item \textit{Vehicles:} contenente tutti dati relativi alla profilazione di un veicolo
-appartenente ad una determinata regione istante di tempo; è presnete un vincolo di integrità
-referenziale per l'attributo \textit{region\_id} rispetto all'attributo \textit{id} della
-relazione \textit{Regions};
+appartenente ad una determinata regione in un dato istante di tempo; è presente un
+vincolo di integrità referenziale per l'attributo \textit{region\_id} rispetto
+all'attributo \textit{id} della relazione \textit{Regions};
 \item \textit{Regions:} contenente i nomi delle regioni per le quali esistono delle
 profilazioni all'interno della relazione \textit{Vehicles}.
 \end{itemize}
@@ -155,9 +155,11 @@ l'applicativo MySQL Workbench.
 
 Considerata a regime una differenza importante tra le due tabelle per numero di record
 memorizzati, è stato valutata sconveniente l'aggiunta delle chiavi della tabella
-\textit{Vehicles} alla tabella \textit{City} con conseguente aggiunta di ridondanza.
+\textit{Vehicles} alla tabella \textit{Cities} con conseguente aggiunta di ridondanza.
 Ciò ha portato a trasformare la relazione uno a molto espressa nel precedente diagramma
-ER in una relazione uno a uno.
+ER in una relazione uno a uno. La stessa considerazione ha portato ad aggiungere
+l'attributo \textit{type} dell'entità \textit{Vehicle} del precedente schema ER alla
+tabella \textit{Vehicles} dello schema logico.
 
 \begin{figure}[H]                                                                                                                                                            
 \centering                                                                                                                                                                   
@@ -165,6 +167,12 @@ ER in una relazione uno a uno.
 \caption{Schema logico Vehicles}                                                                                                                                            
 \label{fig:vehicles_logic_physic}                                                                                                                                                           
 \end{figure}
+
+\subsection{Note di utilizzo}
+
+L'applicativo Java scritto per interrogare il servizio descritto sopra è stato attivo h24
+per un periodo di un mese nell'interrogazione ad intervalli regolari di 5 minuti dei dati
+della region relativa alla città di Torino.
 
 \section{Torino Meteo}
 
