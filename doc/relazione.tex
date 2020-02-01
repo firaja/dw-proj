@@ -1,4 +1,4 @@
-\documentclass[12pt,a4paper,oneside]{report}
+\documentclass[12pt, a4paper, oneside]{report}
 
 \usepackage[italian]{babel}
 \usepackage{graphicx}
@@ -6,7 +6,7 @@
 \usepackage{float}% If comment this, figure moves to Page 2
 \usepackage[table,xcdraw]{xcolor}
 \usepackage{tocbibind}
-\usepackage{caption}
+\usepackage[font=footnotesize,labelfont=bf]{caption}
 \usepackage{geometry}
 \usepackage{xcolor}
 \usepackage{amsmath}
@@ -15,11 +15,17 @@
 
 \usepackage[utf8]{inputenc} % usually not needed (loaded by default)
 \usepackage[T1]{fontenc}
-\usepackage{textcomp}
 \usepackage{booktabs}
-\usepackage{minted}
+%\usepackage{minted}
+\usepackage{tgadventor}
 
-\newminted{json}{linenos,fontsize=\scriptsize,frame=single,breaklines}
+\usepackage{lmodern}
+\renewcommand*\familydefault{\sfdefault}
+\renewcommand{\arraystretch}{1.5}
+\linespread{1.2} 
+
+
+%\newminted{json}{linenos,fontsize=\scriptsize,frame=single,breaklines}
 
 \definecolor{titlepagecolor}{cmyk}{1,.60,0,.40}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}

@@ -50,16 +50,18 @@ utili al progetto.
 Ognuna delle successive richieste deve essere provvista dei seguenti
 parametri nello header: \\
 
-\begin{tabular}{ll}
-\toprule
-\textbf{Chiave} & \textbf{Valore} \\
-\midrule
-X-Requested-With & XMLHttpRequest \\
-User-Agent & Helbiz (com.helbiz.android) \\
-Content-Type & application/json \\
-X-access-token & risultato richiesta di autenticazione \\
-\bottomrule
-\end{tabular} \\
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|l|}
+\hline
+\rowcolor[HTML]{3166FF} 
+{\color[HTML]{FFFFFF} \textbf{Chiave}} & {\color[HTML]{FFFFFF} \textbf{Valore}} \\ \hline
+X-Requested-With                       & XMLHttpRequest                         \\ \hline
+User-Agent                             & Helbiz (com.helbiz.android)            \\ \hline
+Content-Type                           & application/json                       \\ \hline
+X-access-token                         & Risultato richiesta di autenticazione  \\ \hline
+\end{tabular}
+\end{table}
 
 \noindent~Ogni risposta fornita dal servizio qui descritto restituisce dei
 dati in formato JSON.
@@ -80,28 +82,42 @@ progetto sono:
 coordinate cartesiane entra le quali è definita l'area della regione in
 questione.
 A seguito di analisi è risultato che i valori riportati per gli attributi
-startTime e endTime, così come il valore dell'attributo live non sono
+\emph{startTime} e \emph{endTime}, così come il valore dell'attributo live non sono
 indicativi del periodi di attività o del funzionamento del servizio
 nell'area in oggetto.
 Il seguente listato contiene parte delle informazioni ritornate per
 la città di Torino, ove presenti i puntini di sospensione va intesa
 la presenza di altri dati per brevità non riportati.
 
-\inputminted[bgcolor=lightgray]{json}{region.json}{fontsize=\footnotesize}
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{regionjson.png}
+\caption*{Esempio di risposta API regions}
+\label{fig:footprint}
+\end{figure}
+
+
+%\begin{minipage}[]{\linewidth}
+%\inputminted[bgcolor=white]{json}{region.json}
+%\end{minipage}
 
 \subsubsection{API Vehicles}
 
 \textbf{Method:} \texttt{GET} \\
-\textbf{Url:} \texttt{https://api.helbiz.com/prod/vehicles?northWest=coordinateNordOvest\&southEast=coordinateSudEst} \\
+\textbf{Url:} \texttt{https://api.helbiz.com/prod/vehicles?northWest=...\&southEast=...} \\
 
-\begin{tabular}{lll}
-\toprule
-\textbf{Parametro} & \textbf{Esempio} & \textbf{Descrizione} \\
-\midrule
-northWest & 45,397541,7,245143 & coordinate geografiche dell'estremo Nord Ovest dell'area di interesse \\
-southEast & 44,726304,8,464625 & coordinate geografiche dell'estremo Sud Est dell'area di interesse \\
-\bottomrule
-\end{tabular} \\
+\begin{table}[h]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|l|}
+\hline
+\rowcolor[HTML]{3166FF} 
+{\color[HTML]{FFFFFF} \textbf{Parametro}} & {\color[HTML]{FFFFFF} \textbf{Esempio}} & {\color[HTML]{FFFFFF} \textbf{Descrizione}}                           \\ \hline
+northWest                                 & 45,397541,7,245143                      & Coordinate geografiche dell'estremo Nord Ovest dell'area di interesse \\ \hline
+southEast                                 & 44,726304,8,464625                      & Coordinate geografiche dell'estremo Sud Est dell'area di interesse    \\ \hline
+\end{tabular}%
+}
+\end{table}
 
 \noindent\textbf{Descrizione:} la richiesta ritorna i veicoli contenuti nell'area di interesse 
 corrispondente al rettangolo avente per estremo superiore sinistro il punto specificato dal
@@ -116,10 +132,16 @@ Relativamente al singolo veicolo, le informazioni utilizzate ai fini del progett
 \item geofence: nome della region di appartenenza
 \end{itemize}
 Il seguente listato contiene due veicoli di esempio ritornati interrogando il servizio
-con le coordinate indicate nella precedente tabella e facenti riferimento alla region
+con le coordinate indicate nella precedente tabella e facenti riferimento alla \emph{region}
 che copre la città di Torino.
 
-\inputminted[bgcolor=lightgray]{json}{vehicles.json}
+%\inputminted[bgcolor=lightgray]{json}{vehicles.json}
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{vehiclesjson.png}
+\caption{vehicles.json}
+\label{fig:vehiclesjson}
+\end{figure}
 
 \subsection{Progettazione concettuale}
 
