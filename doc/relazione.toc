@@ -1,8 +1,0 @@
-\select@language {italian}
-\select@language {italian}
-\contentsline {chapter}{Indice}{1}
-\contentsline {chapter}{\numberline {1}Introduzione}{2}
-\contentsline {chapter}{\numberline {2}Analisi Sorgenti Dati}{4}
-\contentsline {section}{\numberline {2.1}Helbiz}{4}
-\contentsline {subsection}{\numberline {2.1.1}API Region}{5}
-\contentsline {subsection}{\numberline {2.1.2}API Vehicles}{7}
