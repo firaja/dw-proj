@@ -1,3 +1,7 @@
 *.iml
 .idea
 target/
+doc/*.aux
+doc/*.log
+doc/_minted-relazione/
+doc/relazione.pdf
