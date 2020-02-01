@@ -14,6 +14,12 @@ CREATE DATABASE IF NOT EXISTS dw CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 USE dw;
 
+DROP TABLE IF EXISTS vehicle_types;
+CREATE TABLE IF NOT EXISTS vehicle_types
+(
+    id TINYINT UNSEIGNED,
+    type_name VARCHAR(20) NOT NULL
+)
 
 DROP TABLE IF EXISTS vehicles;
 CREATE TABLE IF NOT EXISTS vehicles
@@ -26,9 +32,11 @@ CREATE TABLE IF NOT EXISTS vehicles
     power               TINYINT UNSIGNED,
     miles_range         MEDIUMINT UNSIGNED,
     query_time          DATETIME,
+    vehicle_type        TINYINT UNSIGNED,
     /*zone                VARCHAR(50),
     FOREIGN KEY (zone) REFERENCES zones (zone_id),*/
-    UNIQUE (id, city, query_time)
+    PRIMARY KEY (id, query_time),
+    FOREIGN KEY (vehicle_type) REFERENCES types (id)
 ) ENGINE = INNODB;
 
 DROP TABLE IF EXISTS vehicles_profilings;
@@ -41,7 +49,9 @@ CREATE TABLE IF NOT EXISTS vehicles_profilings
     position_changed     BOOLEAN,
     new                  BOOLEAN,
     travelled_distance   MEDIUMINT UNSIGNED,
+    vehicle_type        TINYINT UNSIGNED,
     UNIQUE (vehicle_id, city_id, start_profiling_time, end_profiling_time),
+    FOREIGN KEY (vehicle_type) REFERENCES types (id),
     FOREIGN KEY (city_id) REFERENCES cities (name)
 ) ENGINE = INNODB;
 
@@ -54,6 +64,8 @@ CREATE TABLE IF NOT EXISTS vehicle_hourly_use
     end_time           DATETIME,
     uses               SMALLINT UNSIGNED,
     travelled_distance MEDIUMINT UNSIGNED,
+    vehicle_type        TINYINT UNSIGNED,
+    FOREIGN KEY (vehicle_type) REFERENCES types (id),
     UNIQUE (vehicle_id, city_id, start_time, end_time, uses, travelled_distance)
 );
 
@@ -66,20 +78,22 @@ CREATE TABLE IF NOT EXISTS city_hourly_use
     total_uses               SMALLINT UNSIGNED,
     total_travelled_distance MEDIUMINT UNSIGNED,
     total_vehicles           SMALLINT UNSIGNED,
+    vehicle_type        TINYINT UNSIGNED,
+    FOREIGN KEY (vehicle_type) REFERENCES types (id),
     UNIQUE (city_id, start_time, end_time)
 );
 
 DROP TABLE IF EXISTS weather_detections;
 CREATE TABLE IF NOT EXISTS weather_detections
 (
-    id                INT(20),
+    id                MEDIUMINT UNSIGNED,
     city              VARCHAR(50),
     detection_time    DATETIME NOT NULL,
     rain              FLOAT,
     relative_humidity FLOAT,
     wind              FLOAT,
     temperature       FLOAT,
-    PRIMARY KEY (id, city, detection_time),
+    PRIMARY KEY (id, detection_time),
     FOREIGN KEY (city) REFERENCES cities (name),
     INDEX (city, detection_time)
 ) ENGINE = INNODB;
@@ -88,8 +102,9 @@ CREATE TABLE IF NOT EXISTS weather_detections
 DROP TABLE IF EXISTS cities;
 CREATE TABLE IF NOT EXISTS cities
 (
+    id SMALLINT UNSIGNED,
     name VARCHAR(50) NOT NULL,
-    PRIMARY KEY (name),
+    PRIMARY KEY (id),
     INDEX (name)
 ) ENGINE = INNODB;
 
@@ -100,7 +115,8 @@ CREATE TABLE IF NOT EXISTS strikes
     end_time   DATETIME NOT NULL,
     name       VARCHAR(256),
     city       VARCHAR(50),
-    PRIMARY KEY (start_time, end_time, name, city),
+    area_of_interest VARCHAR(256),
+    PRIMARY KEY (start_time, end_time, name, city, area_of_interest),
     FOREIGN KEY (city) REFERENCES cities (name)
 ) ENGINE = INNODB;
 
