@@ -196,9 +196,63 @@ L'applicativo Java scritto per interrogare il servizio descritto sopra è stato 
 per un periodo di un mese nell'interrogazione ad intervalli regolari di 5 minuti dei dati
 della region relativa alla città di Torino.
 
-\section{Torino Meteo}
+\section{Torinometeo}
+Nata nel 2004 come associazione amatoriale di meteo appassionati, Torinometeo oggi è ufficialmente
+riconosciuta come associazione culturale con l'obiettivo di porsi come interlocutore privilegiato
+nei confronti delle istituzioni locali.
+
+Il progetto principale, oltre a quello della raccolta dei dati dai vari rilevatori in tutto il Piemonte, è
+l'esposizione dei dati sottoforma di servizio Open Data. Le singole rilevazioni non sono processate
+in maniera tale da poter affermare che in una certa zona del Piemonte ci sia un rovescio o se ci sia
+un caldo torrido, ma sono composte dalle misurazioni effettive che un determinato sensore ha rilevato
+in una certa data.
 
 \subsection{API REST}
+Di seguito procediamo alla documentazione delle due richieste utilizzate
+
+\subsubsection{API Rilevazioni Realtime}
+\textbf{Method:} \texttt{GET} \\
+\textbf{Url:} \texttt{https://www.torinometeo.org/api/v1/realtime/data} \\
+
+\noindent\textbf{Descrizione:} la richiesta ritorna per ogni rilevatore l'ultima (e ultima soltanto)
+rilevazione effettuata. Notasi che ogni sensore ha un proprio \emph{refresh rate} e che questo non viene
+dichiarato.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{realtimejson.png}
+\caption*{Esempio di risposta realtime}
+\label{fig:realtimejson}
+\end{figure}
+
+
+\subsubsection{API Rilevazioni Storiche}
+\textbf{Method:} \texttt{GET} \\
+\textbf{Url:} \texttt{https://www.torinometeo.org/api/v1/realtime/history/<year>/<month>/<day>} \\
+
+\noindent\textbf{Descrizione:} la richiesta ritorna per ogni rilevatore la rilevazione storica per quella
+determinata data.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+\rowcolor[HTML]{3166FF} 
+{\color[HTML]{FFFFFF} \textbf{Parametro}} & {\color[HTML]{FFFFFF} \textbf{Esempio}} & {\color[HTML]{FFFFFF} \textbf{Descrizione}}                           \\ \hline
+year                                 & 2016                      & Anno in formato \texttt{yyyy} \\ \hline
+month                                 & 05                      & Mese in formato \texttt{M} o \texttt{MM}    \\ \hline
+day                                 & 14                      & Giorno del mese in formato \texttt{d} o \texttt{dd}    \\ \hline
+\end{tabular}%
+
+\end{table}
+
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{historicaljson.png}
+\caption*{Esempio di risposta di rilevazione storica}
+\label{fig:historicaljson}
+\end{figure}
 
 \subsection{Progettazione concettuale}
 
