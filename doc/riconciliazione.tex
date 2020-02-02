@@ -238,12 +238,98 @@ qualche caso di errore dovuto alla momentanea incapacità di rispondere da parte
 del servizio remoto. Per ogni coppia di istanti di misurazione viene effettuata
 un'interrogazione al database della sorgente al fine di ottenere per ogni veicolo
 della region di interesse una tupla ricavata dalla join della tabella
-\textit{vehicles} con se stessa avendo cura di associare profilazioni per veicoli
-aventi lo stesso id, e città 
+\textit{vehicles} con se stessa avendo cura di associare coppie di profilazioni
+aventi stesso id, stessa città e diversa \textit{query\_time} preso dalla coppia
+ottenuta. A questo punto, per ogni coppia vengono prese latitudine e longitudine,
+convertite in radianti e viene calcolata la distanza in linea d'aria espressa in
+metri mediante l'uso delle seguenti tre formule:
 
+\begin{gather}
+\varphi = \abs{\mathit{lon}_1 - \mathit{lon}_2}, \notag \\
+\Delta = \arccos(\sin(\mathit{lat}_2) \cdot \sin(\mathit{lat}_1) + \cos{\mathit{lat}_2} \cdot \cos(\mathit{lat}_1) \cdot \cos(\varphi)), \notag \\
+\mathit{d} = \Delta \cdot 6371000. \notag
+\end{gather}
 
+\noindent~Nello specifico, nell'ultima formula è utilizzato il raggio della
+terra per calcolare la distanza tra i due punti. La distanza ottenuta è
+confrontata con una soglia fissata a 100 metri. Se la distanza in linea d'aria
+è superiore a tale valore, allora è possibile considerare che il veicolo in
+questione stato utilizzato nell'intervallo considerato. Tale soglia serve
+ad escludere errori nella segnalazione della posizione o spostamenti causati da
+attori esterni non allo scopo di utilizzare il veicolo per spostarsi, pertanto
+non rilevanti allo scopo del progetto. Quanto ottenuto da ogni coppia di veicoli
+è via via inserito in una query di INSERT che provvede ad inserire i risultati
+nella tabella \textit{vehicles\_profilings} di figura~\ref{fig:ETL_veicoli_er}.
+La colonna \textit{position\_changed} contiene un valore booleano sulla base
+del prevedente confronto eseguito sulla distanza in linea d'aria calcolata.
+Al termine del processamento di tutte le coppie per un determinato intervallo,
+viene eseguita un'altra query sulla tabella \textit{vehicles} della sorgente allo 
+scopo di estrarre i veicoli rilevati nella misurazione più recente e non nella  
+misurazione temporalmente precedente. In tal modo è possibile tenere conto dei
+veicoli che in quanto utilizzati o disattivati non erano disponibili al momento 
+della prima interrogazione ma lo sono diventati al momento della seconda. Per 
+ognuno dei veicoli risultato di tale query è aggiunto un record alla tabella
+\textit{vehicles\_profilings} avente valore nullo per le colonne 
+\textit{position\_changed} e \textit{travelled\_distance} e avranno valore
+1 per la colonna booleana \textit{new}. La tabella \textit{vehicles\_profilings}
+ha funzione di buffer per le successive operazioni di \textit{enrichment} e risiede
+nell'ODS.
 
-e per ogni coppia di
-Al termine della procedura di estrazione l'applicativo scritto provvede ad
-inserire i dati all'interno della relazione
-\textit{vehicles\_profiling\_window}. 
+Al termine del processamento delle coppie di rilevazioni viene interrogata la tabella
+appena riempita e vengono estratti tutti i record delle rilevazioni aventi come
+\textit{start\_profiling\_time} un valore compreso nelle 24 ore precedenti.
+Per ogni record estratto sono eseguite a livello di codice Java le seguenti
+operazioni:
+\begin{itemize}
+\item l'attributo \textit{start\_profiling\_time} di tipo \java{DATETIME} viene
+ricondotto all'inizio dell'ora ricavando così un'ora d'inizio;
+\item viene verificata in una struttura dati di tipo \java{Map} allocata in
+memoria la presenza di un valore passando come chiave l'attributo \textit{id}
+del veicolo oggetto della profilazione; se presente il valore ritornato consiste un
+oggetto di tipo \java{Map} che associa ad ogni ora di un giorno una mappa,
+quest'ultima contenente le chiavi \textit{uses} e \textit{travelled\_distance}
+ed i relativi valori numerici associati; in caso non esiste un oggetto associato
+all'ora passata come chiave, tale mappa viene creata ed le vengono associato
+valore 0 per ognuno dei precedenti attributi;
+\item se l'attributo \textit{position\_changed} è settato a 1 e la distanza
+\textit{travelled\_distance} è inferiore a 4000 metri, l'algoritmo procede
+ad incrementare la entry con chiave \textit{uses} e ad aggiungere la distanza
+percorsa all'attributo \textit{travelled\_distance}; il confronto con i 4000
+metri deriva dal fatto che entrambi i tipi di veicoli a disposizione hanno
+una velocità massima non superiore a 25\,km/h;
+\item se l'attributo \textit{new} è invece settato a 1, viene eseguito
+un controllo tra le profilazioni aventi \textit{end\_profiling\_time} eguale
+alla \textit{start\_profiling\_time} corrente e, nel caso in cui tale veicolo
+risulti presente in tale finestra di profilazione antecedente a quella in oggetto
+se ne calcola la distanza percorsa con l'utilizzo delle formule mostrate in
+precedenza; nel caso in cui la distanza risulti realisticamente percorribile
+nel corso di 10 minuti di tempo, allora si procede con le stesse modalità
+del punto precedente all'incremento degli attributi \textit{uses} e
+\textit{travelled\_distance}.
+\end{itemize}
+I dati contenuti nella mappa presente in memoria vengono inseriti nella
+tabella \textit{vehicles\_hourly\_profilings}, appartenente anch'essa all'ODS
+ed oggetto del processo di integrazione precedente.
+
+Ogni region ha come attributo un nome sottoforma di stringa alfanumerica
+minuscola. E' però necessario convertire tale stirnga nel nome
+italiano della corrispondente città, valore utilizzato dalle altre due sorgenti
+oggetto dell'integrazione. Entra quindi in gioco una procedura di
+\textit{cleansing} che utilizzando una tabella di supporto, provvede a
+modificar eil valore dell'attributo \textit{city\_id} della tabella
+\textit{vehciles\_profilings} con l'id della corrispondente città della
+tabella \textit{cities} dell'ODS, il tutto mediante una query di UPDATE
+la quale esegue una JOIN su di una tabella di traduzione appositamente
+definita.
+
+Con tale oeprazione termina la procedura di trasformazione dei dati.
+In figura~\ref{fig:ETL_veicoli_er} è mostrato lo schema logico della due tabelle
+oggetto della procedura di trasformazione qui descritta e della tabella
+\textit{cities} ad esse associata.
+
+\subsubsection{Caricamento}
+
+Non essendo possibile procede in alcun modo ad aggiornare i dati inseriti
+nell'ODS, la procedura di caricamente, effettuata con cadenza giornaliera al
+termine della procedura di trasformazione, non ha comportato in fase di
+progettazione la gestione di vincoli o casistiche degne di nota.

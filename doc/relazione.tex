@@ -12,6 +12,8 @@
 \usepackage{amsmath}
 \usepackage[some]{background}
 \usepackage{lipsum}
+\usepackage{mathtools}
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
 
 \usepackage[utf8]{inputenc} % usually not needed (loaded by default)
 \usepackage[T1]{fontenc}
@@ -24,6 +26,8 @@
 \renewcommand{\arraystretch}{1.5}
 \linespread{1.2} 
 
+\newcommand\texthtt[1]{{\normalfont\fontfamily{cmvtt}\selectfont #1}}
+\newcommand{\java}[1]{\texthtt{#1}}
 
 %\newminted{json}{linenos,fontsize=\scriptsize,frame=single,breaklines}
 
