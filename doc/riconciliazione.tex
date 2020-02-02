@@ -185,4 +185,65 @@ risolzione dei conflitti ha portato allo schema di figura~\ref{fig:integrated_1_
 \label{fig:integrated_1_er}                                                                                                                                                           
 \end{figure}
 
+In figura~\ref{fig:riconciliato_er} è mostrato lo schema logico dell'ODS.
+Alla tabella \textit{cities} è stato aggiunta una chiave surrogata \textit{id}
+verso la quale vi è un vincolo di integrità referenziale per ognuna delle tabelle
+ad essa relazionate. Tale attributo è poi parte della chiave primaria per le
+tabelle \textit{strikes} e \textit{weather\_hourly\_profilings}.
 
+Diversamente da quanto fatto in fase di progettazione dello schema logico della
+sorgente operazionale, considerata la necessità per la base date in oggetto
+di conservare i dati sulle profilazioni per un orizzonte temporale lungo che ricada
+nell'intervallo tra 5 e 10 anni dal loro inserimento, si è scelto di rappresentare 
+le entità \textit{Vehicle} e \textit{Vehicles\_hourly\_profilings} con due
+le relazioni eliminando la ridondanza dell'attributo \textit{type}. 
+
+\begin{figure}[H]                                                                                                                                                            
+\centering                                                                                                                                                                   
+\includegraphics[width=\textwidth]{diagrams/riconciliato_er}                                                                                                                                   
+\caption{Schema Riconciliato - Diagramma logico}                                                                                                                                            
+\label{fig:riconciliato_er}                                                                                                                                                           
+\end{figure}
+
+\section{ETL da sorgenti operazionali a ODS}
+
+\subsection{Helbiz}
+
+\subsubsection{Estrazione}
+
+La sorgente dati per sua natura di tipo transiente (i dati sono disponibili in
+real-time e non sono disponibili dati storici) è stata trasformata in una
+sorgente con dati periodici in quanto si è scelto di conservare i dati raccolti
+mediante le API per un periodo di 6 mesi.
+
+L'estrazione è di tipo \textit{incremental delayed}: un job di sistema è
+schedulato al termine della giornata per invocare l'applicativo sviluppato in
+modalità di estrazione il quale interroga la base dati, ottenere i dati delle
+profilazioni delle ultime 24 ore e procedere al caricamento delle stesse
+all'interno dell'ODS.
+
+\subsubsection{Trasformazione}
+
+Durante la procedura di estrazione viene interrogata la tabella
+\textit{vehicles} dello schema di figura~\ref{fig:vehicles_logic_physic} al fine
+di ottenere tutti gli istanti di profilazione intervenuti nelle ultime 24 ore
+per una determinata region, ordinati in maniera ascendente. Viene eseguita
+a livello di codice Java la differenza tra coppie adiacenti di
+\textit{query\_time} e vengono scartate le coppie per cui la differenza in
+minuti non è compresa tra 3 e 10 minuti intervalli esclusi. Come anticipato
+l'applicativo è stato impostato per acquisire dati dal servizio remoto ogni 5
+minuti. Applicando tale operazione di filtraggio si ha la sicurezza di evitare
+di processare profilazioni tra loro troppo vicine o troppo distanti, frutto in
+qualche caso di errore dovuto alla momentanea incapacità di rispondere da parte
+del servizio remoto. Per ogni coppia di istanti di misurazione viene effettuata
+un'interrogazione al database della sorgente al fine di ottenere per ogni veicolo
+della region di interesse una tupla ricavata dalla join della tabella
+\textit{vehicles} con se stessa avendo cura di associare profilazioni per veicoli
+aventi lo stesso id, e città 
+
+
+
+e per ogni coppia di
+Al termine della procedura di estrazione l'applicativo scritto provvede ad
+inserire i dati all'interno della relazione
+\textit{vehicles\_profiling\_window}. 

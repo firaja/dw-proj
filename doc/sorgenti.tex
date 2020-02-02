@@ -151,8 +151,8 @@ minuti interroga ad intervalli regolari il servizio esposto da Helbiz per ottene
 informazioni sui veicoli presenti in una delimitata area geografica.
 In figura~\ref{fig:vehicle_profiling_er} è mostrato lo schema ER che modella le informazioni
 relative alle profilazioni. Nella progettazione è stato assunto che ogni istanza
-dell'entità Profiling sia univocamente identificata dall'attributo query\_time e
-dall'attributo id dell'entità Vehicle.
+dell'entità Profiling sia univocamente identificata dall'attributo \textit{query\_time} e
+dall'attributo \textit{id} dell'entità Vehicle.
 
 \begin{figure}[H]                                                                                                                                                            
 \centering                                                                                                                                                                   
@@ -175,13 +175,11 @@ profilazioni all'interno della relazione \textit{Vehicles}.
 In figura~\ref{fig:vehicles_logic_physic} è mostrato lo schema logico ottenuto mediante
 l'applicativo MySQL Workbench.
 
-Considerata a regime una differenza importante tra le due tabelle per numero di record
-memorizzati, è stato valutata sconveniente l'aggiunta delle chiavi della tabella
-\textit{Vehicles} alla tabella \textit{Cities} con conseguente aggiunta di ridondanza.
-Ciò ha portato a trasformare la relazione uno a molto espressa nel precedente diagramma
-ER in una relazione uno a uno. La stessa considerazione ha portato ad aggiungere
-l'attributo \textit{type} dell'entità \textit{Vehicle} del precedente schema ER alla
-tabella \textit{Vehicles} dello schema logico.
+Al fine di semplificare la scrittura dell'applicativo utilizzato per ottenere i dati
+dei veicoli dalla sorgente, le entità \textit{Vehicle} e \textit{Vehicle\_profiling} 
+sono state rappresentate nella stessa relazione \textit{vehicles}.
+Alla relazione \textit{regions} è stata aggiunta una chiave surrogata referenziata
+dall'attributo \textit{city\_id} della relazione \textit{vehicles}.
 
 \begin{figure}[H]                                                                                                                                                            
 \centering                                                                                                                                                                   

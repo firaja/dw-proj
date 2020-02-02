@@ -162,7 +162,7 @@
     <node id="n6">
       <data key="d6">
         <y:ShapeNode>
-          <y:Geometry height="8.240000000000009" width="8.240000000000009" x="325.88" y="426.84243200000014"/>
+          <y:Geometry height="8.240000000000009" width="8.240000000000009" x="265.88" y="426.84243200000014"/>
           <y:Fill hasColor="false" transparent="false"/>
           <y:BorderStyle hasColor="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="9" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" hasText="false" height="4.0" modelName="custom" textColor="#000000" visible="true" width="4.0" x="2.1200000000000045" y="2.1200000000000045">
@@ -248,7 +248,6 @@
         <y:QuadCurveEdge straightness="0.1">
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0">
             <y:Point x="229.5279999999999" y="430.96243200000015"/>
-            <y:Point x="279.76399999999995" y="430.96243200000015"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="none"/>
@@ -266,7 +265,6 @@
       </data>
     </edge>
     <edge id="e5" source="n7" target="n0">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="19.010239999999726" ty="0.0"/>

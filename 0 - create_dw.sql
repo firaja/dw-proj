@@ -116,7 +116,7 @@ CREATE TABLE IF NOT EXISTS strikes
     name       VARCHAR(256),
     city       VARCHAR(50),
     area_of_interest VARCHAR(256),
-    PRIMARY KEY (start_time, end_time, name, city, area_of_interest),
+    PRIMARY KEY (start_time, end_time, name, city),
     FOREIGN KEY (city) REFERENCES cities (name)
 ) ENGINE = INNODB;
 
