@@ -76,7 +76,7 @@ Inoltre gli attirbuti \textit{position\_changed} e \textit{new} non sono
 sfruttabili in nessuna delle interrogazione derivate dal fatto definito.
 Pertanto, partendo dallo schema concettuale di
 figura~\ref{fig:vehicle_interval_profiling_er} si è giunti allo schema di figura
-\ref{fig:vehcile_hourly_profiling_er}.
+\ref{fig:vehicle_hour_profiling_er}.
 
 \begin{figure}[H]                                                                                                                                                            
 \centering                                                                                                                                                                   
@@ -256,9 +256,9 @@ confrontata con una soglia fissata a 100 metri. Se la distanza in linea d'aria
 è superiore a tale valore, allora è possibile considerare che il veicolo in
 questione stato utilizzato nell'intervallo considerato. Tale soglia serve
 ad escludere errori nella segnalazione della posizione o spostamenti causati da
-attori esterni non allo scopo di utilizzare il veicolo per spostarsi, pertanto
-non rilevanti allo scopo del progetto. Quanto ottenuto da ogni coppia di veicoli
-è via via inserito in una query di INSERT che provvede ad inserire i risultati
+attori esterni non allo scopo di utilizzare il veicolo per spostarsi 
+non rilevanti allo scopo del progetto (\textit{e.g.} i veicoli possono essere spostati con un automezzo causa manutenzione o per operazioni stoccaggio). 
+Quanto ottenuto da ogni coppia di veicoli è via via inserito in una query di INSERT che provvede ad inserire i risultati
 nella tabella \textit{vehicles\_profilings} di figura~\ref{fig:ETL_veicoli_er}.
 La colonna \textit{position\_changed} contiene un valore booleano sulla base
 del prevedente confronto eseguito sulla distanza in linea d'aria calcolata.
