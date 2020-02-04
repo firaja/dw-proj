@@ -1,4 +1,25 @@
 \chapter{Definizione del Datawarehouse}
+
+L'obiettivo del data warehouse in oggetto è quello di fornire dati relativi
+all'utilizzo di veicoli elettrici noleggiati dalla compagnia Helbiz, nel corso
+della giornata, al variare delle condizioni meteo e in presenza o assenza di uno
+sciopero.
+L'architettura scelta è quella a tre livelli, che vede un primo livello costituito
+dalle tre sorgenti operative Helbiz, Torino Meteo e Scioperi, un secondo livello
+costituito consistente nell'ODS ed un terzo livello costituito dai data mart.
+
+\section{Progettazione concettuale}
+
+Prodotto della fase di progettazione concettuale è il Data Fact Model di figura
+\ref{fig:dfm}.
+
+\begin{figure}[H]                                                                                                                                                            
+\centering                                                                                                                                                                   
+\includegraphics[width=\textwidth]{diagrams/dfm}                                                                                                                                   
+\caption{DFM Vehicle use}                                                                                                                                            
+\label{fig:dfm}                                                                                                                                                           
+\end{figure}
+
 \section{Carico di lavoro}
 \begin{table}[h]
 \centering
@@ -12,7 +33,7 @@
                                       & Numero di utilizzi durante le fasce orarie lavorative                           \\ \cline{2-2} 
                                       & Delta del numero di utilizzi tra una giornata di sciopero e una non di sciopero \\ \cline{2-2} 
                                       & Delta del numero di utilizzi tra una giornata di pioggia e una di sole          \\ \cline{2-2} 
-\multirow{-7}{*}{Corsa}               & Delta del numero di utilizzi tra una gioranta di pioggia e una di sciopero      \\ \hline
+\multirow{-7}{*}{Utilizzo veicolo}    & Delta del numero di utilizzi tra una gioranta di pioggia e una di sciopero      \\ \hline
 \end{tabular}
 \end{table}
 \section{Progettazione concettuale}
