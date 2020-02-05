@@ -288,6 +288,19 @@ avrebbe comportato la presenza di ridondanza nei dati memorizzati.
 \label{fig:weather_detection_logic}                                                                                                                                                           
 \end{figure}
 
+
+\subsection{Note di utilizzo}
+
+Tenuto in considerazione che i dati storici sono su base giornaliera e non riportano la
+i dati relativi al vento, la scelta è ricaduta sull'utilizzo della API realtime per la
+profilazione oraria delle condizione metereologiche. La API storica è utilizzata qualora
+si riscontri un malfunzionamento di quella realtime.
+
+Similmente a quanto fatto per Helbiz, è stato scritto un applicativo Java allo scopo di
+interrogare ogni 5 minuti i sensori di interesse e memorizzarne i dati ottenuti in un
+database.
+
+
 \section{Scioperi}
 
 \subsection{API REST}
