@@ -8,6 +8,79 @@ L'architettura scelta è quella a tre livelli, che vede un primo livello costitu
 dalle tre sorgenti operative Helbiz, Torino Meteo e Scioperi, un secondo livello
 costituito consistente nell'ODS ed un terzo livello costituito dai data mart.
 
+\section{Descrizione del dominio}
+Il dominio nel quale si colloca questo progetto è quello dei monopattini elettrici noleggiati in
+modalità \emph{scooter sharing}, in particolare quelli offerti dalla compagnia Helbiz nel territorio italiano.
+Nella fattispecie verrà analizzato il contesto della regione Piemonte che, con Torino, ha avviato una importante
+partnership con Helbiz.
+
+Risulta quindi interessante capire quali siano gli utilizzi dei cittadini durante le diverse avversità metereologiche
+che durante le manifestazioni di astensione dal lavoro, come ad esempio gli scioperi dei mezzi pubblici.
+
+
+\section{Scenario}
+Lo scenario vede la nascita di un dipartimento interno di Helbiz con il compito di raccogliere dati sugli
+utilizzi dei monopattini (con possibilità di estensione ad altri mezzi) in rapporto al meteo e alla presenza
+o meno di scioperi nazionali, regionali o provinciali.
+
+I dati raccolti servono principalmente ad Helbiz per diverse motivazioni:
+\begin{itemize}
+	\item{\textbf{Strategia} -- capire internamente in quali situazioni conviene mettere a disposizione più o meno veicoli in maniera tale da ottimizzare i costi di gestione e manutenzione.
+	Questo \emph{modus operandi} consente all' azienda di poter giocare d'anticipo ed essere preparata a gestire un carico maggiore di richiesta di veicoli.}
+	\item{\textbf{Promozione} -- una volta previste le necessità dell'immediato futuro, è possibile migliorare il servizio offerto ai clienti anche da un punto di vista di comunicazione,
+	facendo sapere alle persone che Helbiz ha già predisposto dei piani d'emergenza nel caso di sciopero}
+	\item{\textbf{Marketing} -- portare al tavolo dei Comuni non ancora serviti dal servizio dati alla mano che possano aiutare l'azienda a far capire quanto sia efficace il servizio proposto}
+\end{itemize}
+
+Al fine di arrivare a questo risultato bisogna avviare una serie di interviste che produrranno una analisi sia funzionale che tecnica;
+da qui si potranno finalmente definire i requisiti  del Datawarehouse in oggetto.
+
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|}
+\hline
+\rowcolor[HTML]{3166FF} 
+{\color[HTML]{FFFFFF} \textbf{Ruolo}}                                                            & {\color[HTML]{FFFFFF} \textbf{Domande}}                                                                                                                \\ \hline
+                                                                                                 & Di quali tipologie di analisi vuole disporre ed a che livello di dettaglio?                                                                            \\ \cline{2-2} 
+                                                                                                 & Quali sono gli obiettivi del suo dipartimento?                                                                                                         \\ \cline{2-2} 
+                                                                                                 & Come misura il successo del suo dipartimento?                                                                                                          \\ \cline{2-2} 
+\multirow{-4}{*}{Manager}                                                                        & Su quale intervallo temporale vuole condurre analisi?                                                                                                  \\ \hline
+Cittadino                                                                                        & \begin{tabular}[c]{@{}l@{}}Pensa che possa essere utile avere informazioni sulle zone coperte da Helbiz durante\\ gli scioperi dei mezzi?\end{tabular} \\ \hline
+                                                                                                 & Con quale frequenza vuole disporre delle informazioni?                                                                                                 \\ \cline{2-2} 
+                                                                                                 & \begin{tabular}[c]{@{}l@{}}Quali aspetti fanno aumentare (o diminuire) drasticamente l'utilizzo dei veicoli da parte\\ dei cittadini?\end{tabular}     \\ \cline{2-2} 
+\multirow{-3}{*}{Direttore della Logistica}                                                      & Qual'è la media di percorrenza di un veicolo per ogni usufruente?                                                                                      \\ \hline
+                                                                                                 & Dove sono memorizzati i dati di interesse?                                                                                                             \\ \cline{2-2} 
+                                                                                                 & \begin{tabular}[c]{@{}l@{}}Disponete di un team competente per la gestione ed\\ il mantenimento nel tempo del data warehouse?\end{tabular}             \\ \cline{2-2} 
+\multirow{-3}{*}{\begin{tabular}[c]{@{}l@{}}Responsabile dei\\ Sistemi Informativi\end{tabular}} & Quali informazioni sono disponibili e qual’è la loro qualità?                                                                                          \\ \hline
+\end{tabular}%
+}
+\end{table}
+
+Logicamente questo scenario introduce una serie di complicazioni che non saranno trattate
+in questo documento, ma permette di avere delle linee guida che consentono di definire
+elementi fondamentali per l'analisi dei requisiti, ovvero il glossario dei requisiti e il carico di
+lavoro.
+
+\section{Glossario dei requisiti}
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|l|l|}
+\hline
+\rowcolor[HTML]{3166FF} 
+{\color[HTML]{FFFFFF} \textbf{Fatto}} & {\color[HTML]{FFFFFF} \textbf{Possibili dimensioni}} & {\color[HTML]{FFFFFF} \textbf{Possibili misure}} & {\color[HTML]{FFFFFF} \textbf{Storicità}} \\ \hline
+                                      & Condizioni atmosferiche                              &                                                  &                                           \\ \cline{2-2}
+                                      & Presenza di uno sciopero                             &                                                  &                                           \\ \cline{2-2}
+                                      & Data inizio periodo                                  & \multirow{-3}{*}{Numero di utilizzi}             &                                           \\ \cline{2-3}
+                                      & Data fine periodo                                    &                                                  &                                           \\ \cline{2-2}
+                                      & Comune                                               &                                                  &                                           \\ \cline{2-2}
+\multirow{-6}{*}{Corsa}               & Tipo di veicolo                                      & \multirow{-3}{*}{Distanza percorsa}              & \multirow{-6}{*}{1 anno}                  \\ \hline
+\end{tabular}%
+}
+\end{table}
+
+
 \section{Progettazione concettuale}
 
 Prodotto della fase di progettazione concettuale è il Data Fact Model di figura
