@@ -313,10 +313,10 @@ ed oggetto del processo di integrazione precedente.
 
 Ogni region ha come attributo un nome sottoforma di stringa alfanumerica
 minuscola. E' però necessario convertire tale stirnga nel nome
-italiano della corrispondente città, valore utilizzato dalle altre due sorgenti
+della corrispondente città, valore utilizzato dalle altre due sorgenti
 oggetto dell'integrazione. Entra quindi in gioco una procedura di
 \textit{cleansing} che utilizzando una tabella di supporto, provvede a
-modificar eil valore dell'attributo \textit{city\_id} della tabella
+modificar il valore dell'attributo \textit{city\_id} della tabella
 \textit{vehciles\_profilings} con l'id della corrispondente città della
 tabella \textit{cities} dell'ODS, il tutto mediante una query di UPDATE
 la quale esegue una JOIN su di una tabella di traduzione appositamente
@@ -329,7 +329,90 @@ oggetto della procedura di trasformazione qui descritta e della tabella
 
 \subsubsection{Caricamento}
 
-Non essendo possibile procede in alcun modo ad aggiornare i dati inseriti
-nell'ODS, la procedura di caricamente, effettuata con cadenza giornaliera al
-termine della procedura di trasformazione, non ha comportato in fase di
-progettazione la gestione di vincoli o casistiche degne di nota.
+La procedura di caricamento è di tipo incrementale, consiste nella sola aggiunta di
+nuovi record alla tabella e viene eseguita con cadenza giornaliera, al termine della
+procedura di trasformazione. Il tutto è svolto dall'applicativo Java sviluppato che
+si occupa nell'ordine di:
+\begin{itemize}
+\item inserire nella tabella \textit{vehicles} i record relativi a veicoli non ancora
+inseriti che sono stati oggetto di profilazioni durante la giornata precedente;
+\item inserire nella tabella \textit{cities} i record relativi a nuove città oggetto
+di profilazione durante la giornata precedente;
+\item estrarre i dati dalla tabella \textit{cities} della sorgente e utilizzare la
+tabella di traduzione al fine di verificare la presenza della versione tradotta della
+stessa all'interno dell'ODS e in caso contrario procedere all'aggiunta;
+\item estrarre dal database delle sorgente i record inseriti durante la precedente
+giornata (per i quali l'attributo \textit{query\_time} si riferisce ad un istante che
+si colloca nelle precedenti 24 ore) comprensivi dell'attributo \textit{name} della
+tabella \textit{city};
+\item procedere all'inserimento dei record ottenuti al punto precedente ottendendo
+per ogni valore dell'attributo \textit{cities.name}, per mezzo del costrutto JOIN,
+il \textit{city\_id} corrispondente della tabella \textit{cities} dell'ODS, al fine
+di mantenere l'integrità referenziale.
+\end{itemize}
+
+\subsection{Torinometeo}
+
+\subsubsection{Estrazione}
+
+Si ha a che fare con una sorgente con dati periodici per la quale si è scelto di 
+conservare dati per i successivi 6 mesi a partire dalla raccolta degli stessi.
+
+L'estrazione è di tipo \textit{incremental delayed}: un job di sistema è
+schedulato al termine della giornata per invocare l'applicativo sviluppato in
+modalità di estrazione il quale interroga la base dati, ottiene i dati
+memorizzati nelle ultime 24 ore e procedere al caricamento degli stessi
+all'interno dell'ODS.
+
+\subsubsection{Trasformazione}
+
+Come anticipato, i dati raccolti nel database della sorgente sono relativi a
+misurazioni realizzate dal sensore nell'istante in cui quest'ultimo viene
+interrogato. Tali dati non si prestano ad essere associati alle rilevazioni
+sull'utilizzo orario dei veicoli. Segue una procedura di enrichment la quale
+provvede nell'ordine a:
+\begin{itemize}
+\item trasformare il valore di tipo \java{DATETIME} dell'attributo
+\textit{query\_time} nell'ora esatta precedente più prossima (operazione
+equivalente a porre ad azzerare minuti e secondi);
+\item eseguire la media delle somme degli attributi \textit{wind\_level},
+\textit{temperature\_level} e \textit{rain\_level} di tutti i record per i
+quali l'attributo \textit{query\_time} rappresenta lo stesso istante o un
+istante più recente, distante meno di un'ora dalla data calcolata al punto
+precedente;
+\item confrontare per ognuno degli attributi calcolati la relativa tabella
+dei livelli la quale associa un valore da 0 a 4 sulla base dell'appartenenza
+o meno al range di valori associato al livello corrispondente; in tal modo si
+rendono discreti i valori di tali attributi e quindi candidati ad essere 
+oggetto di interrogazione;
+\item creare un record da inserire nella tabella
+\textit{weather\_hourly\_profilings} a partire dai dati ottenuti ai punti
+precedenti; nello specifico, per l'attributo
+\textit{start\_profiling\_time} viene presa la data calcolata al primo punto;
+a tale data è sommata un ora per ottenere il valore dell'attributo
+\textit{end\_profiling\_time}; ad ognuno degli attributi relativi alle
+condizioni atmosferiche è associato il livello ottenuto al punto precedente;
+l'attributo \textit{city\_id} è invece ottenuto per mezzo di una JOIN tra il
+nome della città estratta dalla base dati della sorgente e la tabella
+\textit{cities} dell'ODS.
+\end{itemize}
+Tali passi sono ripetuti per ogni ora della precedente giornata.
+
+Le operazioni precedenti, eseguite interamente attraverso l'escuzione di script
+SQL, sono eseguite dall'applicativo Java scritto al termine della precendente
+procedura di estrazione.
+
+\subsubsection{Caricamento}
+
+Il caricamento è di tipo incrementale e consiste nella sola aggiunta dei nuovi
+record alla tabella \textit{weather\-hourly\_profilings} e avviene con cadenza
+giornaliera al termine della precedente procedura di trasformazione.
+L'applicativo Java preposto si occupa di:
+\begin{itemize}
+\item inserire nella tabella \textit{cities} i record relativi a nuove città oggetto
+di profilazione durante la giornata precedente;
+\item procedere all'inserimento dei record risultanti dalla precedente procedura di
+trasformazione facendo in modo di inserire per l'attributo \textit{city\_id}
+la corrispondente chiave della tabella \textit{cities} dell'ODS, al fine
+di mantenere l'integrità referenziale.
+\end{itemize}
