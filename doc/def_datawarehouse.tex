@@ -15,7 +15,7 @@ Nella fattispecie verrà analizzato il contesto della regione Piemonte che, con 
 partnership con Helbiz.
 
 Risulta quindi interessante capire quali siano gli utilizzi dei cittadini durante le diverse avversità metereologiche
-che durante le manifestazioni di astensione dal lavoro, come ad esempio gli scioperi dei mezzi pubblici.
+anche durante le manifestazioni di astensione dal lavoro, come ad esempio gli scioperi dei mezzi pubblici.
 
 
 \section{Scenario}
@@ -75,26 +75,15 @@ lavoro.
                                       & Data inizio periodo                                  & \multirow{-3}{*}{Numero di utilizzi}             &                                           \\ \cline{2-3}
                                       & Data fine periodo                                    &                                                  &                                           \\ \cline{2-2}
                                       & Comune                                               &                                                  &                                           \\ \cline{2-2}
-\multirow{-6}{*}{Corsa}               & Tipo di veicolo                                      & \multirow{-3}{*}{Distanza percorsa}              & \multirow{-6}{*}{1 anno}                  \\ \hline
+\multirow{-6}{*}{Utilizzo veicolo}               & Tipo di veicolo                                      & \multirow{-3}{*}{Distanza percorsa}              & \multirow{-6}{*}{1 anno}                  \\ \hline
 \end{tabular}%
 }
 \end{table}
 
 
-\section{Progettazione concettuale}
-
-Prodotto della fase di progettazione concettuale è il Data Fact Model di figura
-\ref{fig:dfm}.
-
-\begin{figure}[H]                                                                                                                                                            
-\centering                                                                                                                                                                   
-\includegraphics[width=\textwidth]{diagrams/dfm}                                                                                                                                   
-\caption{DFM Vehicle use}                                                                                                                                            
-\label{fig:dfm}                                                                                                                                                           
-\end{figure}
 
 \section{Carico di lavoro}
-\begin{table}[h]
+\begin{table}[H]
 \centering
 \begin{tabular}{|l|l|}
 \hline
@@ -113,9 +102,23 @@ Prodotto della fase di progettazione concettuale è il Data Fact Model di figura
 La progettazione concettuale comporta l’utilizzo dei requisiti identificati nella Sezione xyz
 per realizzare uno schema concettuale per il data mart. A tale scopo viene utilizzato il
 Dimensional Fact Model (DFM), un modello concettuale creato appositamente per supportare la progettazione di data mart. 
-In questa Sezione viene descritta la progettazione del DFM che modella il fatto relativo ad un ascolto.
+In questa Sezione viene descritta la progettazione del DFM che modella il fatto relativo all' utilizzo del veicolo.
+
+\begin{figure}[H]                                                                                                                                                            
+\centering                                                                                                                                                                   
+\includegraphics[width=\textwidth]{diagrams/dfm}                                                                                                                                   
+\caption{DFM Vehicle use}                                                                                                                                            
+\label{fig:dfm}                                                                                                                                                           
+\end{figure}
 
 \section{Progettazione Logica e Fisica}
 In questa Sezione viene descritto il processo di trasformazione del DFM, descritto al paragrafo precedente, in modello logico. 
 Innanzitutto va specificato che è stata applicata la tecnica ROLAP (Relational On-Line Analytical Processing) che prevede l’utilizzo di un
 modello relazionale per la rappresentazione dei dati multidimensionali.
+
+\begin{figure}[H]                                                                                                                                                            
+\centering                                                                                                                                                                   
+\includegraphics[width=\textwidth]{diagrams/logic}                                                                                                                                   
+\caption{DFM Vehicle use}                                                                                                                                            
+\label{fig:logic}                                                                                                                                                           
+\end{figure}
