@@ -416,3 +416,44 @@ trasformazione facendo in modo di inserire per l'attributo \textit{city\_id}
 la corrispondente chiave della tabella \textit{cities} dell'ODS, al fine
 di mantenere l'integrità referenziale.
 \end{itemize}
+
+\subsection{Scioperi}
+
+\subsubsection{Estrazione}
+
+Si ha a che fare con una sorgente con dati periodici per la quale si è scelto di 
+conservare dati per i successivi 6 mesi a partire dalla raccolta degli stessi.
+
+Come per le precedenti due sorgenti l'estrazione è di tipo
+\textit{incremental\_delayed} ed è effettuato con le stesse modalità di estrazione
+utilizzate per le precedenti sorgenti. E' invece presente una differenza sui dati
+memorizzati che si riferiscono a scioperi avvenuti non meno di due giorni prima
+della data corrente. Come anticipato al momento della descrizione della sorgente,
+tali open data hanno anche funzionalità di forecasting ricomprendendo tra gli scioperi
+anche quelli previsti nel futuro ed annunciati. Gli scioperi, compresi quelli in corso,
+sono soggetti anche a modifiche ed annullamenti. Considerato che il dato sulla
+presenza o meno di uno sciopero è da ritenersi attendibile alla fine dello
+sciopero stesso, si è scelto di inserire ad ogni aggiornamento della base dati
+della sorgente i dati sui soli scioperi aventi data precedente di due giorni la
+data corrente al fine di gestire anche il caso di scioperi della durata superiore 
+ad un giorno.
+
+Inoltre, al fine di ottimizzare il processo di estrazione, nell'interrogazione
+vengono selezionati i record degli scioperi relativi alle sole città di interesse,
+ovvero quelle presente nella base dati della sorgente Helbiz.
+
+\subsubsection{Trasformazione}
+
+Non è stata compiuta alcuna trasformazione sui i dati della sorgente Scioperi.
+
+\subsubsection{Caricamento}
+
+Nel caso in cui uno sciopero sia indetto a livello nazionale e sia quindi esteso
+a tutte le città, esso riporterà come valore del campo \textit{city} la stringa 
+"Tutte". Si è scelto di aggiungere un record dummy alla tabella \textit{cities}
+avente come attributo \textit{name} la stringa suddetta.
+
+Al termine della procedura di estrazione, per ogni record del database della
+sorgente viene ottenuto mediante il costrutto JOIN il relativo id della tabella
+\textit{cities} e questo è inserito come attributo \textit{city\_id} per la
+nuova tabella.
