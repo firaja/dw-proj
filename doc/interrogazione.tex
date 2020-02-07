@@ -25,4 +25,19 @@ ORDER BY FIELD(weekday ,'monday', 'tuesday', 'wednesday',
 \fi
 
 
-\section{Analisi sui numeri di utilizzi in presenza di sciopero}
+\section{Utilizzo per livelli di pioggia mese per mese}
+\begin{figure}[H]                                                                                                                                                            
+\centering                                                                                                                                                                   
+\includegraphics[width=\textwidth]{images/query2}                                                                                                                                   
+\label{fig:query2}                                                                                                                                                           
+\end{figure}
+\iffalse
+SELECT SUM(v.uses)                AS total_uses, 
+	   SUM(v.travelled_distance)  AS total_distance,
+       w.rain_level,
+       d.month
+FROM vehicle_use.uses AS v JOIN weather as w ON v.weather = w.id
+                           JOIN dates AS d ON v.start_date = d.id
+GROUP BY w.rain_level, d.month
+ORDER BY w.rain_level DESC
+\fi
