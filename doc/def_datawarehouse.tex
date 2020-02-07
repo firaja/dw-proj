@@ -10,7 +10,7 @@ costituito consistente nell'ODS ed un terzo livello costituito dai data mart.
 
 \section{Descrizione del dominio}
 Il dominio nel quale si colloca questo progetto è quello dei monopattini elettrici noleggiati in
-modalità \emph{scooter sharing}, in particolare quelli offerti dalla compagnia Helbiz nel territorio italiano.
+modalità \emph{scooter sharing}, in particolare quelli offerti dalla compagnia Helbiz sul territorio italiano.
 Nella fattispecie verrà analizzato il contesto della regione Piemonte che, con Torino, ha avviato una importante
 partnership con Helbiz.
 
@@ -99,10 +99,12 @@ lavoro.
 \end{tabular}
 \end{table}
 \section{Progettazione concettuale}
-La progettazione concettuale comporta l’utilizzo dei requisiti identificati nella Sezione xyz
+La progettazione concettuale comporta l’utilizzo dei requisiti identificati precedentemente 
 per realizzare uno schema concettuale per il data mart. A tale scopo viene utilizzato il
-Dimensional Fact Model (DFM), un modello concettuale creato appositamente per supportare la progettazione di data mart. 
-In questa Sezione viene descritta la progettazione del DFM che modella il fatto relativo all' utilizzo del veicolo.
+Dimensional Fact Model (DFM), un modello concettuale creato appositamente per supportare
+la progettazione di data mart. 
+In figura~\ref{fig:dfm} è mostrato il DFM che modella il fatto relativio
+all'\textbf{utilizzo di un veicolo}.
 
 \begin{figure}[H]                                                                                                                                                            
 \centering                                                                                                                                                                   
@@ -111,21 +113,39 @@ In questa Sezione viene descritta la progettazione del DFM che modella il fatto 
 \label{fig:dfm}                                                                                                                                                           
 \end{figure}
 
-Osservando il DFM si nota che gli attributi \textit{uses} e \textit{travelled\_distance} risultano
-essere le misure scelte per il fatto in questione. Esse sono attributi di tipo numerico e
-rappresentano rispettivamente il numero di utilizzi e la distanza percorsa mediante un determinato
+Osservando il DFM si nota che gli attributi \textit{uses} e \textit{travelled\_distance}
+sono le misure scelte per il fatto in questione. Entrambi gli attributi sono di tipo numerico e
+rappresentano rispettivamente il numero di utilizzi e la distanza percorsa da un determinato
 veicolo.
-Un'istanza di fatto è identificata dalla seguenti dimensioni:
+Un'istanza del fatto è identificata dalla seguenti dimensioni:
 \begin{itemize}
 \item \textit{start\_profiling} e \textit{end\_profiling:} dimensioni di tipo data relative
 rispettivamente all'istante di inizio e di fine di una finestra di profilazione; come è possibile
 notare essi condividono la gerarchia che parte dall'attributo date e comprende tutti gli 
-attributi discendenti quali \textit{day}, \textit{month}, \textit{year}, \textit{minute} e
-\textit{hour};
+attributi discendenti quali \textit{day}, \textit{weekday}, \textit{month}, \textit{year},
+\textit{minute} e \textit{hour};
 \item \textit{vehicle\_type:} dimensione di tipo stirnga che permette la selezione tra diversi
 tipi di veicoli all'interno di una finestra di profilazione;
 \item \textit{city:} dimensione di tipo stringa caratterizzata dall'attributo descritto di tipo
 stringa \textit{name}.
+\end{itemize}
+Si evidenziano inolte i seguenti attributi dimensionali appartenenti alla gerarchia della
+dimensione \textit{city}:
+\begin{itemize}
+\item \textit{weather:} attributo relativo alla rilevazione delle condizioni atmosferiche
+in un determinato intervallo di tempo per una data città; esso dispone degli attributi
+dimensionali \textit{weather\_start} e \textit{weather\_end} i quali condividono la gerarchia
+con l'attributo \textit{date} e corrispondono a data di inizio e di fine di una rilevazione;
+gli attributi descrittivi \textit{rain\_level}, \textit{temperature\_level} e
+\textit{wind\_level} con i quali ogni rilevazione atmosferica è in relazione uno a uno,
+permettono di descrivere con valori discreti le condizioni metereologiche in un determinato
+intervallo di tempo;
+\item \textit{strike:} partendo dal presupposto che non ogni città debba essere oggetto di
+almeno uno sciopero, si modella tale attirbuto come opzionale per la dimensione \textit{city};
+tale attributo dispone inoltre degli attributi \textit{strike\_start} e \textit{strike\_end},
+che condividono la gerarchia con \textit{date}, relativi rispettivamente a 
+ora di inizio e ora di fine di uno sciopero; vi sono poi gli attirbuti descrittivi \textit{name} e 
+\textit{area\_of\_interest}, relativi a nome e settore interessato allo sciopero.
 \end{itemize}
 
 \section{Progettazione Logica e Fisica}
