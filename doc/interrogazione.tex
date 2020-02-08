@@ -57,4 +57,31 @@ GROUP BY d.hour
 \fi
 
 
-\section{Utilizzi e distanza media nelle fasce orarie lavorative}
+\section{Differenza negli utilizzi al variare delle temperature a dipendere della presenza di scioperi}
+\begin{figure}[H]                                                                                                                                                            
+\centering                                                                                                                                                                   
+\includegraphics[width=\textwidth]{images/query4}                                                                                                                                   
+\label{fig:query4}                                                                                                                                                           
+\end{figure}
+\iffalse
+SELECT t1.total_with_strike, t2.total_without_strike, t1.temperature_level
+FROM (
+		SELECT SUM(v.uses) AS total_without_strike, 
+  			   w.temperature_level
+  		FROM vehicle_use AS v JOIN weather AS w ON v.weather = w.id
+  		WHERE v.strike IS NULL
+  		GROUP BY w.temperature_level
+      ) AS t1 
+      	
+        JOIN
+      
+      (
+        SELECT SUM(v.uses) AS total_with_strike, 
+               w.temperature_level
+  		FROM vehicle_use AS v JOIN weather AS w ON v.weather = w.id
+        WHERE v.strike IS NOT NULL
+  		GROUP BY w.temperature_level
+      ) AS t2
+        ON t1.temperature_level = t2.temperature_level
+ORDER BY t1.temperature_level ASC
+\fi
