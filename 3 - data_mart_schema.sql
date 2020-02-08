@@ -26,7 +26,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `mydb`.`city` ;
 
 CREATE TABLE IF NOT EXISTS `mydb`.`city` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(50) NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
@@ -38,30 +38,16 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `mydb`.`weather` ;
 
 CREATE TABLE IF NOT EXISTS `mydb`.`weather` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `wind_level` INT NOT NULL,
   `temperature_level` INT NOT NULL,
   `rain_level` INT NOT NULL,
   `city` INT NOT NULL,
-  `start_time` DATETIME NOT NULL,
-  `end_time` DATETIME NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_weather_1_idx` (`city` ASC),
-  INDEX `fk_weather_2_idx` (`start_time` ASC),
-  INDEX `fk_weather_3_idx` (`end_time` ASC),
-  CONSTRAINT `fk_weather_1`
+  INDEX `fk_weather_idx` (`city` ASC)
+  CONSTRAINT `fk_weather`
     FOREIGN KEY (`city`)
     REFERENCES `mydb`.`city` (`name`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_weather_2`
-    FOREIGN KEY (`start_time`)
-    REFERENCES `mydb`.`date` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_weather_3`
-    FOREIGN KEY (`end_time`)
-    REFERENCES `mydb`.`date` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -106,7 +92,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `mydb`.`vehicle_use` ;
 
 CREATE TABLE IF NOT EXISTS `mydb`.`vehicle_use` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `uses` INT NOT NULL,
   `travelled_distance` INT NOT NULL,
   `start_time` DATETIME NOT NULL,

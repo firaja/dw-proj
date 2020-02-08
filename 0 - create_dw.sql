@@ -99,6 +99,17 @@ CREATE TABLE IF NOT EXISTS weather_detections
 ) ENGINE = INNODB;
 
 
+CREATE TABLE IF NOT EXISTS weather_hourly_profiling
+(
+    start_profiling_time DATETIME,
+    end_profiling_time   DATETIME,
+    city              VARCHAR(50),
+    rain_level INT NOT NULL,
+    wind_level INT NOT NULL,
+    temperature_level INT NOT NULL,
+    PRIMARY KEY (start_profiling_time,end_profiling_time)
+) ENGINE = INNODB;
+
 DROP TABLE IF EXISTS cities;
 CREATE TABLE IF NOT EXISTS cities
 (
