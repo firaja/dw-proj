@@ -41,3 +41,20 @@ FROM vehicle_use.uses AS v JOIN weather as w ON v.weather = w.id
 GROUP BY w.rain_level, d.month
 ORDER BY w.rain_level DESC
 \fi
+
+
+\section{Confronto degli utilizzi durante uno sciopero per fascia oraria}
+\begin{figure}[H]                                                                                                                                                            
+\centering                                                                                                                                                                   
+\includegraphics[width=\textwidth]{images/query3}                                                                                                                                   
+\label{fig:query3}                                                                                                                                                           
+\end{figure}
+\iffalse
+SELECT SUM(v.uses) AS total_use, d.hour
+FROM vehicle_use AS v JOIN strike AS s ON s.id = v.strike
+				 JOIN dates AS d ON v.start_date = d.id
+GROUP BY d.hour
+\fi
+
+
+\section{Utilizzi e distanza media nelle fasce orarie lavorative}
