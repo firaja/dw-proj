@@ -292,11 +292,12 @@ ed i relativi valori numerici associati; in caso non esiste un oggetto associato
 all'ora passata come chiave, tale mappa viene creata ed le vengono associato
 valore 0 per ognuno dei precedenti attributi;
 \item se l'attributo \textit{position\_changed} è settato a 1 e la distanza
-\textit{travelled\_distance} è inferiore a 4000 metri, l'algoritmo procede
+\textit{travelled\_distance} è inferiore a 3000 metri, l'algoritmo procede
 ad incrementare la entry con chiave \textit{uses} e ad aggiungere la distanza
-percorsa all'attributo \textit{travelled\_distance}; il confronto con i 4000
-metri deriva dal fatto che entrambi i tipi di veicoli a disposizione hanno
-una velocità massima non superiore a 25\,km/h;
+percorsa all'attributo \textit{travelled\_distance}; considerando che i veicoli
+in esame hanno una velocità massima di 25\,km/h, e da ciò che la massima distanza
+percorribile in un tempo di 5 minuti è di 2\,km, la cifra limite utilizzata nel
+precedente confronto è stata ottenuta moltiplicando per 1,5 tale distanza;
 \item se l'attributo \textit{new} è invece settato a 1, viene eseguito
 un controllo tra le profilazioni aventi \textit{end\_profiling\_time} eguale
 alla \textit{start\_profiling\_time} corrente e, nel caso in cui tale veicolo
