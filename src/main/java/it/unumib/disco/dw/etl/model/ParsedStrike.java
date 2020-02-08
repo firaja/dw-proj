@@ -13,6 +13,8 @@ public class ParsedStrike
     private String city;
 
 
+    private String sector;
+
     public LocalDateTime getBegin()
     {
         return begin;
@@ -53,6 +55,14 @@ public class ParsedStrike
         this.city = city;
     }
 
+    public String getSector() {
+        return sector;
+    }
+
+    public void setSector(String sector) {
+        this.sector = sector;
+    }
+
     @Override
     public String toString()
     {
@@ -61,6 +71,7 @@ public class ParsedStrike
                 ", end=" + end +
                 ", name='" + name + '\'' +
                 ", city='" + city + '\'' +
+                ", sector='" + sector + '\'' +
                 '}';
     }
 }

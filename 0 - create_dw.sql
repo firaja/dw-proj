@@ -124,7 +124,7 @@ CREATE TABLE IF NOT EXISTS strikes
 (
     start_time DATETIME NOT NULL,
     end_time   DATETIME NOT NULL,
-    name       VARCHAR(256),
+    name       VARCHAR(100),
     city       VARCHAR(50),
     area_of_interest VARCHAR(256),
     PRIMARY KEY (start_time, end_time, name, city),
