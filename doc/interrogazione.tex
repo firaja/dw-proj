@@ -15,8 +15,8 @@ zioni ad un DBMS Mysql.
 \iffalse
 SELECT SUM(v.uses)                AS total_uses, 
 	   SUM(v.travelled_distance)  AS total_distance, 
-       AVG(v.uses)                AS average_uses
-       AVG(v.travelled_distance)  AS total_distance
+       AVG(v.uses)                AS average_uses,
+       AVG(v.travelled_distance)  AS total_distance,
        d.weekday
 FROM vehicle_use.uses AS v JOIN dates AS d ON v.start_date = d.id
 GROUP BY d.weekday
@@ -64,7 +64,7 @@ GROUP BY d.hour
 \label{fig:query4}                                                                                                                                                           
 \end{figure}
 \iffalse
-SELECT t1.total_with_strike, t2.total_without_strike, t1.temperature_level
+SELECT t1.total_without_strike, t2.total_with_strike, t1.temperature_level
 FROM (
 		SELECT SUM(v.uses) AS total_without_strike, 
   			   w.temperature_level
@@ -73,7 +73,7 @@ FROM (
   		GROUP BY w.temperature_level
       ) AS t1 
       	
-        JOIN
+        CROSS JOIN
       
       (
         SELECT SUM(v.uses) AS total_with_strike, 
