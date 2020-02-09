@@ -50,8 +50,8 @@ ORDER BY FIELD(weekday ,'monday', 'tuesday', 'wednesday',
 
 \begin{figure}[H]                                                                                                                                                            
 \centering                                                                                                                                                                   
-\includegraphics[width=\textwidth]{images/result1}                                                                                                                                   
-\label{fig:result1}                                                                                                                                                           
+\includegraphics[width=\textwidth]{images/result12}                                                                                                                                   
+\label{fig:result12}                                                                                                                                                           
 \end{figure}
 
 
@@ -85,6 +85,9 @@ ORDER BY w.rain_level DESC
 \fi
 
 
+
+
+
 \section{Confronto degli utilizzi durante uno sciopero per fascia oraria}
 Forse uno dei dati più importanti non solo Helbiz ma anche per il comune e 
 i cittadini stessi; grazie a queste informazioni Helbiz può gestire durante 
@@ -101,6 +104,13 @@ FROM vehicle_use AS v JOIN strike AS s ON s.id = v.strike
 				 JOIN dates AS d ON v.start_date = d.id
 GROUP BY d.hour
 \fi
+
+
+\begin{figure}[H]                                                                                                                                                            
+\centering                                                                                                                                                                   
+\includegraphics[width=\textwidth]{images/result3}                                                                                                                                   
+\label{fig:result3}                                                                                                                                                           
+\end{figure}
 
 
 \section{Delta utilizzi al variare delle temperature a dipendere della presenza di scioperi}
@@ -136,6 +146,13 @@ FROM (
 ORDER BY t1.temperature_level ASC
 \fi
 
+\begin{figure}[H]                                                                                                                                                            
+\centering                                                                                                                                                                   
+\includegraphics[width=\textwidth]{images/result4}                                                                                                                                   
+\label{fig:result4}                                                                                                                                                           
+\end{figure}
+
+
 
 \section{Numero di utilizzi durante uno sciopero nelle ore di punta}
 Questa interrogazione analizza ancora più nel dettaglio la situazione durante
@@ -161,6 +178,13 @@ FROM vehicle_use AS v JOIN date AS d ON v.start_time = d.id
 WHERE strike IS NOT NULL
 GROUP BY d.hour, d.minute
 \fi
+
+
+\begin{figure}[H]                                                                                                                                                            
+\centering                                                                                                                                                                   
+\includegraphics[width=\textwidth]{images/result5}                                                                                                                                   
+\label{fig:result5}                                                                                                                                                           
+\end{figure}
 
 
 \section{Numero di utilizzi durante diverse fasce orarie}
