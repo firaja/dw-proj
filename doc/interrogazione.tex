@@ -1,8 +1,15 @@
 \chapter{Interrogazione del data mart}
 In questa sezione vengono definite le interrogazioni sui datamart che sono state effettuate.
 
-Tutte le richieste fatte ai datamart vengono, di conseguenza, effettuate attraverso interroga-
-zioni ad un DBMS Mysql.
+Tutte le richieste fatte ai datamart vengono, di conseguenza, effettuate attraverso interrogazioni ad un DBMS Mysql.
+
+\subsubsection{Note}
+Il modello concettuale e logico indicano la presenza della dimensione "tipo di veicolo", ma al momento della stesura
+di questo documento Helbiz ritorna informazioni solo per i veicoli di tipo monopattino.
+A questo proposito solo una delle interrogazioni presenti in questo documeto utilizzano tale dimensione, a titolo d'esempio.
+
+
+
 
 \section{Visualizzazione utilizzi/distanze settimanali}
 Lo scopo di questa interrogazione è di poter avere una panoramica ad alto livello
@@ -116,7 +123,8 @@ biciclette ma esclusivamente ai monopattini.
 \begin{figure}[H]                                                                                                                                                            
 \centering                                                                                                                                                                   
 \includegraphics[width=\textwidth]{images/result3}                                                                                                                                   
-\label{fig:result3}                                                                                                                                                           
+\label{fig:result3}
+\caption{Andamento degli utilizzi lungo la giornata durante uno sciopero}                                                                                                                                                                                                                                                                                                                     
 \end{figure}
 
 
@@ -131,9 +139,9 @@ monopattino durante una giornata fredda se si trova senza possibilità di scelta
 \label{fig:query4}                                                                                                                                                           
 \end{figure}
 \iffalse
-SELECT t1.total_without_strike, t2.total_with_strike, t1.temperature_level
+SELECT t1.avg_without_strike, t2.avg_with_strike, t1.temperature_level
 FROM (
-		SELECT SUM(v.uses) AS total_without_strike, 
+		SELECT AVG(v.uses) AS avg_without_strike, 
   			   w.temperature_level
   		FROM vehicle_use AS v JOIN weather AS w ON v.weather = w.id
   		WHERE v.strike IS NULL
@@ -143,7 +151,7 @@ FROM (
         CROSS JOIN
       
       (
-        SELECT SUM(v.uses) AS total_with_strike, 
+        SELECT AVG(v.uses) AS avg_with_strike, 
                w.temperature_level
   		FROM vehicle_use AS v JOIN weather AS w ON v.weather = w.id
         WHERE v.strike IS NOT NULL
@@ -161,7 +169,8 @@ un dato trascurabile fino a chè non ci saranno ulteriori evidenze.
 \begin{figure}[H]                                                                                                                                                            
 \centering                                                                                                                                                                   
 \includegraphics[width=\textwidth]{images/result4}                                                                                                                                   
-\label{fig:result4}                                                                                                                                                           
+\label{fig:result4}
+\caption{Utilizzi in base alle precipitazioni: in blu durante un sciopero, in arancione in una giornata senza sciopero}                                                                                                                                                           
 \end{figure}
 
 
@@ -194,7 +203,8 @@ Si nota subito che il 41\% degli utilizzi del giorno viene fatto solo in queste 
 \begin{figure}[H]                                                                                                                                                            
 \centering                                                                                                                                                                   
 \includegraphics[width=\textwidth]{images/result5}                                                                                                                                   
-\label{fig:result5}                                                                                                                                                           
+\label{fig:result5} 
+\caption{Durante le ore di punta vengono fatti più utilizzi che non durante i normali orari, con un rapporto di circa 8:3 }                                                                                                                                                          
 \end{figure}
 Risulta quindi vitale per Helbiz riuscire a gestire i due periodi che vanno dalle 7 alle 9  e dalle 18 alle 19.
 
@@ -207,7 +217,7 @@ Le fasce orarie identificate sono
 	\item{\textbf{Orario di punta:} come spiegato nella sezione precendete, è l'orario di maggior traffico causato dai lavoratori}
 	\item{\textbf{Orario lavorativo}}
 	\item{\textbf{Uscita da scuola} è l'orario di uscita per la maggior parte degli studenti della scuola dell'obbligo}
-	\item{\textbf{Uscita da scuola 2} simile a quella precedente, ma riguarda la fascia pomeridiana}
+	\item{\textbf{Uscita da scuola pomeridiana} simile a quella precedente, ma riguarda la fascia pomeridiana}
 \end{itemize}
 
 Queste fasce non sono solo utili a capire il numero di veicoli da mettere a disposizione, ma indicano grossolanamente quale sia 
@@ -247,10 +257,13 @@ WHERE strike IS NULL
 GROUP BY d.hour, d.minute
 \fi
 
-
+È più facile in questa maniera visualizzare la richiesta all'interno di ogni singola fascia oraria.
+Notasi che questa query potrebbe dare maggior valore ad Helbiz applicando un ulteriore filtro sul periodo delle due o tre settimane precedenti,
+in maniera tale che gli accumuli non rendano ininfluenti gli sviluppi più recenti.
 
 \begin{figure}[H]                                                                                                                                                            
 \centering                                                                                                                                                                   
 \includegraphics[width=\textwidth]{images/result6}                                                                                                                                   
-\label{fig:result6}                                                                                                                                                           
+\label{fig:result6}
+\caption{Utilizzi divisi per fascia oraria: orario di punta (7-9 e 18-19), orario lavorativo (9-18), uscita da scuola (12-14) e uscita da scuola pomeridiana (16-17)}                                                                                                                                                           
 \end{figure}
