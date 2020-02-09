@@ -303,7 +303,43 @@ database.
 
 \section{Scioperi}
 
+Per quanto riguarda gli scioperi, è stato utilizzato un dataset rilasciato come Open Data
+dal Ministero dei Trasporti della Repubblica Italiana, il quale contiene dati storici
+relativi agli scioperi avvenuti o previsti a partire dal 1° Gennaio 2014.
+
+I dati sono messi a disposizione tramite un file CSV che, aggiornato su base giornaliera,
+contiene tutti i dati sugli scioperi fino alla data corrente. Vi è inoltre un solo 
+endpoint REST, documentato di seguito, che permettone di ricevere una risposta in formato
+JSON di quanto contenuto nel file CSV.
+
 \subsection{API REST}
+
+\subsection{API Storico Scioperi}
+
+\textbf{Method:} \texttt{GET} \\
+\textbf{Url:} \texttt{http://dati.mit.gov.it/catalog/api/action/datastore\_search?resource\_id=6838feb1-1f3d-40dc-845f-d304088a92cd} \\
+
+\noindent\textbf{Descrizione:} la richiesta ritorna la lista degli scioperi a fronte di
+un filtraggio opzionale sulla base dei parametri descritti nella seguente tabella.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+\rowcolor[HTML]{3166FF} 
+{\color[HTML]{FFFFFF} \textbf{Parametro}} & {\color[HTML]{FFFFFF} \textbf{Esempio}} & {\color[HTML]{FFFFFF} \textbf{Opzionale}} & {\color[HTML]{FFFFFF} \textbf{Descrizione}}                           \\ \hline
+q                                 & pubblico                      & Sì & Stringa utilizzata per ricerca testuale tra i dati \\ \hline
+limit                                 & 100                      & Sì &  Numero massimo di risultati in risposta \\ \hline
+\end{tabular}%
+
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{scioperiJson.png}
+\caption*{Esempio di risposta dalla sorgente Scioperi}
+\label{fig:historicaljson}
+\end{figure}
 
 \subsection{Progettazione concettuale}
 
@@ -334,3 +370,26 @@ schema ER.
 \caption{Schema logico Strikes}                                                                                                                                            
 \label{fig:strikes_logic}                                                                                                                                                           
 \end{figure}
+
+\subsection{Note di utilizzo}
+
+Nonostante il dataset riporti, oltre agli scioperi avvenuti, quelli programmati,
+considerato che i dati in oggetto sono da utilizzarsi solo a corredo dei dati
+ottenuti dalle rilevazioni delle precedenti due sorgenti, si è scelto di filtrare
+tra i risultati restituiti dalla API, i soli scioperi risalenti ad almeno due
+giorni dalla data della richiesta e pertanto già avvenuti.
+
+Si segnala inoltre come gli attirbuti \textit{data\_inizio} e \textit{data\_fine} 
+riportino sempre lo stesso valore mentre l'intervallo di validità dello sciopero
+sia esplicitato in maniera eterogenea tra i risultati dall'attributo
+\textit{modalità}.
+
+Come per le altre due sorgenti, è stato scritto un applicativo Java che si occupa
+di:
+\begin{itemize}
+\item reperire al primo avvio tutti i dati relativi agli scioperi avvenuti
+nell'anno in corso fino a due giorni dalla data corrente e salvarli su di
+n'apposita base dati;
+\item aggiornare giornalmente la base date con gli scioperi avvenuti nei
+precedenti due giorni.
+\end{itemize}
