@@ -4,7 +4,7 @@ In questa sezione vengono definite le interrogazioni sui datamart che sono state
 Tutte le richieste fatte ai datamart vengono, di conseguenza, effettuate attraverso interroga-
 zioni ad un DBMS Mysql.
 
-\section{Visualizzazione settimanale}
+\section{Visualizzazione utilizzi/distanze settimanali}
 
 \begin{figure}[H]                                                                                                                                                            
 \centering                                                                                                                                                                   
@@ -57,7 +57,7 @@ GROUP BY d.hour
 \fi
 
 
-\section{Differenza negli utilizzi al variare delle temperature a dipendere della presenza di scioperi}
+\section{Delta utilizzi al variare delle temperature a dipendere della presenza di scioperi}
 \begin{figure}[H]                                                                                                                                                            
 \centering                                                                                                                                                                   
 \includegraphics[width=\textwidth]{images/query4}                                                                                                                                   
@@ -84,4 +84,60 @@ FROM (
       ) AS t2
         ON t1.temperature_level = t2.temperature_level
 ORDER BY t1.temperature_level ASC
+\fi
+
+
+\section{Numero di utilizzi durante uno sciopero nelle ore di punta}
+\begin{figure}[H]                                                                                                                                                            
+\centering                                                                                                                                                                   
+\includegraphics[width=\textwidth]{images/query5}                                                                                                                                   
+\label{fig:query5}                                                                                                                                                           
+\end{figure}
+\iffalse
+SELECT SUM(v.uses) AS total_uses, 
+       d.hour,
+       d.minute,
+       CASE 
+       		WHEN (d.hour >= 7 AND d.hour <= 9)   
+           	  OR (d.hour >= 18 AND d.hour <= 19) THEN "true"
+       		ELSE 								      "false"
+       END AS rush_hour
+FROM vehicle_use AS v JOIN date AS d ON v.date = d.id
+WHERE strike IS NOT NULL
+GROUP BY d.hour, d.minute
+\fi
+
+
+\section{Numero di utilizzi durante diverse fasce orarie}
+\begin{figure}[H]                                                                                                                                                            
+\centering                                                                                                                                                                   
+\includegraphics[width=\textwidth]{images/query6}                                                                                                                                   
+\label{fig:query6}                                                                                                                                                           
+\end{figure}
+\iffalse
+SELECT SUM(v.uses) AS total_uses,
+	   AVG(v.uses) AS average_uses,
+       d.hour,
+       d.minute,
+       CASE 
+       		WHEN (d.hour >= 7 AND d.hour <= 9)   
+           	  OR (d.hour >= 18 AND d.hour <= 19) THEN "true"
+       		ELSE 								      "false"
+       END AS rush_hour,
+       CASE 
+       		WHEN (d.hour >= 9 AND d.hour <= 18)  THEN "true"
+       		ELSE 								      "false"
+       END AS working_hour,
+       CASE 
+       		WHEN (d.hour >= 12 AND d.hour <= 14)  THEN "true"
+       		ELSE 								      "false"
+       END AS school_exit_time,
+       CASE 
+       		WHEN (d.hour >= 16 AND d.hour <= 17)  THEN "true"
+       		ELSE 								      "false"
+       END AS school_exit_time2
+FROM vehicle_use AS v JOIN dates AS d ON v.date = d.id
+WHERE strike IS NULL
+  AND d.weekday NOT IN ('saturday', 'sunday')
+GROUP BY d.hour, d.minute
 \fi
