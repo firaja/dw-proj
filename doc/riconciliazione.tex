@@ -192,11 +192,14 @@ ad essa relazionate. Tale attributo è poi parte della chiave primaria per le
 tabelle \textit{strikes} e \textit{weather\_hourly\_profilings}.
 
 Diversamente da quanto fatto in fase di progettazione dello schema logico della
-sorgente operazionale, considerata la necessità per la base date in oggetto
-di conservare i dati sulle profilazioni per un orizzonte temporale lungo che ricada
-nell'intervallo tra 5 e 10 anni dal loro inserimento, si è scelto di rappresentare 
-le entità \textit{Vehicle} e \textit{Vehicles\_hourly\_profilings} con due
-le relazioni eliminando la ridondanza dell'attributo \textit{type}. 
+sorgente operazionale, si è scelto di rappresentare le entità \textit{Vehicle}
+e \textit{Vehicles\_hourly\_profilings} con due le relazioni eliminando la
+ridondanza dell'attributo \textit{type}. 
+
+Si noti inoltre la presenza dell'attributo \textit{insert\_time} per la
+tabella \textit{cities}, verrà fatto riferomento allo stesso nelle due procedure
+di ETL; nello specifico esso sarà popolato durante la fase di popolamento
+dell'ODS e sarà letto nella fase di popolamento dei data mart.
 
 \begin{figure}[H]                                                                                                                                                            
 \centering                                                                                                                                                                   
