@@ -5,7 +5,13 @@ Tutte le richieste fatte ai datamart vengono, di conseguenza, effettuate attrave
 zioni ad un DBMS Mysql.
 
 \section{Visualizzazione utilizzi/distanze settimanali}
+Lo scopo di questa interrogazione è di poter avere una panoramica ad alto livello
+sugli utilizzi per ogni giorno della settimana; questo dato è utile ad 
+Helbiz in maniera da poter predisporre più o meno veicoli ai cittadini.
 
+Questo tipo di predizione permette di identificare ad altissimo livello
+in quali giorni possano essere fatte più manutenzioni (togliendo quindi i veicoli dalla strada)
+e in quali non ci si può permettere questo lusso.
 \begin{figure}[H]                                                                                                                                                            
 \centering                                                                                                                                                                   
 \includegraphics[width=\textwidth]{images/query1}                                                                                                                                   
@@ -26,6 +32,18 @@ ORDER BY FIELD(weekday ,'monday', 'tuesday', 'wednesday',
 
 
 \section{Utilizzo per livelli di pioggia mese per mese}
+La pioggia è uno dei maggiori deterrenti per impedire alle persone di
+utilizzare i veicoli come monopattini o biciclette.
+
+È quindi molto interessante capire a seconda della stagione quale
+sia il livello di "sopportazione della pioggia" dell'utenza; come prima,
+l'obiettivo è quello di capire in quali circostanze è possibile ritirare
+più veicoli dalle strade o se adirittura decidere di sospendere il servizio: in
+certe circostanze può essere un costo senza guadagno mantenere attivo l'apparato
+di Helbiz se l'utenza è nulla per lunghi periodi di tempo.
+Questo significa che grazie a questi dati, se in un determinato periodo futuro
+dell'anno si dovessero presentare N giorni di pioggia con un livello maggiore ad M,
+allora è conveniente sospendere il servizio.
 \begin{figure}[H]                                                                                                                                                            
 \centering                                                                                                                                                                   
 \includegraphics[width=\textwidth]{images/query2}                                                                                                                                   
@@ -44,6 +62,10 @@ ORDER BY w.rain_level DESC
 
 
 \section{Confronto degli utilizzi durante uno sciopero per fascia oraria}
+Forse uno dei dati più importanti non solo Helbiz ma anche per il comune e 
+i cittadini stessi; grazie a queste informazioni Helbiz può gestire durante 
+un periodo critico come quello di sciopero il numero di mezzi da mettere a disposizione,
+pianificando per ogni ora la strategia migliore per l'immissione di ulteriori veicoli.
 \begin{figure}[H]                                                                                                                                                            
 \centering                                                                                                                                                                   
 \includegraphics[width=\textwidth]{images/query3}                                                                                                                                   
@@ -58,6 +80,10 @@ GROUP BY d.hour
 
 
 \section{Delta utilizzi al variare delle temperature a dipendere della presenza di scioperi}
+Un altro deterrente per gli utenti è la temperatura; ma la presenza di scioperi potrebbe
+far crescere il numero della domanda in quanto un utente è più predisposto a utilizzare un 
+monopattino durante una giornata fredda se si trova senza possibilità di scelta.
+
 \begin{figure}[H]                                                                                                                                                            
 \centering                                                                                                                                                                   
 \includegraphics[width=\textwidth]{images/query4}                                                                                                                                   
@@ -88,6 +114,11 @@ ORDER BY t1.temperature_level ASC
 
 
 \section{Numero di utilizzi durante uno sciopero nelle ore di punta}
+Questa interrogazione analizza ancora più nel dettaglio la situazione durante
+uno sciopero e serve a capire quale sia l'effettiva domanda
+da parte dell'utenza nelle fasce orarie più critiche durante uno sciopero.
+Queste fasce sono quelle identificate come "orario di punta" e sono 
+determinate dall'alto traffico generato dai lavoratori durante il tragitto casa-lavoro e lavoro-casa.
 \begin{figure}[H]                                                                                                                                                            
 \centering                                                                                                                                                                   
 \includegraphics[width=\textwidth]{images/query5}                                                                                                                                   
@@ -109,6 +140,20 @@ GROUP BY d.hour, d.minute
 
 
 \section{Numero di utilizzi durante diverse fasce orarie}
+Questa interrogazione, molto simile alla precendente, invece analizza
+tutte le fasce orarie indipendentemente dal fatto che ci sia o meno uno sciopero.
+Le fasce orarie identificate sono
+\begin{itemize}
+	\item{\textbf{Orario di punta:} come spiegato nella sezione precendete, è l'orario di maggior traffico causato dai lavoratori}
+	\item{\textbf{Orario lavorativo}}
+	\item{\textbf{Uscita da scuola} è l'orario di uscita per la maggior parte degli studenti della scuola dell'obbligo}
+	\item{\textbf{Uscita da scuola 2} simile a quella precedente, ma riguarda la fascia pomeridiana}
+\end{itemize}
+
+Queste fasce non sono solo utili a capire il numero di veicoli da mettere a disposizione, ma indicano grossolanamente quale sia 
+la fascia d'età degli utilizzatori. Questa informazione diventa molto utile in fase promozionale del servizio (\emph{e.g.} se nella fascia d'orario
+uscita scuole non si nota abbastanza affluenza, si potrebbe pensare di creare una agevolazione in collaborazione con le scuole).
+
 \begin{figure}[H]                                                                                                                                                            
 \centering                                                                                                                                                                   
 \includegraphics[width=\textwidth]{images/query6}                                                                                                                                   
