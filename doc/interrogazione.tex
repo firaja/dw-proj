@@ -30,6 +30,30 @@ ORDER BY FIELD(weekday ,'monday', 'tuesday', 'wednesday',
 			   'thursday', 'friday', 'saturday', 'sunday')
 \fi
 
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|
+>{\columncolor[HTML]{FFFFFF}}c |c|c|c|c|}
+\hline
+\cellcolor[HTML]{3166FF}{\color[HTML]{FFFFFF} \textbf{Giorno}} & \cellcolor[HTML]{3166FF}{\color[HTML]{FFFFFF} \textbf{Totale Utilizzi}} & \cellcolor[HTML]{3166FF}{\color[HTML]{FFFFFF} \textbf{Totale Distanza (Km)}} & \cellcolor[HTML]{3166FF}{\color[HTML]{FFFFFF} \textbf{Media Utilizzi}} & \cellcolor[HTML]{3166FF}{\color[HTML]{FFFFFF} \textbf{Media Distanza (Km)}} \\ \hline
+{\color[HTML]{000000} Lunedì}                                  & \cellcolor[HTML]{FF9494}1410                                            & \cellcolor[HTML]{FF8686}907                                                  & \cellcolor[HTML]{FF5555}15                                             & \cellcolor[HTML]{FF6666}9                                                   \\ \hline
+{\color[HTML]{000000} Martedì}                                 & \cellcolor[HTML]{FF4040}1714                                            & \cellcolor[HTML]{FF0000}{\color[HTML]{FFFFFF} \textbf{1177}}                 & \cellcolor[HTML]{FF7F7F}14                                             & \cellcolor[HTML]{FF3333}10                                                  \\ \hline
+{\color[HTML]{000000} Mercoledì}                               & \cellcolor[HTML]{FFC8C8}1229                                            & \cellcolor[HTML]{FFB2B2}818                                                  & \cellcolor[HTML]{FFAAAA}13                                             & \cellcolor[HTML]{FF6666}9                                                   \\ \hline
+{\color[HTML]{000000} Giovedì}                                 & \cellcolor[HTML]{FFBABA}1279                                            & \cellcolor[HTML]{FFC9C9}771                                                  & \cellcolor[HTML]{FFEFEF}11                                             & \cellcolor[HTML]{FFEFEF}6                                                   \\ \hline
+{\color[HTML]{000000} Venerdì}                                 & \cellcolor[HTML]{FF0000}{\color[HTML]{FFFFFF} \textbf{1935}}            & \cellcolor[HTML]{FF5151}1013                                                 & \cellcolor[HTML]{FF2A2A}16                                             & \cellcolor[HTML]{FF9999}8                                                   \\ \hline
+{\color[HTML]{000000} Sabato}                                  & \cellcolor[HTML]{FFEFEF}1036                                            & \cellcolor[HTML]{FFEFEF}664                                                  & \cellcolor[HTML]{FF7F7F}14                                             & \cellcolor[HTML]{FF6666}9                                                   \\ \hline
+{\color[HTML]{000000} Domenica}                                & \cellcolor[HTML]{FF5B5B}1612                                            & \cellcolor[HTML]{FF3838}1060                                                 & \cellcolor[HTML]{FF0000}{\color[HTML]{FFFFFF} \textbf{17}}             & \cellcolor[HTML]{FF0000}{\color[HTML]{FFFFFF} \textbf{11}}                  \\ \hline
+\end{tabular}%
+}
+\end{table}
+
+\begin{figure}[H]                                                                                                                                                            
+\centering                                                                                                                                                                   
+\includegraphics[width=\textwidth]{images/result1}                                                                                                                                   
+\label{fig:result1}                                                                                                                                                           
+\end{figure}
+
 
 \section{Utilizzo per livelli di pioggia mese per mese}
 La pioggia è uno dei maggiori deterrenti per impedire alle persone di
@@ -186,3 +210,11 @@ WHERE strike IS NULL
   AND d.weekday NOT IN ('saturday', 'sunday')
 GROUP BY d.hour, d.minute
 \fi
+
+
+
+\begin{figure}[H]                                                                                                                                                            
+\centering                                                                                                                                                                   
+\includegraphics[width=\textwidth]{images/result6}                                                                                                                                   
+\label{fig:result6}                                                                                                                                                           
+\end{figure}
