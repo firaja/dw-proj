@@ -14,7 +14,7 @@ public class StrikeLoader
 
     private final LocalDatabaseManager lDbManager = LocalDatabaseManager.getInstance();
 
-    private static final String INSERT_STRIKE = "INSERT INTO strikes (`start_time`, `end_time`, `name`, `city`) VALUES ('%s', '%s', '%s', '%s')";
+    private static final String INSERT_STRIKE = "INSERT INTO strikes (`start_time`, `end_time`, `name`, `city`, `area_of_interest`) VALUES ('%s', '%s', '%s', '%s', '%s')";
 
     public void init(List<ParsedStrike> strikeList)
     {
@@ -23,7 +23,7 @@ public class StrikeLoader
             LOG.debug("Writing old strike {}", strike);
             try
             {
-                lDbManager.update(String.format(INSERT_STRIKE, strike.getBegin(), strike.getEnd(), strike.getName(), strike.getCity()));
+                lDbManager.update(String.format(INSERT_STRIKE, strike.getBegin(), strike.getEnd(), strike.getName(), strike.getCity(), strike.getSector()));
             }
             catch (Exception e)
             {

@@ -103,7 +103,9 @@ public class StrikeExtractor extends AbstractJSONExtractor
 
     private boolean filter(RawStrike strike)
     {
-        return StringUtils.equalsAnyIgnoreCase(strike.getNome_provincia(), "torino")
+        return (StringUtils.equalsAnyIgnoreCase(strike.getNome_provincia(), "torino") ||
+                StringUtils.equalsAnyIgnoreCase(strike.getNome_provincia(), "tutte")) &&
+                StringUtils.equalsAnyIgnoreCase(strike.getNome_regione(), "piemonte")
                 && StringUtils.containsIgnoreCase(strike.getSettore(), "trasporto pubblico");
     }
 

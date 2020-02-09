@@ -24,6 +24,7 @@ public class StrikeTransformer
         parsedStrike.setEnd(toDate(strike.getDataFine(), "yyyy-MM-dd'T'HH:mm:ss"));
         parsedStrike.setCity(getCity(strike.getNome_provincia()));
         parsedStrike.setName(strike.getCategoria());
+        parsedStrike.setSector(strike.getSettore());
         return parsedStrike;
     }
 
