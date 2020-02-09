@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`date` (
   `month` INT NOT NULL,
   `year` INT NOT NULL,
   `hour` INT NOT NULL,
+  `weekday` VARCHAR(20),
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
@@ -44,12 +45,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`weather` (
   `rain_level` INT NOT NULL,
   `city` INT NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_weather_idx` (`city` ASC)
-  CONSTRAINT `fk_weather`
-    FOREIGN KEY (`city`)
-    REFERENCES `mydb`.`city` (`name`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+  INDEX `fk_weather_idx` (`city` ASC))
 ENGINE = InnoDB;
 
 
@@ -59,7 +55,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `mydb`.`strike` ;
 
 CREATE TABLE IF NOT EXISTS `mydb`.`strike` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(256) NOT NULL,
   `start_time` DATETIME NOT NULL,
   `end_time` DATETIME NOT NULL,
@@ -67,22 +63,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`strike` (
   PRIMARY KEY (`id`),
   INDEX `fk_strike_1_idx` (`start_time` ASC),
   INDEX `fk_strike_2_idx` (`end_time` ASC),
-  INDEX `fk_strike_3_idx` (`city` ASC),
-  CONSTRAINT `fk_strike_1`
-    FOREIGN KEY (`start_time`)
-    REFERENCES `mydb`.`date` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_strike_2`
-    FOREIGN KEY (`end_time`)
-    REFERENCES `mydb`.`date` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_strike_3`
-    FOREIGN KEY (`city`)
-    REFERENCES `mydb`.`city` (`name`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+  INDEX `fk_strike_3_idx` (`city` ASC))
 ENGINE = InnoDB;
 
 
@@ -105,32 +86,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`vehicle_use` (
   INDEX `fk_vehicle_use_2_idx` (`end_time` ASC),
   INDEX `fk_vehicle_use_3_idx` (`city` ASC),
   INDEX `fk_vehicle_use_4_idx` (`weather` ASC),
-  INDEX `fk_vehicle_use_5_idx` (`strike` ASC),
-  CONSTRAINT `fk_vehicle_use_1`
-    FOREIGN KEY (`start_time`)
-    REFERENCES `mydb`.`date` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_vehicle_use_2`
-    FOREIGN KEY (`end_time`)
-    REFERENCES `mydb`.`date` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_vehicle_use_3`
-    FOREIGN KEY (`city`)
-    REFERENCES `mydb`.`city` (`name`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_vehicle_use_4`
-    FOREIGN KEY (`weather`)
-    REFERENCES `mydb`.`weather` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_vehicle_use_5`
-    FOREIGN KEY (`strike`)
-    REFERENCES `mydb`.`strike` (`name`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+  INDEX `fk_vehicle_use_5_idx` (`strike` ASC))
 ENGINE = InnoDB;
 
 

@@ -42,15 +42,6 @@ public class HelbizExtractorTimerTask extends TimerTask
 
         List<HelbizVehicle> vehicleLst = extractor.getVehicles(getRegion());
         extractor.loadVehicles(vehicleLst);
-        /*HelbizLoader loader = new HelbizLoader();
-        HelbizTransformer transformer = new HelbizTransformer();
-        List<Date> dates = loader.getLastQueryTimes(region);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-        LOG.info("First date retrieved: " + sdf.format(dates.get(0)));
-        LOG.info("Second date retrieved: " + sdf.format(dates.get(1)));
-        LOG.info("Size of vehicles table: " + loader.getTableSize("vehicles"));
-        transformer.getDiffBetweenProfilings(region, dates);*/
     }
 
     public void setExtractor(HelbizScootersLocationsExtractor extractor)

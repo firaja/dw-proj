@@ -34,8 +34,11 @@ public class HelbizTransformer
             "AND v2.query_time = '%s' AND v1.city = '%s'";
     private static final String QUERY_INSERT_VEHICLES_PROFILINGS = "INSERT INTO vehicles_profilings VALUES ";
     private static final String QUERY_SELECT_NEW_VEHICLES =
-            "SELECT id FROM vehicles WHERE city = '%s' AND query_time = '%s' AND id NOT IN (" +
+            "SELECT id, latitude, longitude FROM vehicles WHERE city = '%s' AND query_time = '%s' AND id NOT IN (" +
             "SELECT id FROM vehicles WHERE city = '%s' AND query_time = '%s')";
+    private static final String QUERY_SELECT_PREVIOUS_PROFILING =
+            "SELECT id, city, latitude, longitude, query_time FROM vehicles WHERE id = '%s' AND city = '%s' " +
+                    "AND query_time < '%s' GROUP BY id, city ORDER BY query_time LIMIT 1;";
     private static final String QUERY_SELECT_CITY_PROFILINGS =
             "SELECT vehicle_id, start_profiling_time, end_profiling_time, position_changed, new, travelled_distance " +
             "FROM vehicles_profilings WHERE city_id = '%s' ORDER BY vehicle_id, start_profiling_time;";
@@ -160,14 +163,18 @@ public class HelbizTransformer
         String query = String.format(QUERY_SELECT_NEW_VEHICLES, region.getName(), sdf.format(lastTimes.get(0)),
                 region.getName(), sdf.format(lastTimes.get(1)));
 
-        List<String> vLst = new ArrayList<>();
+        List<Map<String,Object>> vLst = new ArrayList<>();
 
         Map.Entry<Statement,ResultSet> pair = lDbManager.query(query);
         try(Statement statement = pair.getKey(); ResultSet resultSet = pair.getValue())
         {
             while (resultSet.next())
             {
-                vLst.add(resultSet.getString("id"));
+                Map<String,Object> map = new HashMap<>();
+                map.put("id", resultSet.getString("id"));
+                map.put("latitude", resultSet.getDouble("latitude"));
+                map.put("longitude", resultSet.getDouble("longitude"));
+                vLst.add(map);
             }
         }
         catch(SQLException e)
@@ -193,8 +200,22 @@ public class HelbizTransformer
                 str.append(", ");
             }
 
-            str.append(String.format("('%s', '%s', '%s', '%s', 0, 1, 0)", v, region.getName(), lastTimes.get(1),
-                    lastTimes.get(0)));
+            Map<String,Object> resultMap = calculateDistanceForNewVehicle((String) v.get("id"), region.getName(),
+                    (Double) v.get("latitude"), (Double) v.get("longitude"), lastTimes.get(0));
+
+            Date startDate = (Date) resultMap.get("query_time");
+            double distance = ((Double) resultMap.get("distance")).doubleValue();
+
+            if (distance > 100 && distance <= 3000)
+            {
+                str.append(String.format("('%s', '%s', '%s', '%s', 1, 0, %d)", v.get("id"), region.getName(),
+                        sdf.format(startDate), sdf.format(lastTimes.get(0)), distance));
+            }
+            else
+            {
+                str.append(String.format("('%s', '%s', '%s', '%s', 0, 1, 0)", v.get("id"), region.getName(),
+                        sdf.format(lastTimes.get(1)), sdf.format(lastTimes.get(0))));
+            }
         });
 
         query = QUERY_INSERT_VEHICLES_PROFILINGS + str.toString() + ";";
@@ -212,6 +233,56 @@ public class HelbizTransformer
                 LOG.debug("Dump of query executed: " + query);
             }
         }
+    }
+
+    public Map<String,Object> calculateDistanceForNewVehicle(String vehicleId, String city, Double lat2, Double lon2,
+                                                 Date lastProfilingTime)
+    {
+        String query = String.format(QUERY_SELECT_PREVIOUS_PROFILING, vehicleId, city,
+                sdf.format(lastProfilingTime));
+        Map.Entry<Statement,ResultSet> pair = lDbManager.query(query);
+
+        Map<String,Object> result = new HashMap<>();
+        result.put("distance", new Double(0.0));
+        result.put("query_time", null);
+
+        Double lat1 = null, lon1 = null;
+        Date prevProfilingTime = null;
+        try (Statement statement = pair.getKey(); ResultSet resultSet = pair.getValue())
+        {
+            if (resultSet.next())
+            {
+                lat1 = resultSet.getDouble("latitude");
+                lon1 = resultSet.getDouble("longitude");
+                prevProfilingTime = resultSet.getTimestamp("query_time");
+            }
+        }
+        catch (SQLException e)
+        {
+            LOG.error("An error occurred during execution of method calculateDistanceForNewVehicle");
+            LOG.error("The following exception has been thrown: ", e);
+            if (LOG.isDebugEnabled())
+            {
+                LOG.debug("Dump of query executed: " + query);
+            }
+        }
+
+        if (prevProfilingTime != null)
+        {
+            LocalDateTime ldt1 = LocalDateTime.ofInstant(lastProfilingTime.toInstant(), ZoneId.systemDefault());
+            LocalDateTime ldt2 = LocalDateTime.ofInstant(prevProfilingTime.toInstant(), ZoneId.systemDefault());
+
+            Duration duration = Duration.between(ldt1, ldt2);
+
+            if (duration.toMinutes() > 5 && duration.toMinutes() < 25)
+            {
+                result = new HashMap<>();
+                result.put("query_time", prevProfilingTime);
+                result.put("distance", CalculationUtils.calculateDistance(lat1, lon1, lat2, lat2));
+            }
+        }
+
+        return result;
     }
 
     public void processListOfProfilings(HelbizRegion region, List<Date> profilings)
@@ -313,7 +384,7 @@ public class HelbizTransformer
             }
 
             if (p.isPositionChanged() && p.getTravelledDistance() > 100 &&
-                    p.getTravelledDistance() <= 4000)
+                    p.getTravelledDistance() <= 3000)
             {
                 // travelledDistance different by 0 and less than 4 KM far from previous position
                 iIMap.get("uses").value++;
@@ -342,7 +413,7 @@ public class HelbizTransformer
 
                 LocalDateTime dtPlus1 = LocalDateTime.parse(dt, dtf).plusHours(1L);
 
-                str.append(String.format("('%s', '%s', '%s', '%s', %d, %d)", vId, region.getName(),
+                str.append(String.format("('%s', '%s', '%s', '%s', %d, %d, 'SCOOTER')", vId, region.getName(),
                         dt, dtPlus1.format(dtf), uses, tDist));
             });
         });

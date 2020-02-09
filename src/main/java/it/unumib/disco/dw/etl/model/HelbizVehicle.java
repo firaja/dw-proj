@@ -11,6 +11,7 @@ public class HelbizVehicle
     private int range;
     private double power;
     private String geofence;
+    private String vehicleType;
 
     public HelbizVehicle(String id, double lat, double lon, int batteryLevelInMiles, int range, double power, String geofence)
     {
@@ -21,6 +22,18 @@ public class HelbizVehicle
         this.range = range;
         this.power = power;
         this.geofence = geofence;
+    }
+
+    public HelbizVehicle(String id, double lat, double lon, int batteryLevelInMiles, int range, double power, String geofence, String vehicleType)
+    {
+        this.id = id;
+        this.lat = lat;
+        this.lon = lon;
+        this.batteryLevelInMiles = batteryLevelInMiles;
+        this.range = range;
+        this.power = power;
+        this.geofence = geofence;
+        this.vehicleType = vehicleType;
     }
 
     public HelbizVehicle()
@@ -84,10 +97,18 @@ public class HelbizVehicle
         this.geofence = geofence;
     }
 
+    public String getVehicleType() {
+        return vehicleType;
+    }
+
+    public void setVehicleType(String vehicleType) {
+        this.vehicleType = vehicleType;
+    }
+
     public String toString()
     {
         return String.format(Locale.US,
-                "[id: %s, lat: %f, lon: %f, batteryLevelInMiles: %d, range: %d, power: %f, geofence: %s]",
-                id, lat, lon, batteryLevelInMiles, range, power, geofence);
+                "[id: %s, lat: %f, lon: %f, batteryLevelInMiles: %d, range: %d, power: %f, geofence: %s, vehicleType: %s]",
+                id, lat, lon, batteryLevelInMiles, range, power, geofence, vehicleType);
     }
 }

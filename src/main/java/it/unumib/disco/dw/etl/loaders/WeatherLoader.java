@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class WeatherLoader
@@ -44,7 +45,7 @@ public class WeatherLoader
                 LOG.error("", e);
             }
             LOG.debug("Writing new detection {}", detection);
-            lDbManager.update(String.format(INSERT_DETECTION, detection.getId(), detection.getCity(), detection.getDetectionTime(), detection.getRain(), detection.getRelativeHumidity(), detection.getWind(), detection.getTemperature()));
+            lDbManager.update(String.format(Locale.US, INSERT_DETECTION, detection.getId(), detection.getCity(), detection.getDetectionTime(), detection.getRain(), detection.getRelativeHumidity(), detection.getWind(), detection.getTemperature()));
 
         }
 
@@ -60,7 +61,7 @@ public class WeatherLoader
             LOG.debug("Writing old detection {}", detection);
             try
             {
-                lDbManager.update(String.format(INSERT_DETECTION, detection.getId(), detection.getCity(), detection.getDetectionTime(), detection.getRain(), detection.getRelativeHumidity(), detection.getWind(), detection.getTemperature()));
+                lDbManager.update(String.format(Locale.US, INSERT_DETECTION, detection.getId(), detection.getCity(), detection.getDetectionTime(), detection.getRain(), detection.getRelativeHumidity(), detection.getWind(), detection.getTemperature()));
             }
             catch (Exception e)
             {

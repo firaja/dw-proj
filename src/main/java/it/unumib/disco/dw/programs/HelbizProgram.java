@@ -27,13 +27,13 @@ public class HelbizProgram
     public static void main(String [] args)
     {
         HelbizScootersLocationsExtractor extractor = new HelbizScootersLocationsExtractor();
+        ConfigLoader config = new ConfigLoader();
+        extractor.performLogin(config.getProperty("helbiz.credentials.email"),
+                config.getProperty("helbiz.credentials.password"));
 
         if (args.length == 0)
         {
             LOG.info("No option selected. List of available regions will be shown.");
-            ConfigLoader config = new ConfigLoader();
-            extractor.performLogin(config.getProperty("helbiz.credentials.email"),
-                    config.getProperty("helbiz.credentials.password"));
 
             List<HelbizRegion> regionList = extractor.getRegions();
             extractor.showListOfRegions(regionList);
@@ -66,9 +66,6 @@ public class HelbizProgram
             String regionName = args[1];
             long interval = Long.parseLong(args[2]);
 
-            ConfigLoader config = new ConfigLoader();
-            extractor.performLogin(config.getProperty("helbiz.credentials.email"),
-                    config.getProperty("helbiz.credentials.password"));
             HelbizExtractorTimerTask task = new HelbizExtractorTimerTask(extractor, regionName);
             HelbizCrawlerDatabaseStatusTimerTask dbTask = new HelbizCrawlerDatabaseStatusTimerTask();
 

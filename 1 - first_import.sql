@@ -6,9 +6,9 @@ VALUES ('Torino'),
        ('Roma');
 
 INSERT INTO city_translation (name, translation)
-VALUES('Roma', 'Rome'),
-       ('Milano', 'Milan'),
-       ('Torino', 'Turin');
+VALUES('rome', 'Roma'),
+       ('milan1', 'Milano'),
+       ('torino', 'Torino');
 
 
 INSERT INTO precipitations (minimum_rain, maximum_rain, level, name)
