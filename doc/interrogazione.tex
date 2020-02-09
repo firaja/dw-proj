@@ -38,15 +38,20 @@ ORDER BY FIELD(weekday ,'monday', 'tuesday', 'wednesday',
 \hline
 \cellcolor[HTML]{3166FF}{\color[HTML]{FFFFFF} \textbf{Giorno}} & \cellcolor[HTML]{3166FF}{\color[HTML]{FFFFFF} \textbf{Totale Utilizzi}} & \cellcolor[HTML]{3166FF}{\color[HTML]{FFFFFF} \textbf{Totale Distanza (Km)}} & \cellcolor[HTML]{3166FF}{\color[HTML]{FFFFFF} \textbf{Media Utilizzi}} & \cellcolor[HTML]{3166FF}{\color[HTML]{FFFFFF} \textbf{Media Distanza (Km)}} \\ \hline
 {\color[HTML]{000000} Lunedì}                                  & \cellcolor[HTML]{FF9494}1410                                            & \cellcolor[HTML]{FF8686}907                                                  & \cellcolor[HTML]{FF5555}15                                             & \cellcolor[HTML]{FF6666}9                                                   \\ \hline
-{\color[HTML]{000000} Martedì}                                 & \cellcolor[HTML]{FF4040}1714                                            & \cellcolor[HTML]{FF0000}{\color[HTML]{FFFFFF} \textbf{1177}}                 & \cellcolor[HTML]{FF7F7F}14                                             & \cellcolor[HTML]{FF3333}10                                                  \\ \hline
+{\color[HTML]{000000} Martedì}                                 & \cellcolor[HTML]{FF4040}1714                                            & \cellcolor[HTML]{FF5151}1013                 & \cellcolor[HTML]{FF7F7F}14                                             & \cellcolor[HTML]{FF3333}10                                                  \\ \hline
 {\color[HTML]{000000} Mercoledì}                               & \cellcolor[HTML]{FFC8C8}1229                                            & \cellcolor[HTML]{FFB2B2}818                                                  & \cellcolor[HTML]{FFAAAA}13                                             & \cellcolor[HTML]{FF6666}9                                                   \\ \hline
 {\color[HTML]{000000} Giovedì}                                 & \cellcolor[HTML]{FFBABA}1279                                            & \cellcolor[HTML]{FFC9C9}771                                                  & \cellcolor[HTML]{FFEFEF}11                                             & \cellcolor[HTML]{FFEFEF}6                                                   \\ \hline
-{\color[HTML]{000000} Venerdì}                                 & \cellcolor[HTML]{FF0000}{\color[HTML]{FFFFFF} \textbf{1935}}            & \cellcolor[HTML]{FF5151}1013                                                 & \cellcolor[HTML]{FF2A2A}16                                             & \cellcolor[HTML]{FF9999}8                                                   \\ \hline
+{\color[HTML]{000000} Venerdì}                                 & \cellcolor[HTML]{FF0000}{\color[HTML]{FFFFFF} \textbf{1935}}            & \cellcolor[HTML]{FF0000}{\color[HTML]{FFFFFF} \textbf{1177}}                                                 & \cellcolor[HTML]{FF2A2A}16                                             & \cellcolor[HTML]{FF9999}8                                                   \\ \hline
 {\color[HTML]{000000} Sabato}                                  & \cellcolor[HTML]{FFEFEF}1036                                            & \cellcolor[HTML]{FFEFEF}664                                                  & \cellcolor[HTML]{FF7F7F}14                                             & \cellcolor[HTML]{FF6666}9                                                   \\ \hline
 {\color[HTML]{000000} Domenica}                                & \cellcolor[HTML]{FF5B5B}1612                                            & \cellcolor[HTML]{FF3838}1060                                                 & \cellcolor[HTML]{FF0000}{\color[HTML]{FFFFFF} \textbf{17}}             & \cellcolor[HTML]{FF0000}{\color[HTML]{FFFFFF} \textbf{11}}                  \\ \hline
 \end{tabular}%
 }
 \end{table}
+
+Si può notare come la domenica ci siano utilizzi più frequenti ma con bassa percorrenza: questo dato potrebbe essere collegato al turismo che di solito è più frequente durante il weekend.
+
+Nelle giornate lavorative si ha un graduale discesa dell'utilizzo per poi avere un picco di venerdì: è normale avere spostamenti di questo genere in quanto il venerdì dichiara la fine
+della settimana lavorativa e vi è più voglia da parte della gente di frequentare i locali della città .
 
 \begin{figure}[H]                                                                                                                                                            
 \centering                                                                                                                                                                   
@@ -88,7 +93,7 @@ ORDER BY w.rain_level DESC
 
 
 
-\section{Confronto degli utilizzi durante uno sciopero per fascia oraria}
+\section{Confronto degli utilizzi durante uno sciopero per fascia oraria per tipo di veicolo}
 Forse uno dei dati più importanti non solo Helbiz ma anche per il comune e 
 i cittadini stessi; grazie a queste informazioni Helbiz può gestire durante 
 un periodo critico come quello di sciopero il numero di mezzi da mettere a disposizione,
@@ -99,12 +104,14 @@ pianificando per ogni ora la strategia migliore per l'immissione di ulteriori ve
 \label{fig:query3}                                                                                                                                                           
 \end{figure}
 \iffalse
-SELECT SUM(v.uses) AS total_use, d.hour
+SELECT SUM(v.uses) AS total_use, d.hour, v.type
 FROM vehicle_use AS v JOIN strike AS s ON s.id = v.strike
 				 JOIN dates AS d ON v.start_date = d.id
-GROUP BY d.hour
+GROUP BY d.hour, v.type
 \fi
 
+Purtroppo ad oggi per la città di Torino non sono presenti dati relativi alle
+biciclette ma esclusivamente ai monopattini.
 
 \begin{figure}[H]                                                                                                                                                            
 \centering                                                                                                                                                                   
@@ -168,7 +175,6 @@ determinate dall'alto traffico generato dai lavoratori durante il tragitto casa-
 \iffalse
 SELECT SUM(v.uses) AS total_uses, 
        d.hour,
-       d.minute,
        CASE 
        		WHEN (d.hour >= 7 AND d.hour <= 9)   
            	  OR (d.hour >= 18 AND d.hour <= 19) THEN "true"
@@ -176,15 +182,16 @@ SELECT SUM(v.uses) AS total_uses,
        END AS rush_hour
 FROM vehicle_use AS v JOIN date AS d ON v.start_time = d.id
 WHERE strike IS NOT NULL
-GROUP BY d.hour, d.minute
+GROUP BY d.hour
 \fi
 
-
+Si nota subito che il 41\% degli utilizzi del giorno viene fatto solo in queste 5 ore.
 \begin{figure}[H]                                                                                                                                                            
 \centering                                                                                                                                                                   
 \includegraphics[width=\textwidth]{images/result5}                                                                                                                                   
 \label{fig:result5}                                                                                                                                                           
 \end{figure}
+Risulta quindi vitale per Helbiz riuscire a gestire i due periodi che vanno dalle 7 alle 9  e dalle 18 alle 19.
 
 
 \section{Numero di utilizzi durante diverse fasce orarie}
