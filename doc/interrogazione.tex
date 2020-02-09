@@ -22,9 +22,9 @@ e in quali non ci si può permettere questo lusso.
 SELECT SUM(v.uses)                AS total_uses, 
 	   SUM(v.travelled_distance)  AS total_distance, 
        AVG(v.uses)                AS average_uses,
-       AVG(v.travelled_distance)  AS total_distance,
+       AVG(v.travelled_distance)  AS average_distance,
        d.weekday
-FROM vehicle_use.uses AS v JOIN dates AS d ON v.start_date = d.id
+FROM vehicle_use AS v JOIN date AS d ON v.start_time = d.id
 GROUP BY d.weekday
 ORDER BY FIELD(weekday ,'monday', 'tuesday', 'wednesday',
 			   'thursday', 'friday', 'saturday', 'sunday')
@@ -54,8 +54,8 @@ SELECT SUM(v.uses)                AS total_uses,
 	   SUM(v.travelled_distance)  AS total_distance,
        w.rain_level,
        d.month
-FROM vehicle_use.uses AS v JOIN weather as w ON v.weather = w.id
-                           JOIN dates AS d ON v.start_date = d.id
+FROM vehicle_use AS v JOIN weather as w ON v.weather = w.id
+					  JOIN date AS d ON v.start_time = d.id
 GROUP BY w.rain_level, d.month
 ORDER BY w.rain_level DESC
 \fi
@@ -133,7 +133,7 @@ SELECT SUM(v.uses) AS total_uses,
            	  OR (d.hour >= 18 AND d.hour <= 19) THEN "true"
        		ELSE 								      "false"
        END AS rush_hour
-FROM vehicle_use AS v JOIN date AS d ON v.date = d.id
+FROM vehicle_use AS v JOIN date AS d ON v.start_time = d.id
 WHERE strike IS NOT NULL
 GROUP BY d.hour, d.minute
 \fi
@@ -181,7 +181,7 @@ SELECT SUM(v.uses) AS total_uses,
        		WHEN (d.hour >= 16 AND d.hour <= 17)  THEN "true"
        		ELSE 								      "false"
        END AS school_exit_time2
-FROM vehicle_use AS v JOIN dates AS d ON v.date = d.id
+FROM vehicle_use AS v JOIN date AS d ON v.start_time = d.id
 WHERE strike IS NULL
   AND d.weekday NOT IN ('saturday', 'sunday')
 GROUP BY d.hour, d.minute

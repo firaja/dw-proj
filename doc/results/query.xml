@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:x="urn:schemas-microsoft-com:office:excel"
+xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+xmlns:html="http://www.w3.org/TR/REC-html40">
+<Worksheet ss:Name="Table1">
+	<Table>
+		<Column ss:Index="5" ss:AutoFitWidth="0" ss:Width="110"/>
+		<Row>
+			<Cell><Data ss:Type="String">total_uses</Data></Cell>
+			<Cell><Data ss:Type="String">total_distance</Data></Cell>
+			<Cell><Data ss:Type="String">average_uses</Data></Cell>
+			<Cell><Data ss:Type="String">average_distance</Data></Cell>
+			<Cell><Data ss:Type="String">weekday</Data></Cell>
+		</Row>
+
+		<Row>
+			<Cell><Data ss:Type="Number">1410</Data></Cell>
+			<Cell><Data ss:Type="Number">907009</Data></Cell>
+			<Cell><Data ss:Type="Number">14.6875</Data></Cell>
+			<Cell><Data ss:Type="Number">9448.0104</Data></Cell>
+			<Cell><Data ss:Type="String">monday</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="Number">1714</Data></Cell>
+			<Cell><Data ss:Type="Number">1177905</Data></Cell>
+			<Cell><Data ss:Type="Number">14.2833</Data></Cell>
+			<Cell><Data ss:Type="Number">9815.8750</Data></Cell>
+			<Cell><Data ss:Type="String">tuesday</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="Number">1229</Data></Cell>
+			<Cell><Data ss:Type="Number">818112</Data></Cell>
+			<Cell><Data ss:Type="Number">12.8021</Data></Cell>
+			<Cell><Data ss:Type="Number">8522.0000</Data></Cell>
+			<Cell><Data ss:Type="String">wednesday</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="Number">1279</Data></Cell>
+			<Cell><Data ss:Type="Number">771456</Data></Cell>
+			<Cell><Data ss:Type="Number">10.6583</Data></Cell>
+			<Cell><Data ss:Type="Number">6428.8000</Data></Cell>
+			<Cell><Data ss:Type="String">thursday</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="Number">1935</Data></Cell>
+			<Cell><Data ss:Type="Number">1013767</Data></Cell>
+			<Cell><Data ss:Type="Number">15.9917</Data></Cell>
+			<Cell><Data ss:Type="Number">8378.2397</Data></Cell>
+			<Cell><Data ss:Type="String">friday</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="Number">1036</Data></Cell>
+			<Cell><Data ss:Type="Number">664058</Data></Cell>
+			<Cell><Data ss:Type="Number">14.3889</Data></Cell>
+			<Cell><Data ss:Type="Number">9223.0278</Data></Cell>
+			<Cell><Data ss:Type="String">saturday</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="Number">1612</Data></Cell>
+			<Cell><Data ss:Type="Number">1060569</Data></Cell>
+			<Cell><Data ss:Type="Number">16.7917</Data></Cell>
+			<Cell><Data ss:Type="Number">11047.5938</Data></Cell>
+			<Cell><Data ss:Type="String">sunday</Data></Cell>
+		</Row>	</Table>
+</Worksheet>
+</Workbook>
