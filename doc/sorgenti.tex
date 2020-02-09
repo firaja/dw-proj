@@ -305,7 +305,7 @@ database.
 
 Per quanto riguarda gli scioperi, è stato utilizzato un dataset rilasciato come Open Data
 dal Ministero dei Trasporti della Repubblica Italiana, il quale contiene dati storici
-relativi agli scioperi avvenuti o previsti a partire dal 1° Gennaio 2014.
+relativi agli scioperi avvenuti o previsti a partire dal 1$^\circ$ Gennaio 2014.
 
 I dati sono messi a disposizione tramite un file CSV che, aggiornato su base giornaliera,
 contiene tutti i dati sugli scioperi fino alla data corrente. Vi è inoltre un solo 
@@ -317,21 +317,22 @@ JSON di quanto contenuto nel file CSV.
 \subsection{API Storico Scioperi}
 
 \textbf{Method:} \texttt{GET} \\
-\textbf{Url:} \texttt{http://dati.mit.gov.it/catalog/api/action/datastore\_search?resource\_id=6838feb1-1f3d-40dc-845f-d304088a92cd} \\
+\textbf{Url:} \texttt{http://dati.mit.gov.it/catalog/api/action/\\datastore\_search?resource\_id=6838feb1-1f3d-40dc-845f-d304088a92cd} \\
 
 \noindent\textbf{Descrizione:} la richiesta ritorna la lista degli scioperi a fronte di
 un filtraggio opzionale sulla base dei parametri descritti nella seguente tabella.
 
-\begin{table}[h]
+\begin{table}[H]
 \centering
-\begin{tabular}{|l|l|l|}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|l|l|}
 \hline
 \rowcolor[HTML]{3166FF} 
-{\color[HTML]{FFFFFF} \textbf{Parametro}} & {\color[HTML]{FFFFFF} \textbf{Esempio}} & {\color[HTML]{FFFFFF} \textbf{Opzionale}} & {\color[HTML]{FFFFFF} \textbf{Descrizione}}                           \\ \hline
-q                                 & pubblico                      & Sì & Stringa utilizzata per ricerca testuale tra i dati \\ \hline
-limit                                 & 100                      & Sì &  Numero massimo di risultati in risposta \\ \hline
+{\color[HTML]{FFFFFF} \textbf{Parametro}} & {\color[HTML]{FFFFFF} \textbf{Esempio}} & {\color[HTML]{FFFFFF} \textbf{Opzionale}} & {\color[HTML]{FFFFFF} \textbf{Descrizione}}        \\ \hline
+q                                         & pubblico                                & Sì                                        & Stringa utilizzata per ricerca testuale tra i dati \\ \hline
+limit                                     & 100                                     & Sì                                        & Numero massimo di risultati in risposta            \\ \hline
 \end{tabular}%
-
+}
 \end{table}
 
 \begin{figure}[H]
