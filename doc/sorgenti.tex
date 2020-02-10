@@ -124,7 +124,7 @@ corrispondente al rettangolo avente per estremo superiore sinistro il punto spec
 parametro northWest e per estremo inferiore destro il punto specificato dal parametro southEast.
 Relativamente al singolo veicolo, le informazioni utilizzate ai fini del progetto sono:
 \begin{itemize}
-\item id: identificatore del veicolo in formato di stringa alfanumerica (esedecimale);
+\item id: identificatore del veicolo in formato di stringa alfanumerica (esadecimale);
 \item lat: latitudine, numero provvisto di parte decimale di lunghezza variabile 
 \item lon: longitudine, numero provvisto di parte decimale di lunghezza variabile
 \item batteryLevelInMiles: autonomia in miglia della batteria, numero decimale 
@@ -200,7 +200,7 @@ riconosciuta come associazione culturale con l'obiettivo di porsi come interlocu
 nei confronti delle istituzioni locali.
 
 Il progetto principale, oltre a quello della raccolta dei dati dai vari rilevatori in tutto il Piemonte, è
-l'esposizione dei dati sottoforma di servizio Open Data. Le singole rilevazioni non sono processate
+l'esposizione dei dati sotto forma di servizio Open Data. Le singole rilevazioni non sono processate
 in maniera tale da poter affermare che in una certa zona del Piemonte ci sia un rovescio o se ci sia
 un caldo torrido, ma sono composte dalle misurazioni effettive che un determinato sensore ha rilevato
 in una certa data.
@@ -293,7 +293,7 @@ avrebbe comportato la presenza di ridondanza nei dati memorizzati.
 
 Tenuto in considerazione che i dati storici sono su base giornaliera e non riportano la
 i dati relativi al vento, la scelta è ricaduta sull'utilizzo della API realtime per la
-profilazione oraria delle condizione metereologiche. La API storica è utilizzata qualora
+profilazione oraria delle condizione meteorologiche. La API storica è utilizzata qualora
 si riscontri un malfunzionamento di quella realtime.
 
 Similmente a quanto fatto per Helbiz, è stato scritto un applicativo Java allo scopo di
@@ -309,7 +309,7 @@ relativi agli scioperi avvenuti o previsti a partire dal 1$^\circ$ Gennaio 2014.
 
 I dati sono messi a disposizione tramite un file CSV che, aggiornato su base giornaliera,
 contiene tutti i dati sugli scioperi fino alla data corrente. Vi è inoltre un solo 
-endpoint REST, documentato di seguito, che permettone di ricevere una risposta in formato
+endpoint REST, documentato di seguito, che permettono di ricevere una risposta in formato
 JSON di quanto contenuto nel file CSV.
 
 \subsection{API REST}
@@ -380,7 +380,7 @@ ottenuti dalle rilevazioni delle precedenti due sorgenti, si è scelto di filtra
 tra i risultati restituiti dalla API, i soli scioperi risalenti ad almeno due
 giorni dalla data della richiesta e pertanto già avvenuti.
 
-Si segnala inoltre come gli attirbuti \textit{data\_inizio} e \textit{data\_fine} 
+Si segnala inoltre come gli attributi \textit{data\_inizio} e \textit{data\_fine} 
 riportino sempre lo stesso valore mentre l'intervallo di validità dello sciopero
 sia esplicitato in maniera eterogenea tra i risultati dall'attributo
 \textit{modalità}.
@@ -390,7 +390,7 @@ di:
 \begin{itemize}
 \item reperire al primo avvio tutti i dati relativi agli scioperi avvenuti
 nell'anno in corso fino a due giorni dalla data corrente e salvarli su di
-n'apposita base dati;
+un'apposita base dati;
 \item aggiornare giornalmente la base date con gli scioperi avvenuti nei
 precedenti due giorni.
 \end{itemize}

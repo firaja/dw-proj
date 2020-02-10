@@ -1,12 +1,12 @@
 \chapter{Interrogazione del data mart}
-In questa sezione vengono definite le interrogazioni sui datamart che sono state effettuate.
+In questa sezione vengono definite le interrogazioni sui data mart che sono state effettuate.
 
-Tutte le richieste fatte ai datamart vengono, di conseguenza, effettuate attraverso interrogazioni ad un DBMS Mysql.
+Tutte le richieste fatte ai data mart vengono, di conseguenza, effettuate attraverso interrogazioni ad un DBMS MySQL.
 
 \subsubsection{Note}
 Il modello concettuale e logico indicano la presenza della dimensione "tipo di veicolo", ma al momento della stesura
 di questo documento Helbiz ritorna informazioni solo per i veicoli di tipo monopattino.
-A questo proposito solo una delle interrogazioni presenti in questo documeto utilizzano tale dimensione, a titolo d'esempio.
+A questo proposito solo una delle interrogazioni presenti in questo documento utilizzano tale dimensione, a titolo d'esempio.
 
 
 
@@ -55,7 +55,7 @@ ORDER BY FIELD(weekday ,'monday', 'tuesday', 'wednesday',
 }
 \end{table}
 
-Si può notare come la domenica ci siano utilizzi più frequenti ma con bassa percorrenza: questo dato potrebbe essere collegato al turismo che di solito è più frequente durante il weekend.
+Si può notare come la domenica ci siano utilizzi più frequenti ma con bassa percorrenza: questo dato potrebbe essere collegato al turismo che di solito è più frequente durante il week end.
 
 Nelle giornate lavorative si ha un graduale discesa dell'utilizzo per poi avere un picco di venerdì: è normale avere spostamenti di questo genere in quanto il venerdì dichiara la fine
 della settimana lavorativa e vi è più voglia da parte della gente di frequentare i locali della città .
@@ -74,7 +74,7 @@ utilizzare i veicoli come monopattini o biciclette.
 È quindi molto interessante capire a seconda della stagione quale
 sia il livello di "sopportazione della pioggia" dell'utenza; come prima,
 l'obiettivo è quello di capire in quali circostanze è possibile ritirare
-più veicoli dalle strade o se adirittura decidere di sospendere il servizio: in
+più veicoli dalle strade o se addirittura decidere di sospendere il servizio: in
 certe circostanze può essere un costo senza guadagno mantenere attivo l'apparato
 di Helbiz se l'utenza è nulla per lunghi periodi di tempo.
 Questo significa che grazie a questi dati, se in un determinato periodo futuro
@@ -162,9 +162,9 @@ ORDER BY t1.temperature_level ASC
 \fi
 
 Come prevedibile, in entrambi i casi gli utilizzi calano non appena si presenta una minima precipitazione.
-Al livello massimo di precipitazioni abbiamo 0 utilizzi in entrambi i casi, poichè tale evento non si è mai verificato.
-Al livello precendente compare un utilizzo durante uno sciopero, ma si tratta di un unico caso in tutto il dataset; per questo motivo può essere
-un dato trascurabile fino a chè non ci saranno ulteriori evidenze.
+Al livello massimo di precipitazioni abbiamo 0 utilizzi in entrambi i casi, poiché tale evento non si è mai verificato.
+Al livello precedente compare un utilizzo durante uno sciopero, ma si tratta di un unico caso in tutto il dataset; per questo motivo può essere
+un dato trascurabile fino a che non ci saranno ulteriori evidenze.
 
 \begin{figure}[H]                                                                                                                                                            
 \centering                                                                                                                                                                   
@@ -210,11 +210,11 @@ Risulta quindi vitale per Helbiz riuscire a gestire i due periodi che vanno dall
 
 
 \section{Numero di utilizzi durante diverse fasce orarie}
-Questa interrogazione, molto simile alla precendente, invece analizza
+Questa interrogazione, molto simile alla precedente, invece analizza
 tutte le fasce orarie indipendentemente dal fatto che ci sia o meno uno sciopero.
 Le fasce orarie identificate sono
 \begin{itemize}
-	\item{\textbf{Orario di punta:} come spiegato nella sezione precendete, è l'orario di maggior traffico causato dai lavoratori}
+	\item{\textbf{Orario di punta:} come spiegato nella sezione precedente, è l'orario di maggior traffico causato dai lavoratori}
 	\item{\textbf{Orario lavorativo}}
 	\item{\textbf{Uscita da scuola} è l'orario di uscita per la maggior parte degli studenti della scuola dell'obbligo}
 	\item{\textbf{Uscita da scuola pomeridiana} simile a quella precedente, ma riguarda la fascia pomeridiana}

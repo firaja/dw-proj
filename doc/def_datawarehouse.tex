@@ -1,4 +1,4 @@
-\chapter{Definizione del Datawarehouse}
+\chapter{Definizione del Data Warehouse}
 
 L'obiettivo del data warehouse in oggetto è quello di fornire dati relativi
 all'utilizzo di veicoli elettrici noleggiati dalla compagnia Helbiz, nel corso
@@ -14,7 +14,7 @@ modalità \emph{scooter sharing}, in particolare quelli offerti dalla compagnia 
 Nella fattispecie verrà analizzato il contesto della regione Piemonte che, con Torino, ha avviato una importante
 partnership con Helbiz.
 
-Risulta quindi interessante capire quali siano gli utilizzi dei cittadini durante le diverse avversità metereologiche
+Risulta quindi interessante capire quali siano gli utilizzi dei cittadini durante le diverse avversità meteorologiche
 anche durante le manifestazioni di astensione dal lavoro, come ad esempio gli scioperi dei mezzi pubblici.
 
 
@@ -33,7 +33,7 @@ I dati raccolti servono principalmente ad Helbiz per diverse motivazioni:
 \end{itemize}
 
 Al fine di arrivare a questo risultato bisogna avviare una serie di interviste che produrranno una analisi sia funzionale che tecnica;
-da qui si potranno finalmente definire i requisiti  del Datawarehouse in oggetto.
+da qui si potranno finalmente definire i requisiti  del data warehouse in oggetto.
 
 \begin{table}[H]
 \centering
@@ -46,7 +46,7 @@ da qui si potranno finalmente definire i requisiti  del Datawarehouse in oggetto
                                                                                                  & Quali sono gli obiettivi del suo dipartimento?                                                                                                         \\ \cline{2-2} 
                                                                                                  & Come misura il successo del suo dipartimento?                                                                                                          \\ \cline{2-2} 
 \multirow{-4}{*}{Manager}                                                                        & Su quale intervallo temporale vuole condurre analisi?                                                                                                  \\ \hline
-Cittadino                                                                                        & \begin{tabular}[c]{@{}l@{}}Utilizerebbe un monopattino per spostarsi durante uno sciopero?\\ In quali casi non lo farebbe?\end{tabular} \\ \hline
+Cittadino                                                                                        & \begin{tabular}[c]{@{}l@{}}Utilizzerebbe un monopattino per spostarsi durante uno sciopero?\\ In quali casi non lo farebbe?\end{tabular} \\ \hline
                                                                                                  & Con quale frequenza vuole disporre delle informazioni?                                                                                                 \\ \cline{2-2} 
                                                                                                  & \begin{tabular}[c]{@{}l@{}}Quali aspetti fanno aumentare (o diminuire) drasticamente l'utilizzo dei veicoli da parte\\ dei cittadini?\end{tabular}     \\ \cline{2-2} 
 \multirow{-3}{*}{Direttore della Logistica}                                                      & Qual'è la media di percorrenza di un veicolo per ogni usufruente?                                                                                      \\ \hline
@@ -102,7 +102,7 @@ La progettazione concettuale comporta l’utilizzo dei requisiti identificati pr
 per realizzare uno schema concettuale per il data mart. A tale scopo viene utilizzato il
 Dimensional Fact Model (DFM), un modello concettuale creato appositamente per supportare
 la progettazione di data mart. 
-In figura~\ref{fig:dfm} è mostrato il DFM che modella il fatto relativio
+In figura~\ref{fig:dfm} è mostrato il DFM che modella il fatto relativo
 all'\textbf{utilizzo di un veicolo}.
 
 \begin{figure}[H]                                                                                                                                                            
@@ -123,12 +123,12 @@ rispettivamente all'istante di inizio e di fine di una finestra di profilazione;
 notare essi condividono la gerarchia che parte dall'attributo date e comprende tutti gli 
 attributi discendenti quali \textit{day}, \textit{weekday}, \textit{month}, \textit{year},
 \textit{minute} e \textit{hour};
-\item \textit{vehicle\_type:} dimensione di tipo stirnga che permette la selezione tra diversi
+\item \textit{vehicle\_type:} dimensione di tipo stringa che permette la selezione tra diversi
 tipi di veicoli all'interno di una finestra di profilazione;
 \item \textit{city:} dimensione di tipo stringa caratterizzata dall'attributo descritto di tipo
 stringa \textit{name}.
 \end{itemize}
-Si evidenziano inolte i seguenti attributi dimensionali appartenenti alla gerarchia della
+Si evidenziano inoltre i seguenti attributi dimensionali appartenenti alla gerarchia della
 dimensione \textit{city}:
 \begin{itemize}
 \item \textit{weather:} attributo relativo alla rilevazione delle condizioni atmosferiche
@@ -137,13 +137,13 @@ dimensionali \textit{weather\_start} e \textit{weather\_end} i quali condividono
 con l'attributo \textit{date} e corrispondono a data di inizio e di fine di una rilevazione;
 gli attributi descrittivi \textit{rain\_level}, \textit{temperature\_level} e
 \textit{wind\_level} con i quali ogni rilevazione atmosferica è in relazione uno a uno,
-permettono di descrivere con valori discreti le condizioni metereologiche in un determinato
+permettono di descrivere con valori discreti le condizioni meteorologiche in un determinato
 intervallo di tempo;
 \item \textit{strike:} partendo dal presupposto che non ogni città debba essere oggetto di
-almeno uno sciopero, si modella tale attirbuto come opzionale per la dimensione \textit{city};
+almeno uno sciopero, si modella tale attributo come opzionale per la dimensione \textit{city};
 tale attributo dispone inoltre degli attributi \textit{strike\_start} e \textit{strike\_end},
 che condividono la gerarchia con \textit{date}, relativi rispettivamente a 
-ora di inizio e ora di fine di uno sciopero; vi sono poi gli attirbuti descrittivi \textit{name} e 
+ora di inizio e ora di fine di uno sciopero; vi sono poi gli attributi descrittivi \textit{name} e 
 \textit{area\_of\_interest}, relativi a nome e settore interessato allo sciopero.
 \end{itemize}
 

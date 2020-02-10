@@ -1,4 +1,4 @@
-\chapter{Riconcilazione sorgenti}
+\chapter{Riconciliazione sorgenti}
 
 Nel seguito verranno documentati i passi intrapresi nella progettazione
 del modello riconciliato o Operational Data Store partendo dalle sorgenti
@@ -34,7 +34,7 @@ schema logico di partenza ma un nuovo schema a se stante, l'entità
 \textit{Profiling} è stata sostituita con l'entità \textit{Profiling
 window}, le cui istanze si riferiscono ai dati profilati all'interno di
 un delimitato intervallo di tempo per un determinato veicolo.
-Nello specifico sono stati aggiunti i seguenti nuovi attirbuti:
+Nello specifico sono stati aggiunti i seguenti nuovi attributi:
 \begin{itemize}
 \item \textit{start\_profiling\_time:} istante di inizio della finestra
 temporale;
@@ -58,8 +58,8 @@ un tempo superiore all'intervallo tra due successive profilazioni o il caso in
 cui un veicolo sia stato intenzionalmente posizionato in un punto da un addetto
 della manutenzione di Helbiz dopo essere stato ricaricato o allo scopo di
 redistribuzione la flotta di veicoli a disposizione all'interno della region.
-L'attributo \textit{psotion\_changed} è stato aggiunto allo scopo di permettere
-una veloce selezione delle istanze dell'entitò in oggetto per le quali lo
+L'attributo \textit{position\_changed} è stato aggiunto allo scopo di permettere
+una veloce selezione delle istanze dell'entità in oggetto per le quali lo
 spostamento memorizzato nell'attributo \textit{travelled\_distance} risulta essere
 maggiore una certa soglia. Come sarà descritto nella parte dedicata alle attività di
 ETL eseguite dalle sorgenti operazionali all'ODS, tale attributo permette di
@@ -72,7 +72,7 @@ Inoltre si ha che gli attributi \textit{start\_profiling\_time} e
 
 Anche quest'ultimo schema risulta lontano dal poter essere integrato con le altre
 sorgenti, aventi un livello di granularità temporale minimo di un ora.
-Inoltre gli attirbuti \textit{position\_changed} e \textit{new} non sono
+Inoltre gli attributi \textit{position\_changed} e \textit{new} non sono
 sfruttabili in nessuna delle interrogazione derivate dal fatto definito.
 Pertanto, partendo dallo schema concettuale di
 figura~\ref{fig:vehicle_interval_profiling_er} si è giunti allo schema di figura
@@ -89,7 +89,7 @@ Il processo di ristrutturazione ha consistito nella sostituzione dell'entità
 \textit{Profiling window} con l'entità \textit{Hourly Profiling} avente i
 seguenti nuovi attributi:
 \begin{itemize}
-\item \textit{start\_time:} istanze d'inzio della finestra di profilazione;
+\item \textit{start\_time:} istanze d'inizio della finestra di profilazione;
 \item \textit{end\_time:} istanze di fine della finestra di profilazione;
 \item \textit{uses:} attributo contenente il numero di utilizzi di un
 veicolo all'interno della finestra di profilazione;
@@ -97,7 +97,7 @@ veicolo all'interno della finestra di profilazione;
 percorsa dal veicolo nella finestra di profilazione.
 \end{itemize}
 Tale schema è pertanto da considerarsi quale schema concettuale definitivo per la
-sorgente Helbiz e come uno degli schemi oggetto del sucessivo processo di
+sorgente Helbiz e come uno degli schemi oggetto del successivo processo di
 integrazione.
 
 \subsection{Torino Meteo}
@@ -119,7 +119,7 @@ si collocano l'entità in oggetto;
 \item \textit{end\_profiling\_time:} ora di fine dell'intervallo orario in cui si
 collocano le profilazioni rappresentate dall'entità in oggetto;
 \item \textit{rain\_level:} attributo contenente il livello di intensità delle
-precipitazioni rilevanto nell'intervallo orario;
+precipitazioni rilevato nell'intervallo orario;
 \item \textit{wind\_level:} attributo contenente il livello di intensità del
 vento rilevato nell'intervallo orario;
 \item \textit{temperature\_level:} attributo contenente il livello di intensità della
@@ -135,20 +135,20 @@ temperatura rilavato nell'intervallo orario.
 
 Lo schema precedentemente descritto è da considerarsi quale schema concettuale definitivo
 per la sorgente Torino Meteo e come uno degli schemi partecipanti al successivo processo di
-integraizone.
+integrazione.
 
 \subsection{Scioperi}
 
 Per la sorgente Scioperi non è stato necessario procedere ad alcuna ristrutturazione dello
 schema concettuale di figura~\ref{fig:strikes_er} che sarà pertanto insieme ai precedenti
-oggetto della sucessivo processo di integrazione.
+oggetto della successivo processo di integrazione.
 
 \section{Integrazione}
 
 \subsection{Preintegrazione}
 
 Essendo i dati relativi ad ogni sorgente operazionale considerata ottenuti
-attraverso l'interrogazione di una API, solo un sottinsieme tra entità,
+attraverso l'interrogazione di una API, solo un sottoinsieme tra entità,
 relazioni e attributi rilevanti ai fini del progetto sono stati considerati
 al momento della redazione dei precedenti schemi concettuali. Non è stato
 quindi necessario escludere alcuna parte dei dati dall'integrazione. 
@@ -161,8 +161,8 @@ permesso di utilizzare una strategia di integrazione ennaria single step.
 \subsubsection{Conflitti sui nomi}
 
 Si evidenzia tra lo schema concettuale della sorgente Helbiz e quello della
-sorgente Torino Meteo una sinonimia ripsiettivamente tra i nomi delle
-relazioni \textit{Region} e \textit{City}. Le stesse vengon risolte nello
+sorgente Torino Meteo una sinonimia rispettivamente tra i nomi delle
+relazioni \textit{Region} e \textit{City}. Le stesse vengono risolte nello
 schema concettuale integrato utilizzando il nome \textit{City} per l'entità
 in questione.
 
@@ -176,7 +176,7 @@ come gestito negli schemi concettuali della altre due sorgenti.
 \subsection{Fusione e ristrutturazione schemi}
 
 Il risultato della sovrapposizione degli schemi e delle scelte intraprese nella
-risolzione dei conflitti ha portato allo schema di figura~\ref{fig:integrated_1_er}.
+risoluzione dei conflitti ha portato allo schema di figura~\ref{fig:integrated_1_er}.
 
 \begin{figure}[H]                                                                                                                                                            
 \centering                                                                                                                                                                   
@@ -197,7 +197,7 @@ e \textit{Vehicles\_hourly\_profilings} con due le relazioni eliminando la
 ridondanza dell'attributo \textit{type}. 
 
 Si noti inoltre la presenza dell'attributo \textit{insert\_time} per la
-tabella \textit{cities}, verrà fatto riferomento allo stesso nelle due procedure
+tabella \textit{cities}, verrà fatto riferimento allo stesso nelle due procedure
 di ETL; nello specifico esso sarà popolato durante la fase di popolamento
 dell'ODS e sarà letto nella fase di popolamento dei data mart.
 
@@ -316,8 +316,8 @@ I dati contenuti nella mappa presente in memoria vengono inseriti nella
 tabella \textit{vehicles\_hourly\_profilings}, appartenente anch'essa all'ODS
 ed oggetto del processo di integrazione precedente.
 
-Ogni region ha come attributo un nome sottoforma di stringa alfanumerica
-minuscola. E' però necessario convertire tale stirnga nel nome
+Ogni region ha come attributo un nome sotto forma di stringa alfanumerica
+minuscola. E' però necessario convertire tale stringa nel nome
 della corrispondente città, valore utilizzato dalle altre due sorgenti
 oggetto dell'integrazione. Entra quindi in gioco una procedura di
 \textit{cleansing} che utilizzando una tabella di supporto, provvede a
@@ -327,7 +327,7 @@ tabella \textit{cities} dell'ODS, il tutto mediante una query di UPDATE
 la quale esegue una JOIN su di una tabella di traduzione appositamente
 definita.
 
-Con tale oeprazione termina la procedura di trasformazione dei dati.
+Con tale operazione termina la procedura di trasformazione dei dati.
 In figura~\ref{fig:ETL_veicoli_er} è mostrato lo schema logico della due tabelle
 oggetto della procedura di trasformazione qui descritta e della tabella
 \textit{cities} ad esse associata.
@@ -350,7 +350,7 @@ stessa all'interno dell'ODS e in caso contrario procedere all'aggiunta;
 giornata (per i quali l'attributo \textit{query\_time} si riferisce ad un istante che
 si colloca nelle precedenti 24 ore) comprensivi dell'attributo \textit{name} della
 tabella \textit{city};
-\item procedere all'inserimento dei record ottenuti al punto precedente ottendendo
+\item procedere all'inserimento dei record ottenuti al punto precedente ottenendo
 per ogni valore dell'attributo \textit{cities.name}, per mezzo del costrutto JOIN,
 il \textit{city\_id} corrispondente della tabella \textit{cities} dell'ODS, al fine
 di mantenere l'integrità referenziale.
@@ -403,8 +403,8 @@ nome della città estratta dalla base dati della sorgente e la tabella
 \end{itemize}
 Tali passi sono ripetuti per ogni ora della precedente giornata.
 
-Le operazioni precedenti, eseguite interamente attraverso l'escuzione di script
-SQL, sono eseguite dall'applicativo Java scritto al termine della precendente
+Le operazioni precedenti, eseguite interamente attraverso l'esecuzione di script
+SQL, sono eseguite dall'applicativo Java scritto al termine della precedente
 procedura di estrazione.
 
 \subsubsection{Caricamento}

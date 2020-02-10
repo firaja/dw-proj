@@ -7,9 +7,9 @@ logico del data warehouse rappresentato in figura~\ref{fig:logic}.
 La scelta è stata quella di utilizzare il modello \textit{ROLAP} e di
 implementare tale schema utilizzando il DBMS MySQL.
 Lo schema utilizzato è quello a \textit{stella} al quale sono state applicate
-delle variazioni al fine di eliminare alcune ridondanze e rendere più efficente
+delle variazioni al fine di eliminare alcune ridondanze e rendere più efficiente
 in termini di spazio occupato le tabelle relative alle diverse dimensioni.
-Si scelgie di mantenere i dati all'interno dei data mart per un orizzonte
+Si sceglie di mantenere i dati all'interno dei data mart per un orizzonte
 temporale variabile tra i due e i 5 anni dalla data del loro inserimento.
 
 La tabella \textit{vehicle\_use} costituisce il fatto e ha per attributi:
@@ -46,8 +46,8 @@ settimana, evitando di dover ricorrere all'uso di particolari funzioni del DBMS.
 La tabella \textit{strike} aggiunge un attributo \textit{id}, chiave surrogata 
 utile alla relazione con la tabella \textit{vehicle\_use}.
 
-La tabella \textit{city} rimane pressochè invariata rispetto alla controparte
-\textit{cities} appartenente allo schema riconcilato.
+La tabella \textit{city} rimane pressoché invariata rispetto alla controparte
+\textit{cities} appartenente allo schema riconciliato.
 
 Si noti inoltre la presenza della tabella \textit{etl\_execution\_run} il cui
 utilizzo è ristretto al processo di ETL descritto al paragrafo seguente.
@@ -66,7 +66,7 @@ data mart definito al paragrafo precedente a partire dallo schema riconciliato
 di figura~\ref{fig:riconciliato_er}. Tale processo, similmente a quello definito
 per il popolamento dell'ODS a partire dai database delle singole sorgenti
 operazionali, è di tipo \textit{incremental delayed}; non essendo i dati
-precedentementente memorizzati all'interno del data mart soggetti ad aggiornamento,
+precedentemente memorizzati all'interno del data mart soggetti ad aggiornamento,
 la procedura consiste nell'aggiunta dei nuovi record relativi alle profilazioni
 delle sorgenti Helbiz e Torinometeo e nell'aggiornamento sugli scioperi
 intervenuti a due giorni dalla data in cui avviene l'aggiornamento.
@@ -77,7 +77,7 @@ al fatto al fine di non violare i vincoli di integrità referenziale definiti.
 
 La seguente procedura, implementata in uno script sql, è lanciata da un job di
 sistema ogni notte dopo la mezzanotte e fa seguito alla procedura di ETL
-da sorgenti a ODS definita al pragrafo~\ref{sec:etl_sorgenti_ODS}.
+da sorgenti a ODS definita al paragrafo~\ref{sec:etl_sorgenti_ODS}.
 
 \subsection{Popolamento tabelle dimensioni}
 
@@ -95,7 +95,7 @@ vengono selezionati i record per i quali l'attributo
 \textit{start\_profiling\_time} risulta essere superiore alla data di ultimo
 popolamento in memoria; a partire dai valori della colonna
 \textit{start\_profiling\_time} vengono ottenuti per mezzo di funzioni del DBMS
-i valori relaitvi a giorno, mese, anno e giorno della settimana i quali
+i valori relativi a giorno, mese, anno e giorno della settimana i quali
 corrisponderanno rispettivamente agli attributi \textit{day}, \textit{month},
 \textit{year} e \textit{weekday} del relativo record da inserirsi nella tabella
 in oggetto; l'attributo di origine costituirà invece la chiave primaria;
@@ -118,7 +118,7 @@ associata all'interno dell'ODS.
 
 Viene eseguita una query sulla tabella \textit{vehicles\_hourly\_profilings}
 dell'ODS e vengono selezionati i record per i quali l'attributo
-\textit{start\_profiling\_time} risulta esssere antecedente alla data di ultimo
+\textit{start\_profiling\_time} risulta essere antecedente alla data di ultimo
 popolamento presente in memoria. Per ottenere la chiave surrogata \textit{city\_id}
 viene effettuata una JOIN con la tabella \textit{city} ed una con la tabella
 \textit{cities} dell'ODS. La stessa cosa avviene per la chiave surrogata
