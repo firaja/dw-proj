@@ -1,0 +1,27 @@
+\chapter{Appendice}
+L'applicazione che si occupa delle operazioni di ETL è una applicazione Java disponibile su GitHub\footnote{https://github.com/firaja/dw-proj}
+divisa in tre macro programmi, divisi in alcune modalità
+
+\begin{table}[H]
+
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|l|l|}
+\hline
+\rowcolor[HTML]{3166FF} 
+{\color[HTML]{FFFFFF} \textbf{Programma}} & {\color[HTML]{FFFFFF} \textbf{Modalità}} & {\color[HTML]{FFFFFF} \textbf{Descrizione}}                                   & {\color[HTML]{FFFFFF} \textbf{Args}}                                   \\ \hline
+                                          & Crawler                                  &   Effettua il crwaling ogni \texttt{T} minuti per una region \texttt{R}                                                                            & \texttt{crawler <R> <T>}                     \\ \cline{2-4} 
+                                          & Transform                                &    Esegue l'aggragazione che porta ad accorpare coppie di profilazioni adiacenti                                                                           &\texttt{transformer <R> <T1> <T2>} \\ \cline{2-4} 
+\multirow{-3}{*}{HelbizProgram.java}      & Vehicle Profilings                       &   Ottiene le profiliazioni per ogni singolo veicolo per ora                                                                            & \texttt{vprofilings <R> <T1> <T2>} \\ \hline
+                                          & Init                                     & Si occupa di estrarre, trasformare e inserire le rilevazioni meteo storiche   & \texttt{init}                                                                \\ \cline{2-4} 
+\multirow{-2}{*}{WeatherProgram.java}     & Update                                   & Si occupa di estrarre, trasformare e inserire le rilevazioni meteo realtime   & \texttt{update}                                                               \\ \hline
+                                          & Init                                     & Si occupa di estrarre, trasformare e inserire tutti gli scioperi registrati   & \texttt{init}                                                                      \\ \cline{2-4} 
+\multirow{-2}{*}{StrikeProgram.java}      & Update                                   & Si occupa di estrarre, trasformare e inserire o rimuovere gli ultimi scioperi & \texttt{update}                                                                  \\ \hline
+\end{tabular}%
+}
+\end{table}
+
+È sufficiente avere installato una versione di Java 1.8 o superiore e Maven 3 o superiore.
+
+L'installazione avviene tramite task maven \texttt{mvn clean install}.
+All'interno della cartella \texttt{resources} si possono trovare i file SQL contenenti le query DDL per il corretto funzionamento del programma.
