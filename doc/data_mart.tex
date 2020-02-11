@@ -9,8 +9,8 @@ implementare tale schema utilizzando il DBMS MySQL.
 Lo schema utilizzato è quello a \textit{stella} al quale sono state applicate
 delle variazioni al fine di eliminare alcune ridondanze e rendere più efficiente
 in termini di spazio occupato le tabelle relative alle diverse dimensioni.
-Si sceglie di mantenere i dati all'interno dei data mart per un orizzonte
-temporale variabile tra i due e i 5 anni dalla data del loro inserimento.
+Si è scelto di mantenere i dati all'interno dei data mart per un orizzonte
+temporale variabile tra i 2 e i 5 anni dalla data del loro inserimento.
 
 La tabella \textit{vehicle\_use} costituisce il fatto e ha per attributi:
 \begin{itemize}
@@ -68,11 +68,11 @@ per il popolamento dell'ODS a partire dai database delle singole sorgenti
 operazionali, è di tipo \textit{incremental delayed}; non essendo i dati
 precedentemente memorizzati all'interno del data mart soggetti ad aggiornamento,
 la procedura consiste nell'aggiunta dei nuovi record relativi alle profilazioni
-delle sorgenti Helbiz e Torinometeo e nell'aggiornamento sugli scioperi
-intervenuti a due giorni dalla data in cui avviene l'aggiornamento.
+delle sorgenti Helbiz e Torinometeo e nell'aggiornamento degli scioperi
+intervenuti fino a due giorni prima della data in cui avviene l'aggiornamento.
 
 La procedura prevede che il popolamento delle tabelle relative alle dimensioni
-ed ai relativi attributi avvenga prima del popolamento della tabella relativa
+e ai relativi attributi avvenga prima del popolamento della tabella relativa
 al fatto al fine di non violare i vincoli di integrità referenziale definiti.
 
 La seguente procedura, implementata in uno script sql, è lanciata da un job di
@@ -86,8 +86,8 @@ viene ottenuta la data dell'ultima esecuzione del processo in oggetto e
 memorizzata in una variabile. Segue nell'ordine il popolamento delle tabelle:
 \begin{itemize}
 \item \textit{city:} a partire dalla tabella \textit{cities} dell'ODS vengono
-estratti i nomi delle città per le quali il valore della colonna
-\textit{insert\_time} di tale tabella risultino essere successivi a quelli 
+estratti i nomi delle città per i quali il valore della colonna
+\textit{insert\_time} risulta essere successivo a quello 
 della data in memoria; ad ognuno dei record inseriti è associato un id
 numerico incrementale che costituisce la chiave surrogata;
 \item \textit{date:} a partire dalla tabella \textit{vehicle\_hourly\_profilings}
@@ -107,7 +107,7 @@ del data mart al fine di ottenere la chiave surrogata relativa alla città
 associata all'interno dell'ODS;
 \item \textit{weather:} vengono selezionati i record della tabella
 \textit{weather\_hourly\_profilings} aventi per l'attributo
-\textit{start\_profiling\_time} valore successivo a quello della data in memoria;
+\textit{start\_profiling\_time} un valore successivo a quello della data in memoria;
 come per il popolamento della tabella al punto precedente, nella stessa query,
 viene effettuata una JOIN con la tabella \textit{cities} dell'ODS ed una con la
 tabella \textit{city} al fine di ottenere la chiave surrogata relativa alla città
@@ -126,11 +126,11 @@ viene effettuata una JOIN con la tabella \textit{city} ed una con la tabella
 \textit{weather} e con la tabella \textit{weather\_hourly\_profilings}.
 Per quanto riguarda la chiave \textit{weather\_id} essa è ottenuta per mezzo
 dell'operazione di LEFT JOIN con la tabella \textit{weather} specificando
-come condizione che gli attributi \textit{start\_profiling\_time} e ì
+come condizione che gli attributi \textit{start\_profiling\_time} e
 \textit{end\_profiling\_time} della tabella \textit{vehicles\_hourly\_profilings}
 siano contenuti nell'intervallo definito dagli attributi \textit{start\_time} e
 \textit{end\_time} della tabella \textit{strike} dell'ODS. Infatti, come anticipato
-alla descrizione dello schema logico del data mart, mentre per ogni record della
+alla descrizione dello schema logico del data mart, mentre ad ogni record della
 tabella del fatto corrisponde un record della tabella \textit{weather} ciò non
 vale per la tabella \textit{strike} dato che non ad ogni giorno del periodo
 temporale analizzato è associato uno sciopero.

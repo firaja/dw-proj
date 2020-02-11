@@ -15,7 +15,7 @@ warehouse si prefigge di rispondere. Inoltre attributi come
 \textit{power} e \textit{miles\_range} non si prestano, in quanto valori
 numerici continui, ad essere utilizzati all'interno del costrutto di
 selezione di una interrogazione OLAP per il dominio applicativo
-scelto. Inoltre gli attributi \textit{battery\_level\_miles} e
+scelto. Infine, gli attributi \textit{battery\_level\_miles} e
 \textit{miles} risultano essere ridondanti.
 
 Partendo dallo schema ER mostrato in figura~\ref{fig:vehicle_profiling_er} è
@@ -57,7 +57,7 @@ veicolo sia stato oggetto di utilizzo ininterrotto da parte di un utente per
 un tempo superiore all'intervallo tra due successive profilazioni o il caso in
 cui un veicolo sia stato intenzionalmente posizionato in un punto da un addetto
 della manutenzione di Helbiz dopo essere stato ricaricato o allo scopo di
-redistribuzione la flotta di veicoli a disposizione all'interno della region.
+redistribuire la flotta di veicoli a disposizione all'interno della region.
 L'attributo \textit{position\_changed} è stato aggiunto allo scopo di permettere
 una veloce selezione delle istanze dell'entità in oggetto per le quali lo
 spostamento memorizzato nell'attributo \textit{travelled\_distance} risulta essere
@@ -68,10 +68,11 @@ aperti, soggetti agli eventi atmosferici oltre che all'interazione con attori
 che si trovano nelle immediate vicinanze.
 Inoltre si ha che gli attributi \textit{start\_profiling\_time} e
 \textit{end\_profiling\_time} insieme con l'attributo \textit{id} dell'entità
-\textit{Vehicle}, identificano univocamente una finestra di profilazione.
+\textit{Vehicle}, identificano univocamente un'istanza dell'entità
+\textit{Profiling window}.
 
 Anche quest'ultimo schema risulta lontano dal poter essere integrato con le altre
-sorgenti, aventi un livello di granularità temporale minimo di un ora.
+sorgenti, aventi un livello di granularità temporale minimo di un'ora.
 Inoltre gli attributi \textit{position\_changed} e \textit{new} non sono
 sfruttabili in nessuna delle interrogazione derivate dal fatto definito.
 Pertanto, partendo dallo schema concettuale di
@@ -89,41 +90,41 @@ Il processo di ristrutturazione ha consistito nella sostituzione dell'entità
 \textit{Profiling window} con l'entità \textit{Hourly Profiling} avente i
 seguenti nuovi attributi:
 \begin{itemize}
-\item \textit{start\_time:} istanze d'inizio della finestra di profilazione;
-\item \textit{end\_time:} istanze di fine della finestra di profilazione;
+\item \textit{start\_time:} istante d'inizio della finestra di profilazione;
+\item \textit{end\_time:} istante di fine della finestra di profilazione;
 \item \textit{uses:} attributo contenente il numero di utilizzi di un
 veicolo all'interno della finestra di profilazione;
 \item \textit{travelled\_distance:} attributo che contiene la distanza 
-percorsa dal veicolo nella finestra di profilazione.
+percorsa dal veicolo all'interno della finestra di profilazione.
 \end{itemize}
 Tale schema è pertanto da considerarsi quale schema concettuale definitivo per la
 sorgente Helbiz e come uno degli schemi oggetto del successivo processo di
 integrazione.
 
-\subsection{Torino Meteo}
+\subsection{Torinometeo}
 
-Similmente a quanto fatto per Helbiz, anche per la sorgente Torino Meteo è
+Similmente a quanto fatto per Helbiz, anche per la sorgente Torinometeo è
 stato necessario modificare lo schema concettuale presentato in figura
 \ref{fig:weather_detection_er}. Le profilazioni acquisite dai sensori
 sono relative ad un determinato istante di tempo e non ad una finestra temporale
 come nel caso di Helbiz e riportano per gli attributi \textit{rain},
 \textit{wind}, \textit{relative\_humidity} e \textit{temperature} valori numerici
-continui che non si prestano ad essere utilizzati all'interno di un'interrogazione
+continui che non si prestano ad essere utilizzati all'interno di interrogazioni
 OLAP quali quelle definite. Inoltre, gli attributi \textit{id} e
 \textit{relative\_humidity} non sono di interesse ai fini del progetto.
 Lo schema derivato di figura \ref{fig:wheathre_hourly_profiling_er} contiene la
 nuova entità \textit{Weather hourly profiling} caratterizzata dai seguenti attributi:
 \begin{itemize}
 \item \textit{start\_profiling\_time:} istante di inizio dell'intervallo orario in cui
-si collocano l'entità in oggetto;
+si collocano le profilazioni rappresentate dall'entità in oggetto;
 \item \textit{end\_profiling\_time:} ora di fine dell'intervallo orario in cui si
 collocano le profilazioni rappresentate dall'entità in oggetto;
 \item \textit{rain\_level:} attributo contenente il livello di intensità delle
-precipitazioni rilevato nell'intervallo orario;
+precipitazioni, rilevato nell'intervallo orario;
 \item \textit{wind\_level:} attributo contenente il livello di intensità del
-vento rilevato nell'intervallo orario;
+vento, rilevato nell'intervallo orario;
 \item \textit{temperature\_level:} attributo contenente il livello di intensità della
-temperatura rilavato nell'intervallo orario.
+temperaturam rilevato nell'intervallo orario.
 \end{itemize}
 
 \begin{figure}[H]                                                                                                                                                            
@@ -134,7 +135,7 @@ temperatura rilavato nell'intervallo orario.
 \end{figure}
 
 Lo schema precedentemente descritto è da considerarsi quale schema concettuale definitivo
-per la sorgente Torino Meteo e come uno degli schemi partecipanti al successivo processo di
+per la sorgente Torinometeo e come uno degli schemi partecipanti al successivo processo di
 integrazione.
 
 \subsection{Scioperi}
@@ -154,21 +155,21 @@ al momento della redazione dei precedenti schemi concettuali. Non è stato
 quindi necessario escludere alcuna parte dei dati dall'integrazione. 
 
 La semplicità dei diagrammi concettuali di ognuna delle tre sorgenti ha
-permesso di utilizzare una strategia di integrazione ennaria single step.
+permesso di utilizzare una strategia di integrazione n-aria single step.
 
 \subsection{Comparazione e allineamento schemi}
 
 \subsubsection{Conflitti sui nomi}
 
 Si evidenzia tra lo schema concettuale della sorgente Helbiz e quello della
-sorgente Torino Meteo una sinonimia rispettivamente tra i nomi delle
+sorgente Torinometeo una sinonimia rispettivamente tra i nomi delle
 relazioni \textit{Region} e \textit{City}. Le stesse vengono risolte nello
 schema concettuale integrato utilizzando il nome \textit{City} per l'entità
 in questione.
 
 \subsubsection{Conflitti strutturali}
 E' presente un conflitto strutturale relativo alla diversa rappresentazione 
-dell'entità città, per le sorgenti Helbiz e Torino Meteo come entità,
+dell'entità città, per le sorgenti Helbiz e Torinometeo come entità,
 per la sorgente Scioperi come attributo dell'entità \textit{Strike}.
 Si risolve tale conflitto adottando la rappresentazione come entità
 come gestito negli schemi concettuali della altre due sorgenti.
@@ -192,8 +193,8 @@ ad essa relazionate. Tale attributo è poi parte della chiave primaria per le
 tabelle \textit{strikes} e \textit{weather\_hourly\_profilings}.
 
 Diversamente da quanto fatto in fase di progettazione dello schema logico della
-sorgente operazionale, si è scelto di rappresentare le entità \textit{Vehicle}
-e \textit{Vehicles\_hourly\_profilings} con due le relazioni eliminando la
+sorgente operazionale, si è scelto di rappresentare le entità \textit{vehicles}
+e \textit{vehicles\_hourly\_profilings} con due relazioni eliminando la
 ridondanza dell'attributo \textit{type}. 
 
 Si noti inoltre la presenza dell'attributo \textit{insert\_time} per la
@@ -222,7 +223,7 @@ mediante le API per un periodo di 6 mesi.
 
 L'estrazione è di tipo \textit{incremental delayed}: un job di sistema è
 schedulato al termine della giornata per invocare l'applicativo sviluppato in
-modalità di estrazione il quale interroga la base dati, ottenere i dati delle
+modalità di estrazione il quale interroga la base dati, ottiene i dati delle
 profilazioni delle ultime 24 ore e procedere al caricamento delle stesse
 all'interno dell'ODS.
 
@@ -231,14 +232,14 @@ all'interno dell'ODS.
 Durante la procedura di estrazione viene interrogata la tabella
 \textit{vehicles} dello schema di figura~\ref{fig:vehicles_logic_physic} al fine
 di ottenere tutti gli istanti di profilazione intervenuti nelle ultime 24 ore
-per una determinata region, ordinati in maniera ascendente. Viene eseguita
+per una determinata region, ordinati in maniera crescente. Viene eseguita
 a livello di codice Java la differenza tra coppie adiacenti di
 \textit{query\_time} e vengono scartate le coppie per cui la differenza in
 minuti non è compresa tra 3 e 10 minuti intervalli esclusi. Come anticipato
 l'applicativo è stato impostato per acquisire dati dal servizio remoto ogni 5
 minuti. Applicando tale operazione di filtraggio si ha la sicurezza di evitare
 di processare profilazioni tra loro troppo vicine o troppo distanti, frutto in
-qualche caso di errore dovuto alla momentanea incapacità di rispondere da parte
+qualche caso di errori dovuti alla momentanea incapacità di rispondere da parte
 del servizio remoto. Per ogni coppia di istanti di misurazione viene effettuata
 un'interrogazione al database della sorgente al fine di ottenere per ogni veicolo
 della region di interesse una tupla ricavata dalla join della tabella
@@ -258,14 +259,14 @@ metri mediante l'uso delle seguenti tre formule:
 terra per calcolare la distanza tra i due punti. La distanza ottenuta è
 confrontata con una soglia fissata a 100 metri. Se la distanza in linea d'aria
 è superiore a tale valore, allora è possibile considerare che il veicolo in
-questione stato utilizzato nell'intervallo considerato. Tale soglia serve
+questione sia stato utilizzato nell'intervallo considerato. Tale soglia serve
 ad escludere errori nella segnalazione della posizione o spostamenti causati da
-attori esterni non allo scopo di utilizzare il veicolo per spostarsi 
-non rilevanti allo scopo del progetto (\textit{e.g.} i veicoli possono essere spostati con un automezzo causa manutenzione o per operazioni stoccaggio). 
+attori esterni con scopi diversi da quello di utilizzare il veicolo per spostarsi 
+e pertanto non rilevanti allo scopo del progetto (\textit{e.g.} i veicoli possono essere spostati con un automezzo causa manutenzione o per operazioni stoccaggio). 
 Quanto ottenuto da ogni coppia di veicoli è via via inserito in una query di INSERT che provvede ad inserire i risultati
-nella tabella \textit{vehicles\_profilings} di figura~\ref{fig:ETL_veicoli_er}.
+nella tabella \textit{vehicles\_profilings} dell'ODS.
 La colonna \textit{position\_changed} contiene un valore booleano sulla base
-del prevedente confronto eseguito sulla distanza in linea d'aria calcolata.
+del precedente confronto eseguito sulla distanza in linea d'aria calcolata.
 Al termine del processamento di tutte le coppie per un determinato intervallo,
 viene eseguita un'altra query sulla tabella \textit{vehicles} della sorgente allo 
 scopo di estrarre i veicoli rilevati nella misurazione più recente e non nella  
@@ -274,7 +275,7 @@ veicoli che in quanto utilizzati o disattivati non erano disponibili al momento
 della prima interrogazione ma lo sono diventati al momento della seconda. Per 
 ognuno dei veicoli risultato di tale query è aggiunto un record alla tabella
 \textit{vehicles\_profilings} avente valore nullo per le colonne 
-\textit{position\_changed} e \textit{travelled\_distance} e avranno valore
+\textit{position\_changed} e \textit{travelled\_distance} e valore
 1 per la colonna booleana \textit{new}. La tabella \textit{vehicles\_profilings}
 ha funzione di buffer per le successive operazioni di \textit{enrichment} e risiede
 nell'ODS.
@@ -289,11 +290,11 @@ operazioni:
 ricondotto all'inizio dell'ora ricavando così un'ora d'inizio;
 \item viene verificata in una struttura dati di tipo \java{Map} allocata in
 memoria la presenza di un valore passando come chiave l'attributo \textit{id}
-del veicolo oggetto della profilazione; se presente il valore ritornato consiste un
+del veicolo oggetto della profilazione; se presente, il valore ritornato consiste in un
 oggetto di tipo \java{Map} che associa ad ogni ora di un giorno una mappa,
 quest'ultima contenente le chiavi \textit{uses} e \textit{travelled\_distance}
-ed i relativi valori numerici associati; in caso non esiste un oggetto associato
-all'ora passata come chiave, tale mappa viene creata ed le vengono associato
+ed i relativi valori numerici associati; in caso non esista un oggetto associato
+all'ora passata come chiave, tale mappa viene creata e le viene associato
 valore 0 per ognuno dei precedenti attributi;
 \item se l'attributo \textit{position\_changed} è settato a 1 e la distanza
 \textit{travelled\_distance} è inferiore a 3000 metri, l'algoritmo procede
@@ -314,7 +315,7 @@ del punto precedente all'incremento degli attributi \textit{uses} e
 \end{itemize}
 I dati contenuti nella mappa presente in memoria vengono inseriti nella
 tabella \textit{vehicles\_hourly\_profilings}, appartenente anch'essa all'ODS
-ed oggetto del processo di integrazione precedente.
+e risultato del precedente processo di integrazione.
 
 Ogni region ha come attributo un nome sotto forma di stringa alfanumerica
 minuscola. E' però necessario convertire tale stringa nel nome
@@ -325,24 +326,21 @@ modificar il valore dell'attributo \textit{city\_id} della tabella
 \textit{vehciles\_profilings} con l'id della corrispondente città della
 tabella \textit{cities} dell'ODS, il tutto mediante una query di UPDATE
 la quale esegue una JOIN su di una tabella di traduzione appositamente
-definita.
-
-Con tale operazione termina la procedura di trasformazione dei dati.
-In figura~\ref{fig:ETL_veicoli_er} è mostrato lo schema logico della due tabelle
-oggetto della procedura di trasformazione qui descritta e della tabella
-\textit{cities} ad esse associata.
+definita. Con tale operazione termina la procedura di trasformazione dei dati.
 
 \subsubsection{Caricamento}
 
 La procedura di caricamento è di tipo incrementale, consiste nella sola aggiunta di
-nuovi record alla tabella e viene eseguita con cadenza giornaliera, al termine della
+nuovi record alla tabella e viene eseguita con cadenza giornaliera al termine della
 procedura di trasformazione. Il tutto è svolto dall'applicativo Java sviluppato che
 si occupa nell'ordine di:
 \begin{itemize}
 \item inserire nella tabella \textit{vehicles} i record relativi a veicoli non ancora
 inseriti che sono stati oggetto di profilazioni durante la giornata precedente;
 \item inserire nella tabella \textit{cities} i record relativi a nuove città oggetto
-di profilazione durante la giornata precedente;
+di profilazione durante la giornata precedente; ad ogni record inserito corrisponderà
+un orario di inserimento memorizzato nell'attributo \textit{insert\_time} della stessa
+tabella;
 \item estrarre i dati dalla tabella \textit{cities} della sorgente e utilizzare la
 tabella di traduzione al fine di verificare la presenza della versione tradotta della
 stessa all'interno dell'ODS e in caso contrario procedere all'aggiunta;
@@ -379,7 +377,7 @@ provvede nell'ordine a:
 \begin{itemize}
 \item trasformare il valore di tipo \java{DATETIME} dell'attributo
 \textit{query\_time} nell'ora esatta precedente più prossima (operazione
-equivalente a porre ad azzerare minuti e secondi);
+equivalente ad azzerare minuti e secondi);
 \item eseguire la media delle somme degli attributi \textit{wind\_level},
 \textit{temperature\_level} e \textit{rain\_level} di tutti i record per i
 quali l'attributo \textit{query\_time} rappresenta lo stesso istante o un
@@ -394,7 +392,7 @@ oggetto di interrogazione;
 \textit{weather\_hourly\_profilings} a partire dai dati ottenuti ai punti
 precedenti; nello specifico, per l'attributo
 \textit{start\_profiling\_time} viene presa la data calcolata al primo punto;
-a tale data è sommata un ora per ottenere il valore dell'attributo
+a tale data è sommata un'ora per ottenere il valore dell'attributo
 \textit{end\_profiling\_time}; ad ognuno degli attributi relativi alle
 condizioni atmosferiche è associato il livello ottenuto al punto precedente;
 l'attributo \textit{city\_id} è invece ottenuto per mezzo di una JOIN tra il
@@ -403,7 +401,7 @@ nome della città estratta dalla base dati della sorgente e la tabella
 \end{itemize}
 Tali passi sono ripetuti per ogni ora della precedente giornata.
 
-Le operazioni precedenti, eseguite interamente attraverso l'esecuzione di script
+Le operazioni precedenti, eseguite interamente attraverso l'esecuzione di query 
 SQL, sono eseguite dall'applicativo Java scritto al termine della precedente
 procedura di estrazione.
 
@@ -429,15 +427,16 @@ di mantenere l'integrità referenziale.
 Si ha a che fare con una sorgente con dati periodici per la quale si è scelto di 
 conservare dati per i successivi 6 mesi a partire dalla raccolta degli stessi.
 
-Come per le precedenti due sorgenti l'estrazione è di tipo
-\textit{incremental\_delayed} ed è effettuato con le stesse modalità di estrazione
-utilizzate per le precedenti sorgenti. E' invece presente una differenza sui dati
+Come per le altre due sorgenti l'estrazione è di tipo
+\textit{incremental\_delayed} ed è effettuato con le stesse modalità utilizzate
+dalle precedenti.
+E' invece presente una differenza sui dati
 memorizzati che si riferiscono a scioperi avvenuti non meno di due giorni prima
 della data corrente. Come anticipato al momento della descrizione della sorgente,
 tali open data hanno anche funzionalità di forecasting ricomprendendo tra gli scioperi
 anche quelli previsti nel futuro ed annunciati. Gli scioperi, compresi quelli in corso,
-sono soggetti anche a modifiche ed annullamenti. Considerato che il dato sulla
-presenza o meno di uno sciopero è da ritenersi attendibile alla fine dello
+sono soggetti a modifiche ed annullamenti. Considerato che il dato sulla
+presenza o meno di uno sciopero è da ritenersi attendibile solo al termine dello
 sciopero stesso, si è scelto di inserire ad ogni aggiornamento della base dati
 della sorgente i dati sui soli scioperi aventi data precedente di due giorni la
 data corrente al fine di gestire anche il caso di scioperi della durata superiore 
@@ -460,5 +459,5 @@ avente come attributo \textit{name} la stringa suddetta.
 
 Al termine della procedura di estrazione, per ogni record del database della
 sorgente viene ottenuto mediante il costrutto JOIN il relativo id della tabella
-\textit{cities} e questo è inserito come attributo \textit{city\_id} per la
+\textit{cities}; questo è inserito come attributo \textit{city\_id} per la
 nuova tabella.

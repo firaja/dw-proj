@@ -1,26 +1,28 @@
 \chapter{Conclusioni e sviluppi futuri}
+
 Le analisi condotte in questo caso di studio permettono di valutare l'andamento degli 
-utilizzi dei monopattini con differenti punti di vista anche grazie all’integrazione della sorgente dati
-Meteo. Helbiz in quanto azienda sicuramente vorrà espandersi il più possibile sul suolo nazionale italiano;
-in questo senso ha reso disponibile dagli inizi di Febbraio 2020 le API anche per Milano e Roma.
-Questo implica l'integrazione con una base di dati che fornisca la lista di comuni sempre aggiornata, divisi per 
-provincia e regioni: il cambiamento dell'appartenenza di un comune rispetto ad una provincia, la soppressione o aggiunta
-di una provincia o addirittura la annessione di un comune ad una regione è un evento non così raro quanto sembri; per questo
-c'è bisogno di un aggiornamento costante, con un refresh rate ovviamente molto basso. \\~\\
+utilizzi dei monopattini da diversi punti di osservazione anche grazie all’integrazione delle sorgenti dati
+di meteo e scioperi.
 
+Helbiz in quanto azienda in espansione a guida italiana mira a coprire la penisola con almeno una presenza per regione; 
+fa da apripista verso il raggiungimento di tale obiettivo la rinnovata presenza del servizio a Milano dopo circa 6 mesi di sosta dettata dal gap legislativo.
+A tal fine, proprio sull'esempio di Milano, potrebbe essere utile integrare oltre alle sorgenti di cui si dispone degli open data sull'utilizzo di ZTL,
+Area C e Area B al fine di vedere se tali mezzi costituiscono un'alternativa ai mezzi pubblici per l'accesso a tali aree contingentate. \\
 
-La collaborazione con Torinometeo potrebbe quindi espandersi verso l'integrazione con più sorgenti meteorologiche locali
-oppure l'affidarsi ad un unico servizio come OpenWeatherMap, che però ad oggi risulta essere a pagamento dopo il superamento di una soglia di chiamate per minuto.
-Sarà quindi da valutare il costo (in termini di tempo, denaro e risorse) di una unica integrazione a pagamento o di
-molteplici ma diverse integrazioni.\\~\\
+La collaborazione con Torinometeo potrebbe espandersi verso l'integrazione di più sorgenti meteorologiche locali;
+in alternativa si potrebbe sceglie un unico servizio come OpenWeatherMap, il quale però ad oggi risulta essere a pagamento dopo il superamento di una soglia di
+massima di richieste per minuto e non permette l'accesso a dati storici a meno di sottoscrivere un abbonamento.
+Rimane quindi da valutare il costo (in termini di tempo, denaro e risorse) dell'integrazione e successivo utilizzo di un'unica sorgente dati a pagamento o di
+molteplici sorgenti dati gratuite quali Torinometeo al costo di dover effettuare diverse integrazioni, con relativa complicazione della fase di
+riconciliazione degli schemi delle diverse sorgenti.\\
 
+Come già anticipato nel corso della relazione il progetto è stato eseguito profilando le posizioni dei monopattini ma progettando un data warehouse potenzialmente
+in grado di gestire qualsiasi altro tipo di veicolo adibito al noleggio.
+Ciò è dovuto al fatto che, ad oggi, Helbiz permette il noleggio di monopattini in tutte le città in cui è presente ma restringe il noleggio di altri veicoli come
+le biciclette ad una cerchia ristretta di città pilota.
+Una volta che il noleggio delle biciclette diverrà capillare alle città già servite dai monopattini, disponendo delle posizioni sulle biciclette,
+sarà possibile tracciare dei pattern comportamentali divisi per tipo di veicolo.\\
 
-Come già descritto nel documento, ad oggi Helbiz rilascia informazioni solo relative al ai monopattini.
-Una volta che anche posizioni sulle biciclette saranno disponibili sarà possibile tracciare dei pattern comportamentali
-divisi per tipo di veicolo.\\~\\
-
-
-L'utilizzo risulta essere l'unico fatto identificato nel data warehouse creato. Se Helbiz mettesse a disposizione i dati anagrafici
-(opportunamente "anonimizzati" in conformità alla normativa vigente europea sulla privacy) si potrebbero aggiungere
-maggiori dettagli sull'utenza e determinare quali fasce d'età siano più attratte dal servizio.
-
+L'utilizzo risulta essere l'unico fatto identificato nel data warehouse creato. Se Helbiz mettesse a disposizione oltre che le statistiche sull'uso dei veicoli
+anche i dati anagrafici degli utilizzatori degli stessi (opportunamente "anonimizzati" in conformità alla normativa europea vigente in termini di privacy),
+si potrebbero aggiungere maggiori dettagli sull'utenza e determinare quali fasce d'età fanno un uso più intenso del servizio.

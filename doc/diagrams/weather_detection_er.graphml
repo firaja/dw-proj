@@ -20,8 +20,8 @@
           <y:Geometry height="54.079999999999984" width="108.15999999999997" x="238.32000000000005" y="362.96000000000004"/>
           <y:Fill hasColor="false" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="31.9375" modelName="custom" textColor="#000000" visible="true" width="55.228515625" x="26.465742187499984" y="11.071249999999964">Weather
-sensor<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="31.9375" modelName="custom" textColor="#000000" visible="true" width="60.671875" x="23.744062499999984" y="11.071249999999964">Weather
+detection<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -391,7 +391,6 @@ sensor<y:LabelModel>
       </data>
     </edge>
     <edge id="e8" source="n11" target="n0">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="-52.400000000000034" ty="-8.216156311130078">
@@ -404,7 +403,6 @@ sensor<y:LabelModel>
       </data>
     </edge>
     <edge id="e9" source="n10" target="n9">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
